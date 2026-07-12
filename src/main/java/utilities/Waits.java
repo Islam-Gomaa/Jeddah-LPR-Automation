@@ -64,6 +64,11 @@ public class Waits {
         return getWait(driver, timeout).until(ExpectedConditions.visibilityOfAllElementsLocatedBy(locator));
     }
 
+    public static boolean waitUntilUrlContains(WebDriver driver, String expectedUrlPart) {
+        return new WebDriverWait(driver, Duration.ofSeconds(DEFAULT_TIMEOUT))
+                .until(ExpectedConditions.urlContains(expectedUrlPart));
+    }
+
     // ================= CLICKABLE =================
 
     public static WebElement waitForClickable(WebDriver driver, By locator) {

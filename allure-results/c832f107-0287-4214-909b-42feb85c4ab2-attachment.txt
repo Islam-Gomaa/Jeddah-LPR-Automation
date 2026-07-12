@@ -1,0 +1,1 @@
+News by date chart is not displayed

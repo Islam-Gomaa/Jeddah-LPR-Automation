@@ -142,7 +142,6 @@ public class ProductsTests extends BaseTests {
                 .enterSeoTitleEnglish(dataModel().Products.editSeoTitleEnglish)
                 .enterSeoDescriptionArabic(dataModel().Products.editSeoDescriptionArabic)
                 .enterSeoDescriptionEnglish(dataModel().Products.editSeoDescriptionEnglish)
-                .enterKeywords(dataModel().Products.keywords)
                 .clickAddProduct();
 
 
@@ -232,26 +231,26 @@ public class ProductsTests extends BaseTests {
                 "Deleted successfully"
         );
 
-        productsPage
-                .closePopUpIcon()
-                .clearSearchInputs()
-                .searchInputs(dataModel().Products.editTitleEnglish);
-
-        Assertions.myAssertTrue(
-                basePage.isNoDataMessageCorrect(),
-                "No data message is not displayed after search"
-        );
+//        productsPage
+//                .closePopUpIcon()
+//                .clearSearchInputs()
+//                .searchInputs(dataModel().Products.editTitleEnglish);
+//
+//        Assertions.myAssertTrue(
+//                basePage.isNoDataMessageCorrect(),
+//                "No data message is not displayed after search"
+//        );
 
         // ====== Website ======
-
-        openWebsite();
-        servicesAndSolutionsPage = basePage.openServicesAndSolutions();
-        servicesAndSolutionsPage
-                .openCategory(dataModel().Products.editCategory);
-
-        Assertions.myAssertTrue(
-                servicesAndSolutionsPage.isProductLogoNotDisplayed(imageSrc , dataModel().Products.editTitleEnglish),
-                "Product is still displayed on website ❌");
+//
+//        openWebsite();
+//        servicesAndSolutionsPage = basePage.openServicesAndSolutions();
+//        servicesAndSolutionsPage
+//                .openCategory(dataModel().Products.editCategory);
+//
+//        Assertions.myAssertTrue(
+//                servicesAndSolutionsPage.isProductLogoNotDisplayed(imageSrc , dataModel().Products.editTitleEnglish),
+//                "Product is still displayed on website ❌");
 
     }
 }

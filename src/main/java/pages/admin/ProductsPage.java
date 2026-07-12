@@ -136,7 +136,7 @@ public class ProductsPage extends BasePage<ProductsPage> {
 
     @Step("Enter Keywords")
     public ProductsPage enterKeywords(String name) {
-        sendKeys(keywords,name);
+        sendKeys(keywords,name, Keys.ENTER);
         return this;
     }
 

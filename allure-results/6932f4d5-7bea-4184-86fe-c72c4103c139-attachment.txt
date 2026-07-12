@@ -1,0 +1,1 @@
+Clients count card is not displayed

@@ -11,7 +11,12 @@
 <!--            <class name="tests.BlogCategoriesTests"/>-->
 <!--            <class name="tests.BlogsTests"/>-->
 <!--            <class name="tests.SubscribersTests"/>-->
-            <class name="tests.ContactUsTests"/>
+<!--            <class name="tests.ContactUsTests"/>-->
+<!--            <class name ="tests.UsersTests"/>-->
+<!--            <class name ="tests.HomeTests"/>-->
+<!--            <class name="tests.DashboardTests"/>-->
+            <class name ="tests.RolesTests"/>
+
         </classes>
     </test>
 

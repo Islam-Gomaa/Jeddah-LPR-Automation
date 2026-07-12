@@ -98,7 +98,7 @@ public class CategoryPage extends BasePage<CategoryPage> {
     @Step("Enter keywords")
     public CategoryPage enterKeyWords(String value) {
             sendKeys(keyWords,  value);
-            sendKeys(keyWords,  Keys.ENTER.toString());
+            sendKeys(keyWords,  Keys.ENTER);
         return this;
     }
 

@@ -3,6 +3,7 @@ package tests;
 import base.BaseTests;
 import org.testng.annotations.Test;
 import pages.admin.BasePage;
+import pages.admin.ContactUsPage;
 import pages.website.ContactUsWebPage;
 import pages.website.HomePage;
 import utilities.AuthHelper;
@@ -14,10 +15,11 @@ public class ContactUsTests extends BaseTests {
 
     BasePage basePage;
     ContactUsWebPage contactUsWebPage;
+    ContactUsPage contactUsPage;
     HomePage homePage;
 
     @Test(priority = 1)
-    public void addAndDeleteSubscribesTest() {
+    public void addContactUsTest() {
 
         // ====== Website ======
 
@@ -25,43 +27,26 @@ public class ContactUsTests extends BaseTests {
         homePage = new HomePage(driver);
         contactUsWebPage = homePage.openContactUsWebsite();
         contactUsWebPage
-//                .clickContactName()
                 .enterContactName(dataModel().ContactUs.name)
                 .enterContactEmail(dataModel().ContactUs.email)
                 .enterContactPhone(dataModel().ContactUs.phone)
                 .selectRequestDDL(dataModel().ContactUs.requestDDL)
-                .selectRequestTypeDDL(dataModel().ContactUs.requestTypeDDL)
                 .enterContactSubject(dataModel().ContactUs.subject)
+                .selectRequestTypeDDL(dataModel().ContactUs.requestTypeDDL)
                 .enterContactMessage(dataModel().ContactUs.message)
                 .clickSubmitButton();
 
+        openAdmin();
+        basePage = AuthHelper.login(driver);
 
-
-
+        contactUsPage = basePage.openContacts();
+        contactUsPage.clickResult();
 
 
 //        Assertions.myAssertTrue(
-//                homePage.isSubscribeIconOfButtonDisplayed(),"Subscribe button is not displayed");
-//
-//        Assertions.myAssertTrue(
-//                homePage.isSubscribeTitleDisplayed(),"Subscribe title is not displayed");
-//
-//        Assertions.myAssertTrue(
-//                homePage.isSubscribeDescriptionDisplayed(),"Subscribe description is not displayed");
-//
-//        homePage
-//                .enterSubscribeEmail(dataModel().Subscribes.email)
-//                .clickSubscribeBtn();
-//
-//        Assertions.myAssertTrue(
-//                homePage.isSubscribedSuccessfullyMessageDisplayed(),"Subscribed Successfully message is not displayed");
-//
-//        // ====== Control Panel ======
-//
-//        openAdmin();
-//        basePage = AuthHelper.login(driver);
-//
-//        contactUsWebPage = basePage.openSubscribers();
+//                contactUsPage.isContactDetailsDisplayed(contactUsPage.contactDetailsName && dataModel().ContactUs.name,
+//                "Product is not displayed on website");
+
 //        contactUsWebPage
 //                .searchInputs(dataModel().Subscribes.email)
 //                .clickSearchResult();

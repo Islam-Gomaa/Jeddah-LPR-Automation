@@ -22,16 +22,24 @@ public class DriverFactory {
 
                 ChromeOptions chromeOptions = new ChromeOptions();
 
-                // ignore SSL certificate errors
                 chromeOptions.setAcceptInsecureCerts(true);
+
+                // ignore SSL certificate errors
                 chromeOptions.addArguments("--ignore-certificate-errors");
+                chromeOptions.addArguments("--ignore-ssl-errors");
+                chromeOptions.addArguments("--allow-insecure-localhost");
+                chromeOptions.addArguments("--test-type");
+
                 chromeOptions.addArguments("--lang=en");
                 chromeOptions.addArguments("--accept-lang=en-US");
+                chromeOptions.addArguments("--start-maximized");
+                chromeOptions.addArguments("--remote-allow-origins=*");
 
                 if (browser.contains("headless")) {
-                    chromeOptions.addArguments("--headless");
+                    chromeOptions.addArguments("--headless=new");
                     chromeOptions.addArguments("--window-size=1920,1080");
                 }
+
                 return new ChromeDriver(chromeOptions);
 
 

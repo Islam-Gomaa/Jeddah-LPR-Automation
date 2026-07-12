@@ -1,10 +1,7 @@
 package pages.admin;
 
 import io.qameta.allure.Step;
-import org.openqa.selenium.By;
-import org.openqa.selenium.Keys;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
 import pages.admin.Blogs.BlogCategoriesPage;
 import pages.admin.Blogs.BlogsPage;
 import pages.website.BlogsWebPage;
@@ -13,7 +10,6 @@ import pages.admin.DataEntry.*;
 import utilities.ElementActions;
 import utilities.Waits;
 
-import java.util.List;
 import java.util.function.Function;
 
 public class BasePage<T extends BasePage<T>> extends ElementActions {
@@ -30,12 +26,17 @@ public class BasePage<T extends BasePage<T>> extends ElementActions {
     private final By successIcon = By.cssSelector(".swal2-icon-content img");
     private final By successMessage = By.cssSelector(".swal2-title");
     private final By editBtn = By.cssSelector(".v-card-actions .flex button");
-    private final By deleteBtn = By.cssSelector(".v-card-actions .flex button");
+    private final By deleteBtn = By.xpath("//button[.='Delete']");
     private final By noDataAvailableMessage = By.xpath("//td//div[normalize-space()='No data available']");
     private final By noDataRow = By.cssSelector("tr.v-data-table-rows-no-data");
+    private final By confirmDeleteBtn = By.xpath("//button[.='confirm']");
+    private final By popUpMessage = By.cssSelector(".swal2-title");
+    private final By recoveryBtn = By.xpath("//button[.='recovery']");
+
 
     // Page's locators
     // Control Panel
+    private final  By dashboard  = By.xpath("//span[normalize-space()='Dashboard']");
     private final By dataEntry = By.xpath("//span[normalize-space()='Data Entry']");
     private final By featureGroup = By.xpath("//span[normalize-space()='Feature Group']");
     private final By useCases = By.xpath("//span[normalize-space()='Use Cases']");
@@ -46,10 +47,14 @@ public class BasePage<T extends BasePage<T>> extends ElementActions {
     private final By subBlogs = By.xpath("//span[@class='ms-3'][normalize-space()='Blogs'] ");
     private final By blogCategories = By.xpath("//span[@class='ms-3'][normalize-space()='Blog Categories'] ");
     private final By products = By.xpath("//span[normalize-space()='Products']");
+    private final By users = By.xpath("//span[normalize-space()='Users']");
+    private final By roles =  By.xpath("//span[normalize-space()='Roles']");
     private final By subscribers =  By.xpath("//span[normalize-space()='Subscribers']");
+    private final By contacts =  By.xpath("//span[normalize-space()='Contacts']");
+
     // Website
     private final By solutionsAndServices = By.cssSelector("a[aria-label='Solutions and Services'][class='link']");
-    private final By blogsTab = By.cssSelector("a[aria-label='Blogs'][title=\"Blogs\"][class*='footer-link']");
+    private final By blogsTab = By.cssSelector("a[aria-label='Blogs'][title='Blogs'][class*='footer-link']");
 
 
 
@@ -127,11 +132,24 @@ public class BasePage<T extends BasePage<T>> extends ElementActions {
         return getText(dataTableSearchResult);
     }
 
-    @SuppressWarnings("UnusedReturnValue")
-    @Step("Click Delete Btn")
-    public void clickDelete() {
-        List<WebElement> elements = Waits.waitForAllVisible(driver, deleteBtn);
-        elements.get(1).click();
+//    @SuppressWarnings("UnusedReturnValue")
+//    @Step("Click Delete Btn")
+//    public void clickDelete() {
+//        List<WebElement> elements = Waits.waitForAllVisible(driver, deleteBtn);
+//        elements.get(1).click();
+//    }
+
+    @Step("Click Delete Button")
+    public T clickDelete() {
+        click(deleteBtn);
+        return self();
+    }
+
+
+    @Step("Click Confirm Delete Button")
+    public T clickConfirmDelete() {
+        click(confirmDeleteBtn);
+        return self();
     }
 
     @Step("Verify success icon appeared")
@@ -154,20 +172,36 @@ public class BasePage<T extends BasePage<T>> extends ElementActions {
         return Waits.waitForTextToBe(driver, noDataAvailableMessage, "No data available");
     }
 
-    @Step("Verify main category appeared")
+    @Step("Verify main Element appeared")
     public boolean isElementDisplayed(Function<String, By> locatorFunction, String name) {
+
         int maxScrolls = 10;
+
         for (int i = 0; i < maxScrolls; i++) {
 
             By locator = locatorFunction.apply(name);
 
             if (isElementPresent(locator)) {
+
+                WebElement element = getElement(locator);
+
                 scrollToElement(locator);
+
+                highlightElement(element);
+
                 return true;
             }
+
             scrollBy(0, 500);
         }
+
         return false;
+    }
+
+    @Step("Open Dashboard Page")
+    public DashboardPage openDashboard() {
+        click(dashboard);
+        return new DashboardPage(driver);
     }
 
     @Step("Open Feature Group Page")
@@ -225,10 +259,28 @@ public class BasePage<T extends BasePage<T>> extends ElementActions {
         return new ProductsPage(driver);
     }
 
+    @Step("Open Users Page")
+    public UsersPage openUsers() {
+        click(users);
+        return new UsersPage(driver);
+    }
+
+    @Step("Open Roles Page")
+    public RolesPage openRoles() {
+        click(roles);
+        return new RolesPage(driver);
+    }
+
     @Step("Open Subscribers Page")
     public SubscribesPage openSubscribers() {
         click(subscribers);
         return new SubscribesPage(driver);
+    }
+
+    @Step("Open Contacts Page")
+    public ContactUsPage openContacts() {
+        click(contacts);
+        return new ContactUsPage(driver);
     }
 
     // Website pages
@@ -243,6 +295,28 @@ public class BasePage<T extends BasePage<T>> extends ElementActions {
     public BlogsWebPage openBlogsWebsite() {
         click(blogsTab);
         return new BlogsWebPage(driver);
+    }
+
+    public void scrollToFooter() {
+
+        JavascriptExecutor js = (JavascriptExecutor) driver;
+
+        long lastHeight = (Long) js.executeScript("return document.body.scrollHeight");
+
+        while (true) {
+            js.executeScript("window.scrollTo(0, document.body.scrollHeight);");
+
+            try {
+                Thread.sleep(500);
+            } catch (InterruptedException ignored) {}
+
+            long newHeight = (Long) js.executeScript("return document.body.scrollHeight");
+
+            if (newHeight == lastHeight)
+                break;
+
+            lastHeight = newHeight;
+        }
     }
 
 }

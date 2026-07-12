@@ -1,5 +1,6 @@
 package data;
 
+import pages.admin.RolesPage;
 import pages.admin.SubscribesPage;
 
 public class DataModel {
@@ -15,8 +16,7 @@ public class DataModel {
     public Products Products;
     public Subscribes Subscribes;
     public ContactUs ContactUs ;
-
-
-
+    public Users Users;
+    public Roles Roles;
 
 }

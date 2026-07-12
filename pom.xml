@@ -50,6 +50,13 @@
             <artifactId>monte-screen-recorder</artifactId>
             <version>0.7.7.0</version>
         </dependency>
+
+        <dependency>
+            <groupId>ch.randelshofer</groupId>
+            <artifactId>org.monte.media.screenrecorder</artifactId>
+            <version>17.2.1</version>
+        </dependency>
+
     </dependencies>
 
 </project>

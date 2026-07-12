@@ -6,6 +6,8 @@ import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import pages.admin.BasePage;
 import utilities.Waits;
 
@@ -21,8 +23,8 @@ public class ContactUsWebPage extends BasePage<ContactUsWebPage> {
     // Locators
     private final By contactUsPageTitle = By.cssSelector(".content-header h1[class*='page-title']");
     private final By contactUsPageDescription = By.cssSelector(".content-header p[class*='page-description']");
-    private final By nameInput = By.xpath("//div[@class='v-field__field'] //label[.='Name']");
-    private final By emailInput = By.xpath("(//div[@class='v-field__field'] //input[@type='text'])[2]");
+    private final By nameInput = By.xpath("//input[@autocomplete='name' and contains(@class,'v-field__input')]");
+    private final By emailInput = By.xpath("//input[@autocomplete='email' and contains(@class,'v-field__input')]");
     private final By phoneInput = By.cssSelector("input[autocomplete='tel']");
     private final By requestDDL = By.xpath("(//div[@aria-haspopup='listbox'] //div[@class='v-field__input'])[1]");
     private final By requestTypeDDL = By.xpath("(//div[@aria-haspopup='listbox'] //div[@class='v-field__input'])[2]");
@@ -41,83 +43,103 @@ public class ContactUsWebPage extends BasePage<ContactUsWebPage> {
 
     // Fluent setters —
 
-    @Step("Click Contact Name")
-    public ContactUsWebPage clickContactName() {
-        click(nameInput);
-        return this;
-    }
-
     @Step("Enter Contact Name")
     public ContactUsWebPage enterContactName(String name) {
-        sendKeys(nameInput,name);
+        clickAndSendKeys(nameInput,name);
         return this;
     }
 
     @Step("Enter Contact Email")
     public ContactUsWebPage enterContactEmail(String name) {
-        sendKeys(emailInput,name);
+        clickAndSendKeys(emailInput,name);
         return this;
     }
 
     @Step("Enter Contact Phone")
     public ContactUsWebPage enterContactPhone(String name) {
-        sendKeys(phoneInput,name);
+        clickAndSendKeys(phoneInput,name);
         return this;
     }
 
+
+    public void selectFromDDL(
+            By dropdownLocator,
+            String value
+    ) {
+        // Open dropdown
+        click(dropdownLocator);
+        Actions actions = new Actions(driver);
+
+        // Wait for options
+        List<WebElement> allOptions =
+                new WebDriverWait(driver, Duration.ofSeconds(10))
+                        .until(driver ->
+                                driver.findElements(
+                                        By.xpath("//div[contains(@class,'v-list-item')]")
+                                )
+                        );
+        // Start from first option
+        actions.sendKeys(Keys.HOME)
+                .perform();
+
+        for (int i = 0; i < allOptions.size(); i++) {
+
+            WebElement currentOption = allOptions.get(i);
+            String currentText =
+                    currentOption.getDomProperty("innerText").trim();
+
+            if (currentText.equalsIgnoreCase(value.trim())) {
+
+                actions.sendKeys(Keys.ENTER)
+                        .perform();
+                actions.sendKeys(Keys.ESCAPE)
+                        .perform();
+
+                return;
+            }
+            actions.sendKeys(Keys.ARROW_DOWN).perform();
+
+            try {
+                Thread.sleep(300);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+        }
+        throw new RuntimeException(
+                "Value not found in dropdown: " + value);
+    }
+
     @Step("Select Request DDL")
-    public ContactUsWebPage selectRequestDDL(String value) {
-            click(requestDDL);
+    public ContactUsWebPage selectRequestDDL(
+            String value
+    ) {
+        selectFromDDL(
+                requestDDL,
+                value
+        );
+        return this;
+    }
 
-            Actions actions = new Actions(driver);
-            Waits.waitForAllVisible(driver, requestDDL);
-
-            List<WebElement> allOptions = driver.findElements(requestDDL);
-
-            for (int i = 0; i < allOptions.size(); i++) {
-
-                String currentText = allOptions.get(i).getText().trim();
-
-                if (currentText.equalsIgnoreCase(value)) {
-                    actions.sendKeys(Keys.ENTER).perform();
-                    return this;
-                }
-
-                actions.sendKeys(Keys.ARROW_DOWN).perform();
-            }
-
-            throw new RuntimeException("Value not found in dropdown: " + value);
-        }
     @Step("Select Request Type DDL")
-        public ContactUsWebPage selectRequestTypeDDL(String value) {
-            click(requestDDL);
-
-            Actions actions = new Actions(driver);
-
-            for (int i = 0; i < 5; i++) {
-
-                String currentText = driver.switchTo().activeElement().getText().trim();
-
-                if (currentText.equalsIgnoreCase(value)) {
-                    actions.sendKeys(Keys.ENTER).perform();
-                    return this;
-                }
-
-                actions.sendKeys(Keys.ARROW_DOWN).perform();
-            }
-
-            throw new RuntimeException("Value not found: " + value);
-        }
+    public ContactUsWebPage selectRequestTypeDDL(
+            String value
+    ) {
+        selectFromDDL(
+                requestTypeDDL,
+                value
+        );
+        return this;
+    }
 
     @Step("Enter Contact Subject")
     public ContactUsWebPage enterContactSubject(String name) {
-        sendKeys(subjectInput,name);
+        clickAndSendKeys(subjectInput,name);
         return this;
     }
 
     @Step("Enter Contact Message")
     public ContactUsWebPage enterContactMessage(String name) {
-        sendKeys(messageTextarea,name);
+        clickAndSendKeys(messageTextarea,name);
         return this;
     }
 

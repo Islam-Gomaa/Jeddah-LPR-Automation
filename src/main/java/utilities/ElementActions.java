@@ -4,7 +4,10 @@ import io.qameta.allure.Step;
 import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
+import java.time.Duration;
 import java.util.List;
 
 public class ElementActions {
@@ -17,6 +20,36 @@ public class ElementActions {
         this.driver = driver;
         this.js = (JavascriptExecutor) driver;
         this.actions = new Actions(driver);
+    }
+
+
+    @Step("Highlight element before interaction")
+    protected void highlightElement(WebElement element) {
+
+        if (element == null) {
+            return;
+        }
+
+        try {
+
+            js.executeScript("""
+            arguments[0].style.outline='4px solid #FFD700';
+            arguments[0].style.outlineOffset='2px';
+            arguments[0].style.boxShadow='0 0 12px #FFD700';
+            """, element);
+
+            Thread.sleep(200);
+
+            js.executeScript("""
+            arguments[0].style.outline='';
+            arguments[0].style.outlineOffset='';
+            arguments[0].style.boxShadow='';
+            """, element);
+
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+        } catch (StaleElementReferenceException | JavascriptException ignored) {
+        }
     }
 
     // ================= ELEMENTS =================
@@ -50,8 +83,14 @@ public class ElementActions {
         return getElements(locator).size();
     }
 
+    @Step("Wait until URL contains: {expectedUrlPart}")
+    public boolean waitUntilUrlContains(String expectedUrlPart) {
+        return Waits.waitUntilUrlContains(driver, expectedUrlPart);
+    }
+
     // ================= CLICK =================
 
+    @Step("Safe Click element")
     protected void safeClick(By locator) {
         int attempts = 0;
 
@@ -67,10 +106,12 @@ public class ElementActions {
 
         throw new RuntimeException("Failed to click due to stale element");
     }
+
     @Step("Click element")
     protected void click(By locator) {
         try {
             WebElement element = Waits.waitForClickable(driver, locator);
+            highlightElement(element);
             element.click();
         } catch (Exception e) {
             scrollToElement(locator);
@@ -81,6 +122,7 @@ public class ElementActions {
     @Step("Double Click element")
     protected void doubleClick(By locator) {
         WebElement element = getElement(locator);
+        highlightElement(element);
         actions.doubleClick(element).perform();
     }
 
@@ -88,12 +130,15 @@ public class ElementActions {
     protected void jsClick(By locator) {
         WebElement element = getElement(locator);
         js.executeScript("arguments[0].scrollIntoView({block:'center'});", element);
+        highlightElement(element);
         js.executeScript("arguments[0].click();", element);
     }
 
     @Step("Submit element")
     protected void submit(By locator) {
-        getElement(locator).submit();
+        WebElement element = getElement(locator);
+        highlightElement(element);
+        element.submit();
     }
 
     @Step("Click element by index")
@@ -104,6 +149,9 @@ public class ElementActions {
             throw new RuntimeException("Index out of bounds for locator: " + locator);
         }
 
+        WebElement element = elements.get(index);
+        highlightElement(element);
+
         elements.get(index).click();
     }
 
@@ -112,16 +160,54 @@ public class ElementActions {
     @Step("Send keys")
     protected void sendKeys(By locator, CharSequence... keys) {
         WebElement element = getElement(locator);
+        highlightElement(element);
         element.clear();
         element.sendKeys(keys);
     }
 
-    protected void sendKeysNormal(By locator, String text) {
-        WebElement element = Waits.waitForVisible(driver, locator);
-        scrollToElement(locator);
+    public void clickAndSendKeys(By locator, String text) {
+        JavascriptExecutor js =
+                (JavascriptExecutor) driver;
+        for (int i = 0; i < 3; i++) {
 
-        element.clear();
-        element.sendKeys(text);
+            try {
+                // don't wait for visible
+                WebElement element =
+                        new WebDriverWait(driver, Duration.ofSeconds(10))
+                                .until(d ->
+                                        d.findElement(locator));
+                highlightElement(element);
+                // scroll
+                js.executeScript("arguments[0].scrollIntoView({block:'center'});", element);
+                Thread.sleep(200);
+
+                 // Highlight
+                highlightElement(element);
+
+                // force focus
+                js.executeScript("arguments[0].focus();", element);
+
+                // force click by JS
+                js.executeScript("arguments[0].click();", element);
+                Thread.sleep(200);
+
+                // clear old text
+                element.sendKeys(Keys.CONTROL + "a");
+                element.sendKeys(Keys.DELETE);
+                Thread.sleep(200);
+
+                // type
+                element.sendKeys(text);
+
+                Thread.sleep(200);
+                String actual = element.getAttribute("value");
+
+                if (text.equals(actual)) {return;}
+
+            } catch (Exception e) {
+                e.printStackTrace();}
+        }
+        throw new RuntimeException("Failed to set text");
     }
 
     protected void sendKeys(By locator, String text) {
@@ -130,6 +216,13 @@ public class ElementActions {
             try {
                 WebElement element = Waits.waitForVisible(driver, locator);
                 scrollToElement(locator);
+                highlightElement(element);
+
+                // clear old text
+                element.sendKeys(Keys.CONTROL + "a");
+                element.sendKeys(Keys.DELETE);
+                Thread.sleep(200);
+
                 js.executeScript("arguments[0].value = '';", element);
                 js.executeScript("arguments[0].value = arguments[1];", element, text);
 
@@ -152,17 +245,22 @@ public class ElementActions {
 
     @Step("Clear field")
     protected void clear(By locator) {
+        WebElement element = getElement(locator);
+        highlightElement(element);
         getElement(locator).clear();
     }
 
     @Step("Upload file: {filePath}")
     protected void uploadFile(By locator, String filePath) {
         WebElement element = getElement(locator);
+        highlightElement(element);
         element.sendKeys(filePath);
     }
 
     @Step("Select from searchable DDL")
     public void selectFromSearchableDDL(By locator, String value) {
+        WebElement element = getElement(locator);
+        highlightElement(element);
         click(locator);
         sendKeys(locator, value);
         sendKeys(locator, Keys.ESCAPE);
@@ -206,11 +304,10 @@ public class ElementActions {
 
     @Step("Check element displayed")
     protected boolean isDisplayed(By locator) {
-        try {
-            return getElement(locator).isDisplayed();
-        } catch (NoSuchElementException | TimeoutException e) {
-            return false;
-        }
+        WebElement element = getElement(locator);
+        highlightElement(element);
+        return element.isDisplayed();
+//        return getElement(locator).isDisplayed();
     }
 
     @Step("Check element enabled")
@@ -258,7 +355,6 @@ public class ElementActions {
     @Step("Scroll to element")
     protected void scrollToElement(By locator) {
         WebElement element = getElement(locator);
-
         js.executeScript(
                 "arguments[0].scrollIntoView({block: 'center', inline: 'nearest'});",
                 element
@@ -319,4 +415,23 @@ public class ElementActions {
                 )
         );
     }
+
+    @Step("Switch to newly opened tab")
+    protected String switchToNewTab() {
+        String originalTab = driver.getWindowHandle();
+
+        new WebDriverWait(driver, Duration.ofSeconds(10))
+                .until(ExpectedConditions.numberOfWindowsToBe(2));
+
+        for (String tab : driver.getWindowHandles()) {
+            if (!tab.equals(originalTab)) {
+                driver.switchTo().window(tab);
+                break;
+            }
+        }
+
+        return originalTab;
+    }
+
+
 }

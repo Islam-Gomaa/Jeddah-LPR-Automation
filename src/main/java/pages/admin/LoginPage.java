@@ -5,7 +5,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import utilities.ElementActions;
 
-public class LoginPage extends ElementActions {
+public class LoginPage extends BasePage<LoginPage> {
 
     public LoginPage(WebDriver driver) {
         super(driver);
