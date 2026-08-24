@@ -22,8 +22,8 @@
     "editTitleEN": "Test edit - Transportation and Logistic"
   },
   "Category": {
-    "titleAr": "اختبار الامن السيبرانيAuto2",
-    "titleEn": "Test Cyber security Auto2",
+    "titleAr": "اختبار الامن السيبراني",
+    "titleEn": "Test Cyber security Auto",
     "descriptionAr": "قسم خاص بحماية الأنظمة والشبكات من الهجمات الإلكترونية",
     "descriptionEn": "Category focused on protecting systems and networks from cyber threats",
     "mainCategory": "Auto",
@@ -33,8 +33,8 @@
     "descriptionArSEO": "كل ما يتعلق بالأمن السيبراني وحماية البيانات",
     "descriptionEnSEO": "Everything related to cybersecurity and data protection",
     "keywords": " cyber security",
-    "editTitleAr": "الأمن السيبراني المتقدمAuto2",
-    "editTitleEn": "Advanced Cyber Security Auto2",
+    "editTitleAr": "الأمن السيبراني المتقدم اوتو ",
+    "editTitleEn": "Advanced Cyber Security Auto",
     "editNameArSEO": "الأمن-السيبراني-المتقدم",
     "editNameEnSEO": "advanced-cyber-security",
     "editDescriptionArSEO": "تحديث لقسم الأمن السيبراني",
@@ -88,8 +88,8 @@
     "editDescriptionEN": "Updated category covering software engineering concepts and best practices."
   },
   "Products": {
-    "titleArabic": "منصة تحليل البيانات الذكيةauto32",
-    "titleEnglish": "Smart Data Analytics Platform auto32",
+    "titleArabic": "منصة تحليل البيانات الذكية",
+    "titleEnglish": "Smart Data Analytics Platform auto",
     "category": "Cloud Service",
     "descriptionAR": "منصة متقدمة لتحليل البيانات توفر أدوات تفاعلية لبناء لوحات معلومات وتقارير ذكية. تُمكن المستخدمين من استكشاف البيانات من مصادر متعددة وتحويلها إلى رؤى قابلة للتنفيذ باستخدام تقنيات الذكاء الاصطناعي.",
     "descriptionEN": "An advanced data analytics platform that provides interactive tools for building dashboards and smart reports. It enables users to explore data from multiple sources and transform it into actionable insights using AI technologies.",
@@ -103,8 +103,8 @@
     "seoDescriptionArabic": "حل متكامل لتحليل البيانات وإنشاء تقارير ولوحات معلومات تفاعلية لدعم اتخاذ القرار.",
     "seoDescriptionEnglish": "A complete solution for data analytics, enabling interactive dashboards and reporting for better decision-making.",
     "keywords": "Auto Data",
-    "editTitleArabic": "منصة تحليل البيانات المتقدمAuto32",
-    "editTitleEnglish": "Advanced Data Analytics Platform Auto32",
+    "editTitleArabic": "منصة تحليل البيانات المتقدم",
+    "editTitleEnglish": "Advanced Data Analytics Platform Auto",
     "editDescriptionAR": "منصة متطورة لتحليل البيانات تدعم التكامل مع مصادر متعددة وتوفر أدوات ذكاء اصطناعي لتحسين جودة التحليل.",
     "editDescriptionEN": "An enhanced analytics platform that supports integration with multiple sources and provides AI-powered tools for improved insights.",
     "editCategory": "Customized Services",
@@ -127,6 +127,15 @@
     "requestTypeDDL": "Deep Eye",
     "subject": "Inquiry about AI Solutions",
     "message": "I would like to know more details about your AI solutions and services."
+  },
+  "Advertisements" : {
+    "titleAr":"إعلان أختبار",
+    "titleEn" : "Auto Advertisement",
+    "descriptionAr" : "تفاصل الاعلان",
+    "descriptionEn" : "des Advertisements",
+    "image": "product-Icon.svg",
+    "editTitleAr" : "تعديل إعلان أختبار",
+    "editTitleEn" : "Edit Auto Advertisement"
   },
   "Users": {
     "name": "Auto Test User",

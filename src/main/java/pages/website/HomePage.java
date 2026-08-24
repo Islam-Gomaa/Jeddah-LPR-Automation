@@ -88,6 +88,12 @@ public class HomePage extends BasePage<HomePage> {
     private final By footerLogo = By.cssSelector("a[aria-label='Go to homepage'] svg[class='nuxt-icon logo d-flex mb-0']");
     private final By footerDescription = By.cssSelector("[class*='v-col'] p[class='description']");
 
+    // Advertisements
+    private final By closeIcon = By.cssSelector("div[class='advertisment']  button[type='button']");
+
+
+
+
     // Fluent setters — each returns `this` so calls can be chained
     @Step("Open ContactUs Website Page")
     public ContactUsWebPage openContactUsWebsite() {
@@ -165,9 +171,8 @@ public class HomePage extends BasePage<HomePage> {
         return this;
     }
 
-// =============================
+
 // Header Navigation Click Methods
-// =============================
 
     @Step("Click Header Home link")
     public HomePage clickHeaderHomeLink() {
@@ -211,9 +216,8 @@ public class HomePage extends BasePage<HomePage> {
         return this;
     }
 
-// =============================
 // Footer Company Section Display Methods
-// =============================
+
 
     @Step("Verify Company section title appeared")
     public boolean isCompanySectionTitleDisplayed() {
@@ -256,9 +260,9 @@ public class HomePage extends BasePage<HomePage> {
     }
 
 
-// =============================
+
 // Footer Solutions Section Display Methods
-// =============================
+
 
     @Step("Verify Solutions section title appeared")
     public boolean isSolutionsSectionTitleDisplayed() {
@@ -326,9 +330,7 @@ public class HomePage extends BasePage<HomePage> {
     }
 
 
-// =============================
 // Additional Solutions Click Methods
-// =============================
 
     @Step("Click Others link")
     public HomePage clickOthersLink() {
@@ -343,9 +345,8 @@ public class HomePage extends BasePage<HomePage> {
     }
 
 
-// =============================
 // Footer Contact Section Display Methods
-// =============================
+
 
     @Step("Verify Contact section title appeared")
     public boolean isContactSectionTitleDisplayed() {
@@ -373,9 +374,8 @@ public class HomePage extends BasePage<HomePage> {
     }
 
 
-// =============================
 // Social Media Display Methods
-// =============================
+
 
     @Step("Verify Facebook icon appeared")
     public boolean isFacebookIconDisplayed() {
@@ -403,9 +403,7 @@ public class HomePage extends BasePage<HomePage> {
     }
 
 
-// =============================
 // Footer Brand Section Display Methods
-// =============================
 
     @Step("Verify footer logo appeared")
     public boolean isFooterLogoDisplayed() {
@@ -417,9 +415,9 @@ public class HomePage extends BasePage<HomePage> {
         return isDisplayed(footerDescription);
     }
 
-    // =============================
+
     // Footer Navigation Click Methods
-    // =============================
+
 
     @Step("Click Home link")
     public HomePage clickHomeLink() {
@@ -470,9 +468,9 @@ public class HomePage extends BasePage<HomePage> {
         return this;
     }
 
-// =============================
+
 // Solutions Navigation Click Methods
-// =============================
+
 
     @Step("Click Cloud Service link")
     public HomePage clickCloudServiceLink() {
@@ -534,9 +532,8 @@ public class HomePage extends BasePage<HomePage> {
         return this;
     }
 
-// =============================
+
 // Social Media Get Attribute Methods
-// =============================
 
     @Step("Get Facebook link URL")
     public String getFacebookHref() {
@@ -582,5 +579,22 @@ public class HomePage extends BasePage<HomePage> {
     @Step("Switch to Careers tab")
     public String switchToCareersTab() {
         return switchToNewTab();
+    }
+
+    //  Advertisements
+
+    @Step("Verify Advertisement image appeared")
+    public boolean isAdvertisementImgDisplayed(String advertisementName) {
+
+        By advertisementImg =
+                By.cssSelector("img[alt='" + advertisementName + "']");
+
+        return isDisplayed(advertisementImg);
+    }
+
+    @Step("Click close icon of Advertisement image")
+    public HomePage clickCloseIconOfAdvertisementImage() {
+        click(closeIcon);
+        return this;
     }
 }

@@ -1,4 +1,4 @@
 package reporting;
 
-public class EnvironmentWriter {
+public class CategoriesWriter {
 }

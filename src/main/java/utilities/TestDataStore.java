@@ -1,4 +1,4 @@
-package utils;
+package utilities;
 
 import java.io.*;
 import java.nio.file.Files;
@@ -60,12 +60,29 @@ public final class TestDataStore {
     }
 
     // =========================================================
-    // Clear
+    // Clear All
     // =========================================================
 
     public static synchronized void clear() {
 
+        loadIfNeeded();
+
         PROPERTIES.clear();
+
+        save();
+    }
+
+    // =========================================================
+    // Clear Run
+    // =========================================================
+
+    public static synchronized void clearRun(
+            String runPrefix) {
+
+        loadIfNeeded();
+
+        PROPERTIES.stringPropertyNames()
+                .removeIf(key -> key.startsWith(runPrefix));
 
         save();
     }

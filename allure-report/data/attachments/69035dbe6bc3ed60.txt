@@ -1,0 +1,1 @@
+Dashboard category should be displayed

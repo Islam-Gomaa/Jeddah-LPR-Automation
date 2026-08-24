@@ -1,4 +1,4 @@
 package reporting;
 
-public class AllureAttachments {
+public class EnvironmentWriter {
 }

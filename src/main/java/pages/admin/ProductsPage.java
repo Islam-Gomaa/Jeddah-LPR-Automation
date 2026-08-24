@@ -14,7 +14,6 @@ public class ProductsPage extends BasePage<ProductsPage> {
     }
 
     // Locators
-    private final By addButton = By.cssSelector("[form='myForm'] button[type='submit']");
     private final By editButton = By.xpath("//button[.='Edit']");
     private final By saveButton = By.xpath("//button[.='Save']");
     private final By deleteButton = By.xpath("//button[.='Delete']");
@@ -137,12 +136,6 @@ public class ProductsPage extends BasePage<ProductsPage> {
     @Step("Enter Keywords")
     public ProductsPage enterKeywords(String name) {
         sendKeys(keywords,name, Keys.ENTER);
-        return this;
-    }
-
-    @Step("Click Add Blog")
-    public ProductsPage clickAddProduct() {
-        click(addButton);
         return this;
     }
 

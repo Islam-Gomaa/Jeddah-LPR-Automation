@@ -1,104 +1,74 @@
-package pages.admin.DataEntry;
+package pages.admin;
 
 import io.qameta.allure.Step;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
-import pages.admin.BasePage;
+import org.openqa.selenium.WebElement;
+import org.testng.Assert;
+import utilities.ElementActions;
 
-public class CategoryPage extends BasePage<CategoryPage> {
+public class AdvertisementsPage extends BasePage<AdvertisementsPage> {
 
-    public CategoryPage (WebDriver driver) {
+    public AdvertisementsPage(WebDriver driver) {
         super(driver);
     }
 
     // Locators
-    private final By titleArabic = By.cssSelector("input[placeholder='Enter  title in arabic']");
-    private final By titleEnglish = By.cssSelector("input[placeholder='Enter title in English']");
-    private final By descriptionArabic = By.cssSelector("textarea[class='v-field__input'][placeholder='Enter description in AR']");
-    private final By descriptionEnglish = By.cssSelector("textarea[class='v-field__input'][placeholder='Enter description in EN']");
-    private final By mainCategoryDDL = By.cssSelector("[type='select'][updatekey='parent.id'] .v-input .v-input__control");
-    private final By mainCategoryInput = By.cssSelector("[updatekey='parent.id'] .v-input__control [role='combobox'] .v-field__input");
-    private By ddlOption(String value) {
-        return By.xpath("//div[normalize-space()='"+ value +"']");
-    }
-    private final By icon = By.cssSelector("[type='imageUploader'] input[type='file']");
-    private final By titleArabicOfSEO = By.cssSelector("input[placeholder='Enter title in arabic']");
-    private final By titleEnglishOfSEO = By.cssSelector("input[placeholder='Enter title in english']");
-    private final By descriptionSEOArabic = By.cssSelector("input[class='v-field__input'][placeholder='Enter Description (Arabic)']");
-    private final By descriptionSEOEnglish = By.cssSelector("input[class='v-field__input'][placeholder='Enter Description (English)']");
-    private final By keyWords = By.cssSelector("input[placeholder='Enter keywords']");
+    private final By nameArabic = By.cssSelector("input[placeholder='Enter Name (Arabic)']");
+    private final By nameEnglish = By.cssSelector("input[placeholder='Enter Name (English)']");
+    private final By descriptionArabic = By.cssSelector("textarea[class='v-field__input'][placeholder='Enter Description (Arabic)']");
+    private final By descriptionEnglish = By.cssSelector("textarea[class='v-field__input'][placeholder='Enter Description (English)']");
+    private final By image = By.cssSelector("[type='imageUploader'] input[type='file']");
+    private final By isActiveCheckBox = By.cssSelector("input[aria-label='Is Active?']");
 
+    public WebElement getActiveToggle(String name) {
+
+        By autoAdvertisementRow =
+                By.xpath("//tr[.//td[normalize-space()='" + name + "']]");
+
+        WebElement row = driver.findElement(autoAdvertisementRow);
+
+        return row.findElement(
+                By.xpath(".//div[contains(@class,'switch__track')]")
+        );
+    }
     // Fluent setters — each returns `this` so calls can be chained
 
     @Step("Enter Arabic Title")
-    public CategoryPage enterArabicTitle(String name) {
-        getElement(titleArabic)
+    public AdvertisementsPage enterArabicName(String name) {
+        getElement(nameArabic)
                 .sendKeys(Keys.chord(Keys.CONTROL,"a"), Keys.DELETE);
-        sendKeys(titleArabic,name);
+        sendKeys(nameArabic,name);
         return this;
     }
 
     @Step("Enter English Title")
-    public CategoryPage enterEnglishTitle(String name) {
-        sendKeys(titleEnglish,name);
+    public AdvertisementsPage enterEnglishName(String name) {
+        sendKeys(nameEnglish,name);
         return this;
     }
     @Step("Enter Arabic description")
-    public CategoryPage enterArabicDescription(String name) {
+    public AdvertisementsPage enterArabicDescription(String name) {
         sendKeys(descriptionArabic,name);
         return this;
     }
 
     @Step("Enter English description")
-    public CategoryPage enterEnglishDescription(String name) {
+    public AdvertisementsPage enterEnglishDescription(String name) {
         sendKeys(descriptionEnglish,name);
         return this;
     }
 
-    @Step("Select Main Category DDL")
-    public CategoryPage selectMainCategoryDDL(String value) {
-        click(mainCategoryDDL);
-        sendKeys(ddlOption(value),  Keys.ESCAPE);
-        return this;
-    }
-
-    @SuppressWarnings("UnusedReturnValue")
     @Step("Upload Icon")
-    public CategoryPage uploadIcon(String filePath) {
-        uploadFile(icon, filePath);
+    public AdvertisementsPage uploadImage(String filePath) {
+        uploadFile(image, filePath);
         return this;
     }
 
-    // SEO section
-    @Step("Enter SEO Arabic Title")
-    public CategoryPage enterSEOArabicTitle(String name) {
-        sendKeys(titleArabicOfSEO,name);
-        return this;
-    }
-
-    @Step("Enter SEO English Title")
-    public CategoryPage enterSEOEnglishTitle(String name) {
-        sendKeys(titleEnglishOfSEO,name);
-        return this;
-    }
-
-    @Step("Enter SEO Arabic description")
-    public CategoryPage enterSEOArabicDescription(String name) {
-        sendKeys(descriptionSEOArabic,name);
-        return this;
-    }
-
-    @Step("Enter SEO English description")
-    public CategoryPage enterSEOEnglishDescription(String name) {
-        sendKeys(descriptionSEOEnglish,name);
-        return this;
-    }
-
-    @Step("Enter keywords")
-    public CategoryPage enterKeyWords(String value) {
-            sendKeys(keyWords,  value);
-            sendKeys(keyWords,  Keys.ENTER);
+    @Step("Click IsActive")
+    public AdvertisementsPage clickIsActive() {
+        jsClick(isActiveCheckBox);
         return this;
     }
 

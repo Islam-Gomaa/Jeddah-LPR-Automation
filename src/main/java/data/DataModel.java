@@ -18,5 +18,6 @@ public class DataModel {
     public ContactUs ContactUs ;
     public Users Users;
     public Roles Roles;
+    public Advertisements Advertisements;
 
 }

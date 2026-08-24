@@ -1,0 +1,1 @@
+Success popup is not displayed correctly

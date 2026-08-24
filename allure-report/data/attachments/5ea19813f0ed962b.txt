@@ -1,0 +1,1 @@
+Use Case category should be displayed

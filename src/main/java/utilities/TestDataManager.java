@@ -1,4 +1,7 @@
-package utils;
+package utilities;
+
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 public final class TestDataManager {
 
@@ -11,6 +14,13 @@ public final class TestDataManager {
     private static final String DEFAULT_RUN_ID =
             "default";
 
+    /**
+     * Keeps generated data available during
+     * the current JVM/session.
+     */
+    private static final Map<String, String> RUNTIME_DATA =
+            new ConcurrentHashMap<>();
+
     private TestDataManager() {
         // Utility class
     }
@@ -19,7 +29,7 @@ public final class TestDataManager {
     // English
     // =========================================================
 
-    public static String generateEnglish(
+    public static synchronized String generateEnglish(
             String key,
             String baseValue) {
 
@@ -50,7 +60,7 @@ public final class TestDataManager {
     // Arabic
     // =========================================================
 
-    public static String generateArabic(
+    public static synchronized String generateArabic(
             String key,
             String baseValue) {
 
@@ -81,7 +91,7 @@ public final class TestDataManager {
     // Get
     // =========================================================
 
-    public static String get(String key) {
+    public static synchronized String get(String key) {
 
         validateKey(key);
 
@@ -94,7 +104,7 @@ public final class TestDataManager {
     // Update
     // =========================================================
 
-    public static void update(
+    public static synchronized void update(
             String key,
             String value) {
 
@@ -111,15 +121,18 @@ public final class TestDataManager {
     // Remove
     // =========================================================
 
-    public static void remove(String key) {
+    public static synchronized void remove(String key) {
 
         validateKey(key);
 
+        String storageKey =
+                buildKey(key);
+
+        RUNTIME_DATA.remove(storageKey);
+
         if (isPersistenceEnabled()) {
 
-            TestDataStore.remove(
-                    buildKey(key)
-            );
+            TestDataStore.remove(storageKey);
         }
     }
 
@@ -127,13 +140,22 @@ public final class TestDataManager {
     // Clear Current Run
     // =========================================================
 
-    public static void clearCurrentRun() {
+    public static synchronized void clearCurrentRun() {
 
-        if (!isPersistenceEnabled()) {
-            return;
+        String runPrefix =
+                getRunId() + ".";
+
+        RUNTIME_DATA.keySet()
+                .removeIf(
+                        key -> key.startsWith(runPrefix)
+                );
+
+        if (isPersistenceEnabled()) {
+
+            TestDataStore.clearRun(
+                    runPrefix
+            );
         }
-
-        TestDataStore.clear();
     }
 
     // =========================================================
@@ -144,6 +166,7 @@ public final class TestDataManager {
             data.DataModel dataModel) {
 
         if (dataModel == null) {
+
             throw new IllegalArgumentException(
                     "DataModel cannot be null"
             );
@@ -565,25 +588,52 @@ public final class TestDataManager {
     private static String getStoredValue(
             String storageKey) {
 
-        if (!isPersistenceEnabled()) {
-            return null;
+        // 1. Current JVM / session
+        String runtimeValue =
+                RUNTIME_DATA.get(storageKey);
+
+        if (runtimeValue != null) {
+            return runtimeValue;
         }
 
-        return TestDataStore.get(storageKey);
+        // 2. Persistent storage
+        if (isPersistenceEnabled()) {
+
+            String persistentValue =
+                    TestDataStore.get(storageKey);
+
+            if (persistentValue != null) {
+
+                RUNTIME_DATA.put(
+                        storageKey,
+                        persistentValue
+                );
+
+                return persistentValue;
+            }
+        }
+
+        return null;
     }
 
     private static void saveStoredValue(
             String storageKey,
             String value) {
 
-        if (!isPersistenceEnabled()) {
-            return;
-        }
-
-        TestDataStore.set(
+        // Always keep value during current session
+        RUNTIME_DATA.put(
                 storageKey,
                 value
         );
+
+        // Persist only when enabled
+        if (isPersistenceEnabled()) {
+
+            TestDataStore.set(
+                    storageKey,
+                    value
+            );
+        }
     }
 
     // =========================================================

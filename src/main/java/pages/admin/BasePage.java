@@ -22,10 +22,12 @@ public class BasePage<T extends BasePage<T>> extends ElementActions {
     private final By closePopUp = By.cssSelector("button[type='button'][aria-label='Close this dialog']");
     private final By dataTableSearchResult = By.xpath("//tbody[@class='v-data-table__tbody']/tr[1]/td[2]");
     private final By addBtn = By.cssSelector("#teleported-items .flex .v-btn");
+    private final By addButtonInPopUp = By.cssSelector("[form='myForm'] button[type='submit']");
     private final By submitBtn = By.cssSelector("button[form='myForm'][type='submit']");
     private final By successIcon = By.cssSelector(".swal2-icon-content img");
     private final By successMessage = By.cssSelector(".swal2-title");
     private final By editBtn = By.cssSelector(".v-card-actions .flex button");
+    private final By saveEditBtn = By.xpath("//button[.='Edit']");
     private final By deleteBtn = By.xpath("//button[.='Delete']");
     private final By noDataAvailableMessage = By.xpath("//td//div[normalize-space()='No data available']");
     private final By noDataRow = By.cssSelector("tr.v-data-table-rows-no-data");
@@ -47,6 +49,7 @@ public class BasePage<T extends BasePage<T>> extends ElementActions {
     private final By subBlogs = By.xpath("//span[@class='ms-3'][normalize-space()='Blogs'] ");
     private final By blogCategories = By.xpath("//span[@class='ms-3'][normalize-space()='Blog Categories'] ");
     private final By products = By.xpath("//span[normalize-space()='Products']");
+    private final By advertisements = By.xpath("//span[normalize-space()='Advertisements']");
     private final By users = By.xpath("//span[normalize-space()='Users']");
     private final By roles =  By.xpath("//span[normalize-space()='Roles']");
     private final By subscribers =  By.xpath("//span[normalize-space()='Subscribers']");
@@ -113,6 +116,12 @@ public class BasePage<T extends BasePage<T>> extends ElementActions {
         return self();
     }
 
+    @Step("Click Add In Pup Up")
+    public T clickAddPopUp() {
+        click(addButtonInPopUp);
+        return self();
+    }
+
     @SuppressWarnings("UnusedReturnValue")
     @Step("Click Submit Btn")
     public T clickSubmit() {
@@ -127,17 +136,17 @@ public class BasePage<T extends BasePage<T>> extends ElementActions {
         return self();
     }
 
+    @Step("Click Edit Btn and Save")
+    public T clickEditAndSave() {
+        Waits.waitForClickable(driver, saveEditBtn).click();
+        return self();
+    }
+
     @Step("Get Item update")
     public String getTableSearchResult() {
         return getText(dataTableSearchResult);
     }
 
-//    @SuppressWarnings("UnusedReturnValue")
-//    @Step("Click Delete Btn")
-//    public void clickDelete() {
-//        List<WebElement> elements = Waits.waitForAllVisible(driver, deleteBtn);
-//        elements.get(1).click();
-//    }
 
     @Step("Click Delete Button")
     public T clickDelete() {
@@ -257,6 +266,12 @@ public class BasePage<T extends BasePage<T>> extends ElementActions {
     public ProductsPage openProducts() {
         click(products);
         return new ProductsPage(driver);
+    }
+
+    @Step("Open Advertisements Page")
+    public AdvertisementsPage openAdvertisements() {
+        click(advertisements);
+        return new AdvertisementsPage(driver);
     }
 
     @Step("Open Users Page")

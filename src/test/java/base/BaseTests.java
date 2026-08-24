@@ -9,7 +9,10 @@ import utilities.VideoRecorder;
 
 import java.lang.reflect.Method;
 import java.time.Duration;
+import org.testng.annotations.Listeners;
+import listeners.AllureListener;
 
+@Listeners(AllureListener.class)
 public class BaseTests {
 
     protected WebDriver driver;

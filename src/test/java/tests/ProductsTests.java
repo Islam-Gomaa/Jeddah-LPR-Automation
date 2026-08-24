@@ -48,7 +48,7 @@ public class ProductsTests extends BaseTests {
                 .enterSeoDescriptionArabic(dataModel().Products.seoDescriptionArabic)
                 .enterSeoDescriptionEnglish(dataModel().Products.seoDescriptionEnglish)
                 .enterKeywords(dataModel().Products.keywords)
-                .clickAddProduct();
+                .clickAddPopUp();
 
         Assertions.myAssertTrue(
                 basePage.isSuccessIconDisplayed()
@@ -142,7 +142,7 @@ public class ProductsTests extends BaseTests {
                 .enterSeoTitleEnglish(dataModel().Products.editSeoTitleEnglish)
                 .enterSeoDescriptionArabic(dataModel().Products.editSeoDescriptionArabic)
                 .enterSeoDescriptionEnglish(dataModel().Products.editSeoDescriptionEnglish)
-                .clickAddProduct();
+                .clickAddPopUp();
 
 
         Assertions.myAssertTrue(
