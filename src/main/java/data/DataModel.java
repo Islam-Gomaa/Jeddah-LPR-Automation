@@ -1,8 +1,5 @@
 package data;
 
-import pages.admin.RolesPage;
-import pages.admin.SubscribesPage;
-
 public class DataModel {
 
     public Login Login;

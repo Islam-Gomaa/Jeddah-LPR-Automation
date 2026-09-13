@@ -24,7 +24,7 @@ public class ElementActions {
 
 
     @Step("Highlight element before interaction")
-    protected void highlightElement(WebElement element) {
+        public void highlightElement(WebElement element) {
 
         if (element == null) {
             return;

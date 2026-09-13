@@ -1,253 +1,339 @@
-package pages.admin;
+package pages;
 
 import io.qameta.allure.Step;
-import org.openqa.selenium.*;
-import utilities.Waits;
+import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
 
-public class RolesPage extends BasePage<RolesPage> {
+import java.time.Duration;
 
-    public RolesPage(WebDriver driver) {
-        super(driver);
-    }
+public class GatesPage extends BasePage<GatesPage> {
 
-        // Buttons Locators
-        private final By addButton = By.xpath("//button[contains(.,'Add Role')]");
-        private final By editButton = By.xpath("//button[contains(.,'Edit')]");
-        private final By saveButton = By.xpath("//button[contains(.,'Save')]");
-        private final By deleteButton = By.xpath("//button[contains(.,'Delete')]");
-        private final By confirmDeleteButton = By.xpath("//button[contains(.,'confirm')]");
-        private final  By cancelButton =  By.xpath("//button[contains(.,'Cancel')]");
+  public GatesPage(WebDriver driver) {
+    super(driver);
+  }
 
-        // Role Information Locators
-        private final By roleName = By.cssSelector("input[placeholder='Enter Name']");
-        private final By displayNameAr = By.cssSelector("input[placeholder='Enter Display Name (Arabic)']");
-        private final By displayNameEn = By.cssSelector("input[placeholder='Enter Display Name (English)']");
-        private final By descriptionAR = By.cssSelector("textarea[placeholder='Enter Description (Arabic)']");
-        private final By descriptionEN = By.cssSelector("textarea[placeholder='Enter Description (English)']");
-        private final By isActiveRole = By.cssSelector("[class*='v-checkbox-btn'] input[aria-label='Is Active?']");
+  // Locators
+  private String getRowByPlate(String plateNumber) {
+    return "//tbody//tr[.//*[contains(normalize-space(.),'" + plateNumber + "')]]";
+  }
 
-        // Permission Locators
-        private final By permissionSearch = By.cssSelector("input[placeholder='Search']");
-        private final By permissionsList = By.cssSelector("ul.overflow-y-auto");
+  public By plateNumberEn(String plateNumber) {
+    return By.xpath(getRowByPlate(plateNumber) + "//td[5]//span[3]");
+  }
 
-        private By permissionCategory(String category) {
-            return By.xpath("//div[contains(@class,'border-surface_hover')]//h3[normalize-space()='" + category + "']");}
+  public By plateNumberAr(String plateNumber) {
+    return By.xpath(getRowByPlate(plateNumber) + "//td[6]");
+  }
 
-        private By permissionCheckbox(String permission) {
-            return By.cssSelector("[class*='v-checkbox-btn'] input[value='" + permission + "']");}
+  public By permitStatusBtn(String plateNumber) {
+    return By.xpath(getRowByPlate(plateNumber) + "//td[8]");
+  }
 
-        private By roleCard(String roleName) {
-            return By.xpath("//div[contains(@class,'flex-col')]//h3[normalize-space()='" + roleName + "']");}
+  public By changeStatusIcon(String plateNumber) {
+    return By.xpath(getRowByPlate(plateNumber) + "//button[1][1]");
+  }
 
+  public By addComplaintIcon(String plateNumber) {
+    return By.xpath(getRowByPlate(plateNumber) + "//button[1][2]");
+  }
 
+  public By deleteGateIcon(String plateNumber) {
+    return By.xpath(getRowByPlate(plateNumber) + "//button[1][3]");
+  }
 
-    // Role Information Methods
-        @Step("Enter role name")
-        public RolesPage enterRoleName(String value) {
-            sendKeys(roleName, value);
-            return this;
-        }
+  private final By plateLetterArInPopup =
+      By.xpath("(//div[contains(@class,'plate__letter__ar')]//span)[2]");
+  private final By plateLetterEnInPopup =
+      By.xpath("(//div[contains(@class,'plate__letter__en')]//span)[4]");
+  private final By vehicleIsNotPermittedTXT =
+      By.xpath("(//div[contains(@class,'no_permit permit_status')]//span)[2]");
 
-        @Step("Enter Arabic display name")
-        public RolesPage enterDisplayNameArabic(String value) {
-            sendKeys(displayNameAr, value);
-            return this;
-        }
+  // Create Permit
+  private final By createPermitBtn = By.xpath("//button[.='Create Permit']");
+  private final By vehicleType =
+      By.xpath(
+          "//div[@updatekey='car_type.id']//div[contains(@class,'v-input v-input--horizontal')]");
+  private final By drivers =
+      By.xpath(
+          "//div[@updatekey='driver.id']//div[contains(@class,'v-input v-input--horizontal')]");
+  private final By mainWaste =
+      By.xpath(
+          "//div[@updatekey='main_waste.id']//div[contains(@class,'v-input v-input--horizontal')]");
+  private final By subWaste =
+      By.xpath("//div[@updatekey='waste.id']//div[contains(@class,'v-input v-input--horizontal')]");
+  private final By contractor =
+      By.xpath(
+          "//div[@updatekey='contractor.id']//div[contains(@class,'v-input v-input--horizontal')]");
+  private final By uHFTag = By.xpath("");
+  private final By notes = By.xpath("");
 
-        @Step("Enter English display name")
-        public RolesPage enterDisplayNameEnglish(String value) {
-            sendKeys(displayNameEn, value);
-            return this;
-        }
+  @Step("Check plate number EN")
+  public boolean isPlateNumberDisplayed(String number) {
+    return isDisplayed(plateNumberEn(number));
+  }
 
-        @Step("Enter Arabic description")
-        public RolesPage enterDescriptionArabic(String value) {
-            sendKeys(descriptionAR, value);
-            return this;
-        }
+  // Button Actions
+  @Step("Click Permit button")
+  public GatesPage clickPermitStatusButton(String plateNumber) {
+    click(permitStatusBtn(plateNumber));
+    return this;
+  }
 
-        @Step("Enter English description")
-        public RolesPage enterDescriptionEnglish(String value) {
-            sendKeys(descriptionEN, value);
-            return this;
-        }
+  @Step("Check plate letter AR Displayed")
+  public boolean isPlateLetterArDisplayed() {
+    return isDisplayed(plateLetterArInPopup);
+  }
 
-        // Active Status Methods
-        @Step("Enable role")
-        public RolesPage enableRole() {
-            if (!getElement(isActiveRole).isSelected()) {
-                jsClick(isActiveRole);
-            }
-            return this;
-        }
+  @Step("Get plate letter AR")
+  public String getPlateLetterAr() {
+    return getText(plateLetterArInPopup);
+  }
 
-        @Step("Disable role")
-        public RolesPage disableRole() {
-            if (getElement(isActiveRole).isSelected()) {
-                jsClick(isActiveRole);
-            }
-            return this;
-        }
+  public WebElement getPlateLetterArElement() {
+    return driver.findElement(plateLetterArInPopup);
+  }
 
-        // Permission Methods
-        @Step("Search permission: {permission}")
-        public RolesPage searchPermission(String permission) {
-            sendKeys(permissionSearch, permission);
-            return this;
-        }
+  @Step("Check plate letter EN Displayed")
+  public boolean isPlateLetterEnDisplayed() {
+    return isDisplayed(plateLetterEnInPopup);
+  }
 
-        @Step("Open permission category: {category}")
-        public RolesPage openPermissionCategory(String category) {
-            click(permissionCategory(category));
-            return this;
-        }
+  @Step("Get plate letter EN")
+  public String getPlateLetterEn() {
+    return getText(plateLetterEnInPopup);
+  }
 
-        @Step("Select permission: {permission}")
-        public RolesPage selectPermission(String permission) {
-            jsClick(permissionCheckbox(permission));
-            return this;
-        }
+  public WebElement getPlateLetterEnElement() {
+    return driver.findElement(plateLetterEnInPopup);
+  }
 
-        @Step("Unselect permission: {permission}")
-        public RolesPage unselectPermission(String permission) {
-            if (getElement(permissionCheckbox(permission)).isSelected()) {
-                click(permissionCheckbox(permission));
-            }
-            return this;
-        }
+  @Step("Get vehicle is not permitted text")
+  public String getVehicleIsNotPermittedText() {
+    return getText(vehicleIsNotPermittedTXT);
+  }
 
-        // Button Actions
-        @Step("Click Add button")
-        public RolesPage clickAdd() {
-            click(addButton);
-            return this;
-        }
+  public WebElement getVehicleIsNotPermittedTextElement() {
+    return driver.findElement(vehicleIsNotPermittedTXT);
+  }
 
-        @Step("Click Save button")
-        public RolesPage clickSave() {
-            click(saveButton);
-            return this;
-        }
+  @Step("Click Create Permit button")
+  public GatesPage clickCreatePermit() {
+    click(createPermitBtn);
+    return this;
+  }
 
-        @Step("Click Cancel button")
-        public RolesPage clickCancel() {
-            click(cancelButton);
-            return this;
-        }
+  @Step("Select Vehicle Type DDL")
+  public GatesPage selectVehicleTypeDDL() {
+    click(vehicleType);
+    Actions actions = new Actions(driver);
+    actions.sendKeys(Keys.ARROW_DOWN).pause(Duration.ofMillis(500)).sendKeys(Keys.ENTER).perform();
+    return this;
+  }
 
-        @Step("Click Edit button")
-        public RolesPage clickEditRole() {
-            click(editButton);
-            return this;
-        }
+  @Step("Select Vehicle Type DDL")
+  public GatesPage selectDriverDDL() {
+    click(drivers);
+    Actions actions = new Actions(driver);
+    actions
+        .pause(Duration.ofMillis(500))
+        .sendKeys(Keys.ARROW_DOWN)
+        .pause(Duration.ofMillis(500))
+        .sendKeys(Keys.ENTER)
+        .perform();
+    return this;
+  }
 
-        @Step("Click Delete button")
-        public RolesPage clickDeleteRole() {
-            click(deleteButton);
-            return this;
-        }
+  @Step("Select Vehicle Type DDL")
+  public GatesPage selectMainWasteDDL() {
+    click(mainWaste);
+    Actions actions = new Actions(driver);
+    actions.sendKeys(Keys.ARROW_DOWN).pause(Duration.ofMillis(500)).sendKeys(Keys.ENTER).perform();
+    return this;
+  }
 
-        @Step("Click Confirm Delete button")
-        public RolesPage clickConfirmDeleteRole() {
-            click(confirmDeleteButton);
-            return this;
-        }
+  @Step("Select Vehicle Type DDL")
+  public GatesPage selectSubWasteDDL() {
+    click(subWaste);
+    Actions actions = new Actions(driver);
+    actions.sendKeys(Keys.ARROW_DOWN).pause(Duration.ofMillis(500)).sendKeys(Keys.ENTER).perform();
+    return this;
+  }
 
-        // Verification Methods
-        @Step("Verify permission category displayed")
-        public boolean isPermissionCategoryDisplayed(String category) {
-            Waits.waitForVisible(driver, permissionCategory(category));
-            return isDisplayed(permissionCategory(category));
-        }
+  @Step("Select Vehicle Type DDL")
+  public GatesPage selectContractorDDL() {
+    click(contractor);
+    Actions actions = new Actions(driver);
+    actions
+        .pause(Duration.ofMillis(500))
+        .sendKeys(Keys.ARROW_DOWN)
+        .pause(Duration.ofMillis(500))
+        .sendKeys(Keys.ENTER)
+        .perform();
+    return this;
+  }
 
-        @Step("Verify permission displayed")
-        public boolean isPermissionDisplayed(String permission) {
-            return isDisplayed(permissionCheckbox(permission));
-        }
+  @Step("Select Vehicle Type DDL")
+  public GatesPage selectContracDDL() {
+    click(contractor);
+    Actions actions = new Actions(driver);
+    actions
+            .pause(Duration.ofMillis(500))
+            .sendKeys(Keys.ARROW_DOWN)
+            .pause(Duration.ofMillis(500))
+            .sendKeys(Keys.ENTER)
+            .perform();
+    return this;
+  }
 
-        @Step("Verify Add button displayed")
-        public boolean isAddButtonDisplayed() {
-            return isDisplayed(addButton);
-        }
+  //  @Step("Enter Arabic display name")
+  //  public GatesPage enterDisplayNameArabic(String value) {
+  //    sendKeys(displayNameAr, value);
+  //    return this;
+  //  }
+  //
+  //  @Step("Enter English display name")
+  //  public GatesPage enterDisplayNameEnglish(String value) {
+  //    sendKeys(displayNameEn, value);
+  //    return this;
+  //  }
+  //
+  //  @Step("Enter Arabic description")
+  //  public GatesPage enterDescriptionArabic(String value) {
+  //    sendKeys(descriptionAR, value);
+  //    return this;
+  //  }
+  //
+  //  @Step("Enter English description")
+  //  public GatesPage enterDescriptionEnglish(String value) {
+  //    sendKeys(descriptionEN, value);
+  //    return this;
+  //  }
+  //
+  //  // Active Status Methods
+  //  @Step("Enable role")
+  //  public GatesPage enableRole() {
+  //    if (!getElement(isActiveRole).isSelected()) {
+  //      jsClick(isActiveRole);
+  //    }
+  //    return this;
+  //  }
+  //
+  //  @Step("Disable role")
+  //  public GatesPage disableRole() {
+  //    if (getElement(isActiveRole).isSelected()) {
+  //      jsClick(isActiveRole);
+  //    }
+  //    return this;
+  //  }
+  //
+  //  // Permission Methods
+  //  @Step("Search permission: {permission}")
+  //  public GatesPage searchPermission(String permission) {
+  //    sendKeys(permissionSearch, permission);
+  //    return this;
+  //  }
+  //
+  //  @Step("Open permission category: {category}")
+  //  public GatesPage openPermissionCategory(String category) {
+  //    click(permissionCategory(category));
+  //    return this;
+  //  }
+  //
+  //  @Step("Select permission: {permission}")
+  //  public GatesPage selectPermission(String permission) {
+  //    jsClick(permissionCheckbox(permission));
+  //    return this;
+  //  }
+  //
+  //  @Step("Unselect permission: {permission}")
+  //  public GatesPage unselectPermission(String permission) {
+  //    if (getElement(permissionCheckbox(permission)).isSelected()) {
+  //      click(permissionCheckbox(permission));
+  //    }
+  //    return this;
+  //  }
 
-        @Step("Verify Save button displayed")
-        public boolean isSaveButtonDisplayed() {
-            return isDisplayed(saveButton);
-        }
+  //  // Button Actions
+  //  @Step("Click Add button")
+  //  public GatesPage clickAdd() {
+  //    click(addButton);
+  //    return this;
+  //  }
+  //
+  //  @Step("Click Cancel button")
+  //  public GatesPage clickCancel() {
+  //    click(cancelButton);
+  //    return this;
+  //  }
+  //
+  //  @Step("Click Edit button")
+  //  public GatesPage clickEditRole() {
+  //    click(editButton);
+  //    return this;
+  //  }
+  //
+  //  @Step("Click Delete button")
+  //  public GatesPage clickDeleteRole() {
+  //    click(deleteButton);
+  //    return this;
+  //  }
+  //
+  //  @Step("Click Confirm Delete button")
+  //  public GatesPage clickConfirmDeleteRole() {
+  //    click(confirmDeleteButton);
+  //    return this;
+  //  }
 
-        @Step("Verify role displayed")
-        public boolean isRoleDisplayed(String roleName) {
-            return isDisplayed(roleCard(roleName));
-        }
+  //  // Verification Methods
+  //  @Step("Verify permission category displayed")
+  //  public boolean isPermissionCategoryDisplayed(String category) {
+  //    Waits.waitForVisible(driver, permissionCategory(category));
+  //    return isDisplayed(permissionCategory(category));
+  //  }
 
-       @Step("Verify Edit button displayed")
-        public boolean isEditButtonDisplayed() {
-            return isDisplayed(editButton);
-        }
+  //  @Step("Fill role information")
+  //  public GatesPage fillRoleData(
+  //      String name, String displayAr, String displayEn, String descAr, String descEn) {
+  //
+  //    return enterRoleName(name)
+  //        .enterDisplayNameArabic(displayAr)
+  //        .enterDisplayNameEnglish(displayEn)
+  //        .enterDescriptionArabic(descAr)
+  //        .enterDescriptionEnglish(descEn);
+  //  }
 
-        @Step("Verify Delete button displayed")
-        public boolean isDeleteButtonDisplayed() {
-           return isDisplayed(deleteButton);
-       }
+  //  @Step("Assign permissions in category {category}")
+  //  public GatesPage assignPermissions(String category, String... permissions) {
+  //
+  //    openPermissionCategory(category);
+  //
+  //    for (String permission : permissions) {
+  //      selectPermission(permission);
+  //    }
+  //
+  //    return this;
+  //  }
 
-        @Step("Fill role information")
-        public RolesPage fillRoleData(String name,
-                                      String displayAr,
-                                      String displayEn,
-                                      String descAr,
-                                      String descEn) {
-
-            return enterRoleName(name)
-                    .enterDisplayNameArabic(displayAr)
-                    .enterDisplayNameEnglish(displayEn)
-                    .enterDescriptionArabic(descAr)
-                    .enterDescriptionEnglish(descEn);
-        }
-
-        @Step("Clear role information")
-        public RolesPage clearRoleData() {
-
-            clear(roleName);
-            clear(displayNameAr);
-            clear(displayNameEn);
-            clear(descriptionAR);
-            clear(descriptionEN);
-
-            return this;
-        }
-
-        @Step("Assign permissions in category {category}")
-        public RolesPage assignPermissions(String category, String... permissions) {
-
-            openPermissionCategory(category);
-
-            for (String permission : permissions) {
-                selectPermission(permission);
-            }
-
-            return this;
-        }
-
-        @Step("Verify role is not displayed")
-        public boolean isRoleNotDisplayed(String roleName) {
-        return !isElementPresent(roleCard(roleName));
-        }
-
-        @Step("Open role: {roleName}")
-        public RolesPage openRole(String roleName) {
-            click(roleCard(roleName));
-            return this;
-        }
-        @Step("Scroll Permissions List To Bottom")
-        public RolesPage scrollPermissionsListToBottom() {
-            WebElement list = getElement(permissionsList);
-
-            ((JavascriptExecutor) driver).executeScript(
-                   "arguments[0].scrollTop = arguments[0].scrollHeight;",
-                    list
-            );
-            return this;
-        }
-
-    }
-
+  //  @Step("Verify role is not displayed")
+  //  public boolean isRoleNotDisplayed(String roleName) {
+  //    return !isElementPresent(roleCard(roleName));
+  //  }
+  //
+  //  @Step("Open role: {roleName}")
+  //  public GatesPage openRole(String roleName) {
+  //    click(roleCard(roleName));
+  //    return this;
+  //  }
+  //
+  //  @Step("Scroll Permissions List To Bottom")
+  //  public GatesPage scrollPermissionsListToBottom() {
+  //    WebElement list = getElement(permissionsList);
+  //
+  //    ((JavascriptExecutor) driver)
+  //        .executeScript("arguments[0].scrollTop = arguments[0].scrollHeight;", list);
+  //    return this;
+  //  }
+}

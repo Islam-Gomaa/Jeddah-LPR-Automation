@@ -6,11 +6,14 @@ import org.testng.annotations.BeforeMethod;
 import utilities.ConfigReader;
 import utilities.DriverFactory;
 import utilities.VideoRecorder;
-
 import java.lang.reflect.Method;
 import java.time.Duration;
 import org.testng.annotations.Listeners;
 import listeners.AllureListener;
+import utils.Assertions;
+
+import java.awt.AWTException;
+
 
 @Listeners(AllureListener.class)
 public class BaseTests {
@@ -19,7 +22,7 @@ public class BaseTests {
     public VideoRecorder recorder;
 
     @BeforeMethod
-    public void setUp(Method method) {
+    public void setUp(Method method) throws AWTException {
 
         System.out.println("Starting Test: " + method.getName());
 
@@ -31,6 +34,8 @@ public class BaseTests {
         driver = DriverFactory.createDriver(
                 ConfigReader.get("browser"));
 
+        Assertions.setDriver(driver);
+
         // Maximize window
         driver.manage().window().maximize();
 
@@ -39,12 +44,8 @@ public class BaseTests {
                 .implicitlyWait(Duration.ofSeconds(10));
     }
 
-    protected void openAdmin() {
-        driver.get(ConfigReader.get("admin.url"));
-    }
-
-    protected void openWebsite() {
-        driver.get(ConfigReader.get("website.url"));
+    protected void openSystem() {
+        driver.get(ConfigReader.get("baseUrl"));
     }
 
     @AfterMethod
@@ -53,6 +54,6 @@ public class BaseTests {
         recorder.stopRecording();
 
         System.out.println("Recording stopped");
-        //            driver.quit();
+//                    driver.quit();
     }
 }

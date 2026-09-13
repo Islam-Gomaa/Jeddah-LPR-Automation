@@ -1,8 +1,8 @@
 package utilities;
 
 import org.openqa.selenium.WebDriver;
-import pages.admin.BasePage;
-import pages.admin.LoginPage;
+import pages.BasePage;
+import pages.LoginPage;
 
 import static dataReader.ReadDataFromJson.dataModel;
 

@@ -1,9 +1,8 @@
-package pages.admin;
+package pages;
 
 import io.qameta.allure.Step;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import utilities.ElementActions;
 
 public class LoginPage extends BasePage<LoginPage> {
 
@@ -12,7 +11,7 @@ public class LoginPage extends BasePage<LoginPage> {
     }
 
     // Locators
-    private final By logo = By.cssSelector("img[src='/assets/logo_light.D0guCldj.svg'][class*='v-img__img']");
+    private final By logo = By.cssSelector("[class='mb-3'][src='/images/svg/logo_lg.svg']");
     private final By loginEmail = By.cssSelector("input[id*='input'][type='text']");
     private final By password = By.cssSelector("input[id*='input'][type='password']");
     private final By loginButton = By.cssSelector("button[type='submit'][class*='v-btn']");

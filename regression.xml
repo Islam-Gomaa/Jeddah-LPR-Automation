@@ -2,22 +2,7 @@
 
     <test name="Main Flow">
         <classes>
-<!--            <class name="tests.FeatureGroupTests"/>-->
-<!--            <class name="tests.CategoryTests"/>-->
-            <class name="tests.ProductsTests"/>
-<!--            <class name="tests.UseCasesTests"/>-->
-<!--            <class name="tests.ClientsTests"/>-->
-<!--            <class name="tests.PartnersTests"/>-->
-<!--            <class name="tests.BlogCategoriesTests"/>-->
-<!--            <class name="tests.BlogsTests"/>-->
-<!--            <class name="tests.SubscribersTests"/>-->
-<!--            <class name="tests.ContactUsTests"/>-->
-<!--            <class name ="tests.UsersTests"/>-->
-<!--            <class name ="tests.HomeTests"/>-->
-<!--            <class name="tests.DashboardTests"/>-->
-<!--            <class name ="tests.RolesTests"/>-->
-<!--            <class name ="tests.AdvertisementsTests"/>-->
-
+            <class name="tests.Gates"/>
         </classes>
     </test>
 

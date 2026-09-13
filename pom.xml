@@ -6,7 +6,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>tech.wakeb</groupId>
-    <artifactId>wakeb-website-automation</artifactId>
+    <artifactId>jeddah-lpr-automation</artifactId>
     <version>1.0-SNAPSHOT</version>
 
     <properties>
@@ -14,7 +14,7 @@
         <maven.compiler.target>17</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
-        <selenium.version>4.29.0</selenium.version>
+        <selenium.version>4.48.0</selenium.version>
         <testng.version>7.11.0</testng.version>
         <allure.version>2.29.1</allure.version>
     </properties>
@@ -89,6 +89,19 @@
             <groupId>com.github.stephenc.monte</groupId>
             <artifactId>monte-screen-recorder</artifactId>
             <version>0.7.7.0</version>
+        </dependency>
+
+        <dependency>
+            <groupId>io.rest-assured</groupId>
+            <artifactId>rest-assured</artifactId>
+            <version>5.5.6</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>io.rest-assured</groupId>
+            <artifactId>rest-assured</artifactId>
+            <version>5.5.6</version>
         </dependency>
 
     </dependencies>

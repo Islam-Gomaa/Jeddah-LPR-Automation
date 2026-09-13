@@ -6,6 +6,8 @@ import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
 
+import java.util.Map;
+
 public class DriverFactory {
 
     public static WebDriver createDriver(String browser) {
@@ -24,11 +26,11 @@ public class DriverFactory {
 
                 chromeOptions.setAcceptInsecureCerts(true);
 
-                // ignore SSL certificate errors
                 chromeOptions.addArguments("--ignore-certificate-errors");
                 chromeOptions.addArguments("--ignore-ssl-errors");
                 chromeOptions.addArguments("--allow-insecure-localhost");
                 chromeOptions.addArguments("--test-type");
+                chromeOptions.addArguments("--disable-infobars");
 
                 chromeOptions.addArguments("--lang=en");
                 chromeOptions.addArguments("--accept-lang=en-US");
@@ -40,8 +42,14 @@ public class DriverFactory {
                     chromeOptions.addArguments("--window-size=1920,1080");
                 }
 
-                return new ChromeDriver(chromeOptions);
+                ChromeDriver driver = new ChromeDriver(chromeOptions);
 
+                driver.executeCdpCommand(
+                        "Emulation.setPageScaleFactor",
+                        Map.of("pageScaleFactor", 0.8)
+                );
+
+                return driver;
 
             case "firefox":
             case "headlessfirefox":
