@@ -68,7 +68,7 @@ public class Gates extends BaseTests {
         gatespage.isPlateNumberDisplayed(plateNumber), "Plate number did not appear successfully");
 
     // Create Permit for vehicle
-    gatespage.clickPermitStatusButton(plateNumber);
+    gatespage.clickPermitStatusButtonInTable(plateNumber);
 
     Assertions.myAssertTrue(
         gatespage.isPlateLetterArDisplayed(), "Plate letter Ar did not appear successfully");
@@ -100,7 +100,18 @@ public class Gates extends BaseTests {
         .selectDriverDDL()
         .selectMainWasteDDL()
         .selectSubWasteDDL()
-        .selectContractorDDL();
+        .selectContractorDDL()
+        .clickSaveButton();
+
+    Assertions.myAssertEquals(
+            gatespage.getVehicleIsNotPermittedTextElement(),
+            gatespage.getVehicleIsNotPermittedText(),
+            "This vehicle is permitted to enter",
+            "Vehicle does not permitted");
+
+    // Change Status
+
+
 
     //                .enterArabicName(dataModel().FeatureGroup.nameAR)
     //                .enterEnglishName(dataModel().FeatureGroup.nameEN)

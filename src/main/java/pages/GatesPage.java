@@ -32,14 +32,6 @@ public class GatesPage extends BasePage<GatesPage> {
     return By.xpath(getRowByPlate(plateNumber) + "//td[8]");
   }
 
-  public By changeStatusIcon(String plateNumber) {
-    return By.xpath(getRowByPlate(plateNumber) + "//button[1][1]");
-  }
-
-  public By addComplaintIcon(String plateNumber) {
-    return By.xpath(getRowByPlate(plateNumber) + "//button[1][2]");
-  }
-
   public By deleteGateIcon(String plateNumber) {
     return By.xpath(getRowByPlate(plateNumber) + "//button[1][3]");
   }
@@ -67,19 +59,27 @@ public class GatesPage extends BasePage<GatesPage> {
   private final By contractor =
       By.xpath(
           "//div[@updatekey='contractor.id']//div[contains(@class,'v-input v-input--horizontal')]");
-  private final By uHFTag = By.xpath("");
-  private final By notes = By.xpath("");
+  private final By saveButton = By.xpath("//button[.='Save']");
 
+  // Change Status
+  public By changeStatusIcon(String plateNumber) {
+    return By.xpath(getRowByPlate(plateNumber) + "//button[1][1]");
+  }
+  private final By changeStatus = By.xpath("//p[contains(normalize-space(.),'Change Status')]");
+  private final By setStatus = By.cssSelector(".v-field__input > input[placeholder='Set Status']");
+  private final By notes = By.cssSelector(".v-field__field> textarea[placeholder='Notes']");
+
+  // Report
+  public By addComplaintIcon(String plateNumber) {
+    return By.xpath(getRowByPlate(plateNumber) + "//button[1][2]");
+  }
+  private final By reportButton = By.xpath("//p[contains(normalize-space(.),'Report')]");
+
+
+  // Actions
   @Step("Check plate number EN")
   public boolean isPlateNumberDisplayed(String number) {
     return isDisplayed(plateNumberEn(number));
-  }
-
-  // Button Actions
-  @Step("Click Permit button")
-  public GatesPage clickPermitStatusButton(String plateNumber) {
-    click(permitStatusBtn(plateNumber));
-    return this;
   }
 
   @Step("Check plate letter AR Displayed")
@@ -110,6 +110,7 @@ public class GatesPage extends BasePage<GatesPage> {
     return driver.findElement(plateLetterEnInPopup);
   }
 
+  // Create Permit
   @Step("Get vehicle is not permitted text")
   public String getVehicleIsNotPermittedText() {
     return getText(vehicleIsNotPermittedTXT);
@@ -117,6 +118,12 @@ public class GatesPage extends BasePage<GatesPage> {
 
   public WebElement getVehicleIsNotPermittedTextElement() {
     return driver.findElement(vehicleIsNotPermittedTXT);
+  }
+
+  @Step("Click Permit button")
+  public GatesPage clickPermitStatusButtonInTable(String plateNumber) {
+    click(permitStatusBtn(plateNumber));
+    return this;
   }
 
   @Step("Click Create Permit button")
@@ -133,7 +140,7 @@ public class GatesPage extends BasePage<GatesPage> {
     return this;
   }
 
-  @Step("Select Vehicle Type DDL")
+  @Step("Select Driver DDL")
   public GatesPage selectDriverDDL() {
     click(drivers);
     Actions actions = new Actions(driver);
@@ -146,7 +153,7 @@ public class GatesPage extends BasePage<GatesPage> {
     return this;
   }
 
-  @Step("Select Vehicle Type DDL")
+  @Step("Select Main Waste DDL")
   public GatesPage selectMainWasteDDL() {
     click(mainWaste);
     Actions actions = new Actions(driver);
@@ -154,7 +161,7 @@ public class GatesPage extends BasePage<GatesPage> {
     return this;
   }
 
-  @Step("Select Vehicle Type DDL")
+  @Step("Select Sub Waste DDL")
   public GatesPage selectSubWasteDDL() {
     click(subWaste);
     Actions actions = new Actions(driver);
@@ -162,7 +169,7 @@ public class GatesPage extends BasePage<GatesPage> {
     return this;
   }
 
-  @Step("Select Vehicle Type DDL")
+  @Step("Select Contractor DDL")
   public GatesPage selectContractorDDL() {
     click(contractor);
     Actions actions = new Actions(driver);
@@ -175,24 +182,41 @@ public class GatesPage extends BasePage<GatesPage> {
     return this;
   }
 
-  @Step("Select Vehicle Type DDL")
-  public GatesPage selectContracDDL() {
-    click(contractor);
-    Actions actions = new Actions(driver);
-    actions
-            .pause(Duration.ofMillis(500))
-            .sendKeys(Keys.ARROW_DOWN)
-            .pause(Duration.ofMillis(500))
-            .sendKeys(Keys.ENTER)
-            .perform();
+  @Step("Enter Arabic display name")
+  public GatesPage clickSaveButton() {
+    click(saveButton);
     return this;
   }
 
-  //  @Step("Enter Arabic display name")
-  //  public GatesPage enterDisplayNameArabic(String value) {
-  //    sendKeys(displayNameAr, value);
-  //    return this;
-  //  }
+  // Change Status
+  @Step("Click Change Status button In Pop-Up")
+  public GatesPage clickChangeStatusButton() {
+    click(changeStatus);
+    return this;
+  }
+
+  @Step("Click Change Status Icon In table")
+  public GatesPage clickChangeStatusIcon() {
+    click(changeStatus);
+    return this;
+  }
+
+  @Step("Select Set Status DDL")
+  public GatesPage selectSetStatusDDL() {
+    click(setStatus);
+    Actions actions = new Actions(driver);
+    actions.sendKeys(Keys.ARROW_DOWN).pause(Duration.ofMillis(500)).sendKeys(Keys.ENTER).perform();
+    return this;
+  }
+
+  @Step("Enter Status Notes")
+  public GatesPage enterStatusNotes(String note) {
+    sendKeys(notes,note);
+    return this;
+  }
+
+  // Report
+
   //
   //  @Step("Enter English display name")
   //  public GatesPage enterDisplayNameEnglish(String value) {
