@@ -1,11 +1,13 @@
 package pages;
 
 import io.qameta.allure.Step;
-import org.openqa.selenium.By;
-import org.openqa.selenium.Keys;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Actions;
+
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+
+import java.time.Duration;
 
 import java.time.Duration;
 
@@ -59,21 +61,28 @@ public class GatesPage extends BasePage<GatesPage> {
   private final By contractor =
       By.xpath(
           "//div[@updatekey='contractor.id']//div[contains(@class,'v-input v-input--horizontal')]");
-  private final By saveButton = By.xpath("//button[.='Save']");
 
   // Change Status
   public By changeStatusIcon(String plateNumber) {
     return By.xpath(getRowByPlate(plateNumber) + "//button[1][1]");
   }
-  private final By changeStatus = By.xpath("//p[contains(normalize-space(.),'Change Status')]");
+
+  private final By changeStatusBtn = By.cssSelector("[class='d-flex gap-2'] button[type='button'][class*='text-primary']");
   private final By setStatus = By.cssSelector(".v-field__input > input[placeholder='Set Status']");
   private final By notes = By.cssSelector(".v-field__field> textarea[placeholder='Notes']");
 
   // Report
   public By addComplaintIcon(String plateNumber) {
-    return By.xpath(getRowByPlate(plateNumber) + "//button[1][2]");
+    return By.xpath("(" + getRowByPlate(plateNumber) + "//button[1])[2]");
   }
   private final By reportButton = By.xpath("//p[contains(normalize-space(.),'Report')]");
+  private final By nameEnglish = By.cssSelector("[class='v-field__field'] input[placeholder='Name (English)']");
+  private final By nameArabic = By.cssSelector("[class='v-field__field'] input[placeholder='Name (Arabic)']");
+  private final By assignedUser = By.xpath("//div[contains(@type,'select')][.//div[contains(@class,'field-label') and normalize-space()='Assigned User']]//div[contains(@class,'v-field__input')]");
+  private final By selectStage = By.xpath("//div[contains(@type,'select')][.//div[contains(@class,'field-label') and normalize-space()='Select Stage']]//div[contains(@class,'v-field__input')]");
+  private final By priority = By.xpath("//div[contains(@type,'select')][.//div[contains(@class,'field-label') and normalize-space()='Priority']]//div[contains(@class,'v-field__input')]");
+  private final By detailsEnglish = By.cssSelector("textarea[placeholder='Details (English)']");
+  private final By detailsArabic = By.cssSelector("textarea[placeholder='Details (Arabic)']");
 
 
   // Actions
@@ -182,30 +191,32 @@ public class GatesPage extends BasePage<GatesPage> {
     return this;
   }
 
-  @Step("Enter Arabic display name")
-  public GatesPage clickSaveButton() {
-    click(saveButton);
-    return this;
-  }
-
   // Change Status
+
   @Step("Click Change Status button In Pop-Up")
   public GatesPage clickChangeStatusButton() {
-    click(changeStatus);
+    click(changeStatusBtn);
     return this;
   }
 
   @Step("Click Change Status Icon In table")
-  public GatesPage clickChangeStatusIcon() {
-    click(changeStatus);
+  public GatesPage clickChangeStatusIcon(String plateNumber) {
+    click(changeStatusIcon(plateNumber));
     return this;
   }
 
   @Step("Select Set Status DDL")
   public GatesPage selectSetStatusDDL() {
-    click(setStatus);
+    doubleClick(setStatus);
     Actions actions = new Actions(driver);
-    actions.sendKeys(Keys.ARROW_DOWN).pause(Duration.ofMillis(500)).sendKeys(Keys.ENTER).perform();
+    actions
+            .pause(Duration.ofMillis(1000))
+            .sendKeys(Keys.ARROW_DOWN)
+            .sendKeys(Keys.ARROW_DOWN)
+            .sendKeys(Keys.ARROW_DOWN)
+            .pause(Duration.ofMillis(500))
+            .sendKeys(Keys.ENTER)
+            .perform();
     return this;
   }
 
@@ -216,6 +227,112 @@ public class GatesPage extends BasePage<GatesPage> {
   }
 
   // Report
+
+  @Step("Click Complaint button")
+  public GatesPage clickReportButtonIcon(String plateNumber) {
+    click(addComplaintIcon(plateNumber));
+    return this;
+  }
+
+  @Step("Click Complaint button")
+  public GatesPage clickReportButtonInPopUp() {
+    click(reportButton);
+    return this;
+  }
+
+  @Step("Enter Name English")
+  public GatesPage enterNameEnglish(String name) {
+    Actions actions = new Actions(driver);
+    sendKeys(nameEnglish, name);
+     actions.pause(Duration.ofMillis(500))
+            .sendKeys(Keys.ENTER);
+    return this;
+  }
+  @Step("Enter Name Arabic")
+  public GatesPage enterNameArabic(String name) {
+    Actions actions = new Actions(driver);
+    sendKeys(nameArabic, name);
+    actions.pause(Duration.ofMillis(500))
+            .sendKeys(Keys.ENTER);
+    return this;
+  }
+
+  @Step("Select Assigned User DDL")
+  public GatesPage selectAssignedUserDDL() {
+    click(assignedUser);
+    Actions actions = new Actions(driver);
+       actions.pause(Duration.ofMillis(1500))
+              .sendKeys(Keys.ARROW_DOWN)
+              .sendKeys(Keys.ARROW_UP)
+              .pause(Duration.ofMillis(500))
+              .sendKeys(Keys.ENTER).perform();
+    return this;
+  }
+
+  @Step("Select Select Stage DDL")
+  public GatesPage selectSelectStageDDL() {
+    click(selectStage);
+    Actions actions = new Actions(driver);
+    actions.pause(Duration.ofMillis(1500))
+            .sendKeys(Keys.ARROW_DOWN)
+            .sendKeys(Keys.ARROW_UP)
+            .pause(Duration.ofMillis(500))
+            .sendKeys(Keys.ENTER).perform();
+    return this;
+  }
+
+  @Step("Select Priority DDL")
+  public GatesPage selectPriorityDDL() {
+    click(priority);
+    Actions actions = new Actions(driver);
+    actions.pause(Duration.ofMillis(1500))
+            .sendKeys(Keys.ARROW_DOWN)
+            .pause(Duration.ofMillis(500))
+            .sendKeys(Keys.ENTER).perform();
+    return this;
+  }
+
+  @Step("Enter Details English")
+  public GatesPage enterDetailsEnglish(String name) {
+    sendKeys(detailsEnglish, name);
+    return this;
+  }
+  @Step("Enter Details Arabic")
+  public GatesPage enterDetailsArabic(String name) {
+    sendKeys(detailsArabic, name);
+    return this;
+  }
+
+  // Locations
+  private final By locations =
+          By.xpath("(//div[contains(@class,'v-field') and @role='combobox'][.//input[@placeholder='Location']])");
+
+  @Step("Search and select Location: {0}")
+  public GatesPage searchAndSelectLocation(String value) {
+
+    WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(30));
+
+    WebElement dropdown =
+            wait.until(ExpectedConditions.elementToBeClickable(locations));
+
+    dropdown.click();
+
+    wait.until(driver ->
+            "true".equals(
+                    driver.findElement(locations)
+                            .getAttribute("aria-expanded")
+            )
+    );
+
+    By option = By.xpath(
+            "//div[contains(@class,'v-list-item-title') and normalize-space()='" + value + "']"
+    );
+
+    wait.until(ExpectedConditions.elementToBeClickable(option)).click();
+
+    return this;
+  }
+
 
   //
   //  @Step("Enter English display name")

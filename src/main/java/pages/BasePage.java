@@ -15,7 +15,9 @@ public class BasePage<T extends BasePage<T>> extends ElementActions {
     private final By changeLanguage = By.cssSelector(".navbar-actions-cont i[class*='v-icon notranslate v-theme--light v-icon--size-default']");
     private final By englishBtn = By.xpath("(//div[contains(@class,'language_wrapper')] //span[contains(@class,'language_option mx-2')])[2]");
     private final By submitBtn = By.cssSelector("button[form='myForm'][type='submit']");
-    private final By successIcon = By.cssSelector(".swal2-icon-content img");
+    private final By searchInputs = By.cssSelector("[class*='searching'] input[placeholder='Search']");
+    private final By saveButton = By.xpath("//button[.='Save']");
+    private final By dataTableSearchResult = By.cssSelector("");
     private final By successMessage = By.cssSelector(".swal2-title");
     private final By editBtn = By.cssSelector(".v-card-actions .flex button");
     private final By saveEditBtn = By.xpath("//button[.='Edit']");
@@ -61,29 +63,37 @@ public class BasePage<T extends BasePage<T>> extends ElementActions {
         return self();
     }
 
-//    @Step("Clear Search Inputs")
-//    public T clearSearchInputs() {
-//        WebElement element = Waits.waitForVisible(driver, searchInputs);
-//
-//        element.click();
-//        element.sendKeys(Keys.CONTROL + "a");
-//        element.sendKeys(Keys.DELETE);
-//
-//        return self();
-//    }
-//
-//    @Step("Search Inputs")
-//    public T searchInputs(String searchText) {
-//        Waits.waitForVisible(driver, searchInputs);
-//
-//        clearSearchInputs();
-//        sendKeys(searchInputs, searchText);
-//
+    @Step("Clear Search Inputs")
+    public T clearSearchInputs() {
+        WebElement element = Waits.waitForVisible(driver, searchInputs);
+
+        element.click();
+        element.sendKeys(Keys.CONTROL + "a");
+        element.sendKeys(Keys.DELETE);
+
+        return self();
+    }
+
+    @Step("Search Inputs")
+    public T searchInputs(String searchText) {
+        Waits.waitForVisible(driver, searchInputs);
+
+        clearSearchInputs();
+        sendKeys(searchInputs, searchText);
+
 //        Waits.waitForTableResultOrNoData(driver, dataTableSearchResult, noDataRow);
-//
-//        return self();
-//    }
-//
+
+        return self();
+    }
+
+    @Step("Enter Arabic display name")
+    public T clickSaveButton() {
+        click(saveButton);
+        return self();
+    }
+
+
+    //
 //    @Step("Close PopUp")
 //    public T closePopUpIcon() {
 //        Waits.waitForClickable(driver, closePopUp).click();
@@ -158,10 +168,15 @@ public class BasePage<T extends BasePage<T>> extends ElementActions {
 //        return getElement(successIcon).isDisplayed();
 //    }
 //
-//    @Step("Get success message")
-//    public String getSuccessMessage() {
-//        return getText(successMessage);
-//    }
+    @Step("Get success message")
+    public WebElement getSuccessMessage() {
+    return driver.findElement(successMessage);
+    }
+
+    @Step("Get success message")
+    public String getSuccessMessageText() {
+        return getText(successMessage);
+    }
 //
 //    @Step("Get no data available message")
 //    public boolean isNoDataMessageCorrect() {

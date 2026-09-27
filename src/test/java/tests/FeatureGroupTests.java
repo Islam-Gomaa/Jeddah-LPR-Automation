@@ -1,18 +1,23 @@
-//package tests;
+//شوف الكود ده واستني عالطلب الطلب بتاعي لحد ما اكملك كلامي package tests;
 //
+//import api.LprApiClient;
 //import base.BaseTests;
+//import io.restassured.response.Response;
+//import org.testng.Assert;
 //import org.testng.annotations.BeforeMethod;
 //import org.testng.annotations.Test;
 //import pages.BasePage;
+//import pages.GatesPage;
 //import utilities.AuthHelper;
 //import utils.Assertions;
+//import org.openqa.selenium.WebElement;
 //
-//import static dataReader.ReadDataFromJson.dataModel;
+//import java.nio.file.Path;
 //
-//public class FeatureGroupTests extends BaseTests {
+//public class Gates extends BaseTests {
 //
 //    BasePage basePage;
-////    FeatureGroupPage featureGroupPage;
+//    GatesPage gatespage;
 //
 //    @BeforeMethod
 //    public void setupAdminSession() {
@@ -20,88 +25,142 @@
 //        basePage = AuthHelper.login(driver);
 //    }
 //
-//    @Test(priority = 1)
-//    public void createFeatureGroupTest() {
-
-        // ====== Control Panel ======
-
-
-
-
-//        featureGroupPage = basePage.openFeatureGroup();
-//        featureGroupPage
-//                .clickAddButton()
-//                .enterArabicName(dataModel().FeatureGroup.nameAR)
-//                .enterEnglishName(dataModel().FeatureGroup.nameEN)
-//                .clickSubmit();
+//    @Test
+//    public void sendVehiclePassageEvent() {
+//
+//        Path carImage = Path.of("src/test/resources/images/car.png");
+//
+//        Path plateImage = Path.of("src/test/resources/images/plate.png");
+//
+//        LprApiClient client = new LprApiClient();
+//
+//        Response response = client.sendVehiclePassage(carImage, plateImage);
+//
+//        System.out.println("Status: " + response.statusCode());
+//        System.out.println("Response: " + response.asPrettyString());
+//        System.out.println("Plate EN: " + client.getGeneratedPlateEn());
+//        System.out.println("Plate AR: " + client.getGeneratedPlateAr());
+//        System.out.println("Date: " + client.getGeneratedDate());
+//
+//        Assert.assertEquals(
+//                response.statusCode(), 200, "Vehicle passage request failed: " + response.asPrettyString());
+//
+//        // Use plate number in process cycle
+//
+//        String plateEn = client.getGeneratedPlateEn();
+//        String plateAr = client.getGeneratedPlateAr();
+//
+//        String plateNumber = plateEn.replaceAll("[^0-9]", "");
+//        String plateLettersEn = plateEn.replaceAll("[^A-Za-z]", "");
+//        String plateLettersAr = plateAr.replaceAll("[^\\u0600-\\u06FF]", "");
+//
+//        System.out.println("Plate EN: " + plateEn);
+//        System.out.println("Plate AR: " + plateAr);
+//
+//        System.out.println("Expected Number: " + plateNumber);
+//        System.out.println("Expected Letters EN: " + plateLettersEn);
+//        System.out.println("Expected Letters AR: " + plateLettersAr);
+//
+//        // Gates Page
+//        gatespage = basePage.openGates();
 //
 //        Assertions.myAssertTrue(
-//                basePage.isSuccessIconDisplayed()
-//                        && basePage.isSuccessMessageDisplayed(),
-//                "Success popup is not displayed correctly");
+//                gatespage.isPlateNumberDisplayed(plateNumber), "Plate number did not appear successfully");
 //
-//        Assertions.myAssertEquals(
-//                basePage.getSuccessMessage(),
-//                "Created successfully");
-//
-//        featureGroupPage
-//                .closePopUpIcon()
-//                .searchInputs(dataModel().FeatureGroup.nameEN);
-//
-//        Assertions.myAssertEquals(
-//                basePage.getTableSearchResult(),
-//                dataModel().FeatureGroup.nameEN);
-//
-//        featureGroupPage
-//                .searchInputs(dataModel().FeatureGroup.nameEN)
-//                .clickSearchResult()
-//                .clickEdit()
-//                .enterArabicName(dataModel().FeatureGroup.editNameAR)
-//                .enterEnglishName(dataModel().FeatureGroup.editNameEN)
-//                .clickSubmit();
+//        // Create Permit for vehicle
+//        gatespage.clickPermitStatusButtonInTable(plateNumber);
 //
 //        Assertions.myAssertTrue(
-//                basePage.isSuccessIconDisplayed()
-//                        && basePage.isSuccessMessageDisplayed(),
-//                "Success popup is not displayed correctly");
+//                gatespage.isPlateLetterArDisplayed(), "Plate letter Ar did not appear successfully");
 //
-//        Assertions.myAssertEquals(
-//                basePage.getSuccessMessage(),
-//                "Updated successfully");
-//
-//        featureGroupPage
-//                .closePopUpIcon()
-//                .searchInputs(dataModel().FeatureGroup.editNameEN);
-//
-//        Assertions.myAssertEquals(
-//                basePage.getTableSearchResult(),
-//                dataModel().FeatureGroup.editNameEN);
-//
-//        featureGroupPage
-//                .searchInputs(dataModel().FeatureGroup.editNameEN)
-//                .clickSearchResult()
-//                .clickDelete();
+//        Assertions.myAssertEqualsIgnoreSpaces(
+//                gatespage.getPlateLetterArElement(),
+//                gatespage.getPlateLetterAr(),
+//                plateLettersAr,
+//                "Incorrect Arabic plate letters");
 //
 //        Assertions.myAssertTrue(
-//                basePage.isSuccessIconDisplayed()
-//                        && basePage.isSuccessMessageDisplayed(),
-//                "Success popup is not displayed correctly"
-//        );
+//                gatespage.isPlateLetterEnDisplayed(), "Plate letter En did not appear successfully");
+//
+//        Assertions.myAssertEqualsIgnoreSpaces(
+//                gatespage.getPlateLetterEnElement(),
+//                gatespage.getPlateLetterEn(),
+//                plateLettersEn,
+//                "Incorrect English plate letter");
+//
 //        Assertions.myAssertEquals(
-//                basePage.getSuccessMessage(),
-//                "Deleted successfully"
-//        );
+//                gatespage.getVehicleIsNotPermittedTextElement(),
+//                gatespage.getVehicleIsNotPermittedText(),
+//                "This vehicle is not permitted to enter",
+//                "Vehicle is permitted");
 //
-//        featureGroupPage
-//                .closePopUpIcon()
-//                .clearSearchInputs()
-//                .searchInputs(dataModel().FeatureGroup.editNameEN);
+//        gatespage
+//                .clickCreatePermit()
+//                .selectVehicleTypeDDL()
+//                .selectDriverDDL()
+//                .selectMainWasteDDL()
+//                .selectSubWasteDDL()
+//                .selectContractorDDL()
+//                .clickSaveButton();
 //
-//        Assertions.myAssertTrue(
-//                basePage.isNoDataMessageCorrect(),
-//                "No data message is not displayed after search"
-//        );
+////        Assertions.myAssertEquals(
+////                gatespage.getVehicleIsNotPermittedTextElement(),
+////                gatespage.getVehicleIsNotPermittedText(),
+////                "This vehicle is permitted to enter",
+////                "Vehicle does not permitted");
+//
+//        // Change Status
+//
+//
+//        gatespage
+////            .searchInputs(plateEn)
+////            .clickPermitStatusButtonInTable(plateNumber)
+//                .clickChangeStatusButton()
+//                .selectSetStatusDDL()
+//                .enterStatusNotes("note")
+//                .clickSaveButton();
+//
+//        Assertions.myAssertEquals(
+//                gatespage.getSuccessMessage(),
+//                gatespage.getSuccessMessageText(),
+//                "Status updated successfully",
+//                "Status not updated");
+//
+//
+//        gatespage
+//                .searchInputs(plateEn)
+//                .clickChangeStatusIcon(plateNumber)
+//                .selectSetStatusDDL()
+//                .enterStatusNotes("test note")
+//                .clickSaveButton();
+//
+//        Assertions.myAssertEquals(
+//                gatespage.getSuccessMessage(),
+//                gatespage.getSuccessMessageText(),
+//                "Status updated successfully",
+//                "Status not updated");
+//
+//
+//        // Report
+//
+//        gatespage
+//                .searchInputs(plateEn)
+//                .clickReportButtonIcon(plateNumber)
+//                .enterNameEnglish("test name ")
+//                .enterNameArabic("بلاغ جديد")
+//                .selectAssignedUserDDL()
+//                .selectSelectStageDDL()
+//                .selectPriorityDDL()
+//                .enterDetailsEnglish("test des ")
+//                .enterDetailsArabic("تفاصيل")
+//                .clickSaveButton();
+//
+//        Assertions.myAssertEquals(
+//                gatespage.getSuccessMessage(),
+//                gatespage.getSuccessMessageText(),
+//                "Status updated successfully",
+//                "Status not updated");
+//
+//
 //    }
 //}
-//
-
