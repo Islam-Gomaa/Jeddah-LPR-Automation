@@ -84,6 +84,11 @@ public class GatesPage extends BasePage<GatesPage> {
   private final By detailsEnglish = By.cssSelector("textarea[placeholder='Details (English)']");
   private final By detailsArabic = By.cssSelector("textarea[placeholder='Details (Arabic)']");
 
+  // Locations
+  private final By locations =
+          By.xpath("(//div[contains(@class,'v-field') and @role='combobox'][.//input[@placeholder='Location']])");
+
+  private final By locationsGate = By.xpath("//p[contains(normalize-space(.),'Gate 2')]");
 
   // Actions
   @Step("Check plate number EN")
@@ -304,8 +309,6 @@ public class GatesPage extends BasePage<GatesPage> {
   }
 
   // Locations
-  private final By locations =
-          By.xpath("(//div[contains(@class,'v-field') and @role='combobox'][.//input[@placeholder='Location']])");
 
   @Step("Search and select Location: {0}")
   public GatesPage searchAndSelectLocation(String value) {
@@ -323,15 +326,26 @@ public class GatesPage extends BasePage<GatesPage> {
                             .getAttribute("aria-expanded")
             )
     );
-
-    By option = By.xpath(
-            "//div[contains(@class,'v-list-item-title') and normalize-space()='" + value + "']"
-    );
-
-    wait.until(ExpectedConditions.elementToBeClickable(option)).click();
+    Actions actions = new Actions(driver);
+    actions.pause(Duration.ofMillis(1500))
+            .sendKeys(Keys.ARROW_DOWN)
+            .sendKeys(Keys.ARROW_DOWN)
+            .pause(Duration.ofMillis(500))
+            .sendKeys(Keys.ENTER).perform();
 
     return this;
   }
+  //
+  @Step("Get success location")
+  public WebElement getLocationsGate() {
+    return driver.findElement(locationsGate);
+  }
+
+  @Step("Get vehicle is not permitted text")
+  public String getLocationsGateText() {
+    return getText(locationsGate);
+  }
+
 
 
   //
@@ -475,6 +489,5 @@ public class GatesPage extends BasePage<GatesPage> {
   //
   //    ((JavascriptExecutor) driver)
   //        .executeScript("arguments[0].scrollTop = arguments[0].scrollHeight;", list);
-  //    return this;
-  //  }
+  //    return this
 }

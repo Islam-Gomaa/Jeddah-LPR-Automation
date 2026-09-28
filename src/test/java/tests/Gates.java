@@ -138,7 +138,7 @@ public class Gates extends BaseTests {
 //                "Status not updated");
 //
 //    }
-//
+
 //    @Test(priority = 3)
 //    public void changeVehicleStatusByIcon() {
 //        gatespage = basePage.openGates();
@@ -182,10 +182,19 @@ public class Gates extends BaseTests {
 //        );
 //    }
 
-    @Test(priority = 1)
+    @Test(priority = 5)
     public void filterByLocations(){
         gatespage = basePage.openGates();
         gatespage.searchAndSelectLocation("Gates 2");
+        gatespage.clickPermitStatusButtonInTable(plateNumber);
+
+        Assertions.myAssertEquals(
+                gatespage.getLocationsGate(),
+                gatespage.getLocationsGateText(),
+                "Gate 2",
+                "Location Gate not appeared");
+
+
     }
 
 }

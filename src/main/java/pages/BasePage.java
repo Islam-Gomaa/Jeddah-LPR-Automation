@@ -220,7 +220,7 @@ public class BasePage<T extends BasePage<T>> extends ElementActions {
         click(gates);
         return new GatesPage(driver);
     }
-//
+
 //    @Step("Open UseCases Page")
 //    public UseCasesPage openUseCases() {
 //        click(dataEntry);
