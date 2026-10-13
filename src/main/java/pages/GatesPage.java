@@ -7,9 +7,9 @@ import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-import java.time.Duration;
 
 import java.time.Duration;
+
 
 public class GatesPage extends BasePage<GatesPage> {
 
@@ -39,11 +39,10 @@ public class GatesPage extends BasePage<GatesPage> {
   }
 
   private final By plateLetterArInPopup =
-      By.xpath("(//div[contains(@class,'plate__letter__ar')]//span)[2]");
+          By.xpath("(//div[contains(@class,'plate__letter__ar')]//span)[2]");
   private final By plateLetterEnInPopup =
-      By.xpath("(//div[contains(@class,'plate__letter__en')]//span)[4]");
-  private final By vehicleIsNotPermittedTXT =
-      By.xpath("(//div[contains(@class,'no_permit permit_status')]//span)[2]");
+          By.xpath("(//div[contains(@class,'plate__letter__en')]//span)[4]");
+
 
   // Create Permit
   private final By createPermitBtn = By.xpath("//button[.='Create Permit']");
@@ -61,6 +60,11 @@ public class GatesPage extends BasePage<GatesPage> {
   private final By contractor =
       By.xpath(
           "//div[@updatekey='contractor.id']//div[contains(@class,'v-input v-input--horizontal')]");
+  private final By vehicleIsNotPermittedTXT =
+          By.xpath("(//div[contains(@class,'no_permit permit_status')]//span)[2]");
+
+  private final By vehicleIsPermittedTXT =
+          By.xpath("(//div[contains(@class,'permit permit_status')]//span)[2]");
 
   // Change Status
   public By changeStatusIcon(String plateNumber) {
@@ -68,7 +72,8 @@ public class GatesPage extends BasePage<GatesPage> {
   }
 
   private final By changeStatusBtn = By.cssSelector("[class='d-flex gap-2'] button[type='button'][class*='text-primary']");
-  private final By setStatus = By.cssSelector(".v-field__input > input[placeholder='Set Status']");
+  private final By setStatusField = By.xpath("//div[contains(@class,'v-field')][.//input[@placeholder='Set Status']]");
+  private final By setStatusInput = By.cssSelector(".v-field__input > input[placeholder='Set Status']");
   private final By notes = By.cssSelector(".v-field__field> textarea[placeholder='Notes']");
 
   // Report
@@ -84,13 +89,27 @@ public class GatesPage extends BasePage<GatesPage> {
   private final By detailsEnglish = By.cssSelector("textarea[placeholder='Details (English)']");
   private final By detailsArabic = By.cssSelector("textarea[placeholder='Details (Arabic)']");
 
-  // Locations
-  private final By locations =
-          By.xpath("(//div[contains(@class,'v-field') and @role='combobox'][.//input[@placeholder='Location']])");
-
+  // Filters
+  private final By locations = By.xpath("(//div[contains(@class,'v-field') and @role='combobox'][.//input[@placeholder='Location']])");
   private final By locationsGate = By.xpath("//p[contains(normalize-space(.),'Gate 2')]");
+  private final By vehicleInformationTab = By.xpath("//button[contains(@class,'v-btn') and normalize-space()='Vehicle Information']");
+  private final By contractTypeDDL = By.xpath("(//div[contains(@class,'v-field') and @role='combobox'][.//input[@placeholder='Contract Type']])");
+  private final By contractTypeField = By.xpath("(//div[contains(@class,'info-data')] //p[normalize-space()='Temporary Contract'])[1]");
+
+  // Delete, Restore and Force Delete
+  private final By deleteIcon = By.xpath("(//div[contains(@class,'actions')] //button[contains(@class,'bg-table-icon delete')])[2]");
+  private final By archiveIcon = By.xpath("//div[contains(@class,'transition-all')] //button[contains(@class,'v-btn--elevated')]");
+  private final By restoreIcon = By.xpath("//div[contains(@class,'actions')] //button[contains(@class,'elevated table-icon edit')]");
+  private final By forceDeleteIcon = By.xpath("//div[contains(@class,'actions')] //button[contains(@class,'elevated table-icon delete')]");
+  private final By okButton = By.xpath("//button[contains(@class,'swal2-confirm')]");
+  private final By assertPopUpAction = By.xpath("//h2[contains(@id,'swal2-title')]");
+  private final By assertPopUpPlateNumber = By.xpath("//div[contains(@id,'swal2-html-container')]");
+
+
 
   // Actions
+
+  // Check Plate Number
   @Step("Check plate number EN")
   public boolean isPlateNumberDisplayed(String number) {
     return isDisplayed(plateNumberEn(number));
@@ -129,17 +148,52 @@ public class GatesPage extends BasePage<GatesPage> {
   public String getVehicleIsNotPermittedText() {
     return getText(vehicleIsNotPermittedTXT);
   }
-
+  @Step("Get vehicle is not permitted text")
   public WebElement getVehicleIsNotPermittedTextElement() {
     return driver.findElement(vehicleIsNotPermittedTXT);
   }
 
-  @Step("Click Permit button")
-  public GatesPage clickPermitStatusButtonInTable(String plateNumber) {
-    click(permitStatusBtn(plateNumber));
+  @Step("Wait until vehicle is permitted")
+  public GatesPage waitUntilVehicleIsPermitted() {
+
+    WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(30));
+
+    wait.until(driver -> {
+      try {
+        return driver.findElement(vehicleIsPermittedTXT)
+                .getText()
+                .trim()
+                .equals("This vehicle is permitted to enter");
+      } catch (Exception e) {
+        return false;
+      }
+    });
+
     return this;
   }
 
+  @Step("Get vehicle is not permitted text")
+  public String getVehicleIsPermittedText() {
+    return getText(vehicleIsPermittedTXT);
+  }
+  @Step("Get vehicle is not permitted text")
+  public WebElement getVehicleIsPermittedTextElement() {
+    return driver.findElement(vehicleIsPermittedTXT);
+  }
+
+ @Step("Click Permit button for plate")
+ public GatesPage clickPermitStatusButtonInTable(String plateNumber) {
+   WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(30));
+   By permitButton = permitStatusBtn(plateNumber);
+   wait.until(ExpectedConditions.elementToBeClickable(permitButton));
+   click(permitButton);
+  return this;
+}
+  @Step("Click Permit button")
+  public GatesPage clickVehicleInformationTab() {
+    click(vehicleInformationTab);
+    return this;
+  }
   @Step("Click Create Permit button")
   public GatesPage clickCreatePermit() {
     click(createPermitBtn);
@@ -211,23 +265,36 @@ public class GatesPage extends BasePage<GatesPage> {
   }
 
   @Step("Select Set Status DDL")
-  public GatesPage selectSetStatusDDL() {
-    doubleClick(setStatus);
-    Actions actions = new Actions(driver);
-    actions
-            .pause(Duration.ofMillis(1000))
-            .sendKeys(Keys.ARROW_DOWN)
-            .sendKeys(Keys.ARROW_DOWN)
-            .sendKeys(Keys.ARROW_DOWN)
-            .pause(Duration.ofMillis(500))
-            .sendKeys(Keys.ENTER)
-            .perform();
+  public GatesPage selectSetStatusDDL(String status) {
+
+    WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+
+    wait.until(ExpectedConditions.elementToBeClickable(setStatusField)).click();
+    By statusOption = By.xpath(
+            "//div[contains(@class,'v-list-item') and @role='option']" +
+                    "//div[contains(@class,'v-list-item-title') and normalize-space()='" + status + "']"
+    );
+    wait.until(ExpectedConditions.elementToBeClickable(statusOption))
+            .click();
     return this;
   }
 
   @Step("Enter Status Notes")
   public GatesPage enterStatusNotes(String note) {
     sendKeys(notes,note);
+    return this;
+  }
+
+  @Step("Wait for vehicle to be ready: {0}")
+  public GatesPage waitForVehicleAppear() {
+
+    try {
+      Thread.sleep(300);
+    } catch (InterruptedException e) {
+      Thread.currentThread().interrupt();
+      throw new RuntimeException("Interrupted while waiting for vehicle", e);
+    }
+
     return this;
   }
 
@@ -250,7 +317,8 @@ public class GatesPage extends BasePage<GatesPage> {
     Actions actions = new Actions(driver);
     sendKeys(nameEnglish, name);
      actions.pause(Duration.ofMillis(500))
-            .sendKeys(Keys.ENTER);
+             .sendKeys(Keys.ENTER).perform();
+
     return this;
   }
   @Step("Enter Name Arabic")
@@ -258,7 +326,7 @@ public class GatesPage extends BasePage<GatesPage> {
     Actions actions = new Actions(driver);
     sendKeys(nameArabic, name);
     actions.pause(Duration.ofMillis(500))
-            .sendKeys(Keys.ENTER);
+            .sendKeys(Keys.ENTER).perform();
     return this;
   }
 
@@ -308,16 +376,18 @@ public class GatesPage extends BasePage<GatesPage> {
     return this;
   }
 
+  // Filter
   // Locations
 
-  @Step("Search and select Location: {0}")
-  public GatesPage searchAndSelectLocation(String value) {
+  @Step("Search and select Location ")
+  public GatesPage filterByLocationAndSelect(String value) {
 
     WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(30));
 
     WebElement dropdown =
             wait.until(ExpectedConditions.elementToBeClickable(locations));
 
+    // Open Location dropdown
     dropdown.click();
 
     wait.until(driver ->
@@ -326,16 +396,17 @@ public class GatesPage extends BasePage<GatesPage> {
                             .getAttribute("aria-expanded")
             )
     );
-    Actions actions = new Actions(driver);
-    actions.pause(Duration.ofMillis(1500))
-            .sendKeys(Keys.ARROW_DOWN)
-            .sendKeys(Keys.ARROW_DOWN)
-            .pause(Duration.ofMillis(500))
-            .sendKeys(Keys.ENTER).perform();
+
+    // Select filtered option
+    By option = By.xpath(
+            "//div[contains(@class,'v-list-item-title') " +
+                    "and normalize-space()='" + value + "']"
+    );
+    wait.until(ExpectedConditions.elementToBeClickable(option)).click();
 
     return this;
   }
-  //
+
   @Step("Get success location")
   public WebElement getLocationsGate() {
     return driver.findElement(locationsGate);
@@ -346,148 +417,93 @@ public class GatesPage extends BasePage<GatesPage> {
     return getText(locationsGate);
   }
 
+  // Contract Type
+  @Step("Search and select Contract Type ")
+  public GatesPage filterByContractTypeAndSelect(String value) {
+
+    WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(30));
+
+    WebElement dropdown =
+            wait.until(ExpectedConditions.elementToBeClickable(contractTypeDDL));
+
+    // Open Location dropdown
+    dropdown.click();
+
+    wait.until(driver ->
+            "true".equals(
+                    driver.findElement(contractTypeDDL)
+                            .getAttribute("aria-expanded")
+            )
+    );
+
+    // Select filtered option
+    By option = By.xpath(
+            "//div[contains(@class,'v-list-item-title') " +
+                    "and normalize-space()='" + value + "']"
+    );
+    wait.until(ExpectedConditions.elementToBeClickable(option)).click();
+
+    return this;
+  }
+
+  @Step("Get success location")
+  public WebElement getContractType() {
+    return driver.findElement(contractTypeField);
+  }
+
+  @Step("Get vehicle is not permitted text")
+  public String getContractTypeText() {
+    return getText(contractTypeField);
+  }
 
 
-  //
-  //  @Step("Enter English display name")
-  //  public GatesPage enterDisplayNameEnglish(String value) {
-  //    sendKeys(displayNameEn, value);
-  //    return this;
-  //  }
-  //
-  //  @Step("Enter Arabic description")
-  //  public GatesPage enterDescriptionArabic(String value) {
-  //    sendKeys(descriptionAR, value);
-  //    return this;
-  //  }
-  //
-  //  @Step("Enter English description")
-  //  public GatesPage enterDescriptionEnglish(String value) {
-  //    sendKeys(descriptionEN, value);
-  //    return this;
-  //  }
-  //
-  //  // Active Status Methods
-  //  @Step("Enable role")
-  //  public GatesPage enableRole() {
-  //    if (!getElement(isActiveRole).isSelected()) {
-  //      jsClick(isActiveRole);
-  //    }
-  //    return this;
-  //  }
-  //
-  //  @Step("Disable role")
-  //  public GatesPage disableRole() {
-  //    if (getElement(isActiveRole).isSelected()) {
-  //      jsClick(isActiveRole);
-  //    }
-  //    return this;
-  //  }
-  //
-  //  // Permission Methods
-  //  @Step("Search permission: {permission}")
-  //  public GatesPage searchPermission(String permission) {
-  //    sendKeys(permissionSearch, permission);
-  //    return this;
-  //  }
-  //
-  //  @Step("Open permission category: {category}")
-  //  public GatesPage openPermissionCategory(String category) {
-  //    click(permissionCategory(category));
-  //    return this;
-  //  }
-  //
-  //  @Step("Select permission: {permission}")
-  //  public GatesPage selectPermission(String permission) {
-  //    jsClick(permissionCheckbox(permission));
-  //    return this;
-  //  }
-  //
-  //  @Step("Unselect permission: {permission}")
-  //  public GatesPage unselectPermission(String permission) {
-  //    if (getElement(permissionCheckbox(permission)).isSelected()) {
-  //      click(permissionCheckbox(permission));
-  //    }
-  //    return this;
-  //  }
+  @Step("Click Delete Vehicle")
+  public GatesPage clickDeleteIcon() {
+    click(deleteIcon);
+    return this;
+  }
 
-  //  // Button Actions
-  //  @Step("Click Add button")
-  //  public GatesPage clickAdd() {
-  //    click(addButton);
-  //    return this;
-  //  }
-  //
-  //  @Step("Click Cancel button")
-  //  public GatesPage clickCancel() {
-  //    click(cancelButton);
-  //    return this;
-  //  }
-  //
-  //  @Step("Click Edit button")
-  //  public GatesPage clickEditRole() {
-  //    click(editButton);
-  //    return this;
-  //  }
-  //
-  //  @Step("Click Delete button")
-  //  public GatesPage clickDeleteRole() {
-  //    click(deleteButton);
-  //    return this;
-  //  }
-  //
-  //  @Step("Click Confirm Delete button")
-  //  public GatesPage clickConfirmDeleteRole() {
-  //    click(confirmDeleteButton);
-  //    return this;
-  //  }
+  @Step("Click Archive Page")
+  public GatesPage clickArchiveIcon() {
+    click(archiveIcon);
+    return this;
+  }
 
-  //  // Verification Methods
-  //  @Step("Verify permission category displayed")
-  //  public boolean isPermissionCategoryDisplayed(String category) {
-  //    Waits.waitForVisible(driver, permissionCategory(category));
-  //    return isDisplayed(permissionCategory(category));
-  //  }
+  @Step("Click Restore Vehicle")
+  public GatesPage clickRestoreIcon() {
+    click(restoreIcon);
+    return this;
+  }
 
-  //  @Step("Fill role information")
-  //  public GatesPage fillRoleData(
-  //      String name, String displayAr, String displayEn, String descAr, String descEn) {
-  //
-  //    return enterRoleName(name)
-  //        .enterDisplayNameArabic(displayAr)
-  //        .enterDisplayNameEnglish(displayEn)
-  //        .enterDescriptionArabic(descAr)
-  //        .enterDescriptionEnglish(descEn);
-  //  }
+  @Step("Click Force Delete Vehicle")
+  public GatesPage clickForceDeleteIcon() {
+    click(forceDeleteIcon);
+    return this;
+  }
 
-  //  @Step("Assign permissions in category {category}")
-  //  public GatesPage assignPermissions(String category, String... permissions) {
-  //
-  //    openPermissionCategory(category);
-  //
-  //    for (String permission : permissions) {
-  //      selectPermission(permission);
-  //    }
-  //
-  //    return this;
-  //  }
+  @Step("Click Ok Button")
+  public GatesPage clickOkButton() {
+    click(okButton);
+    return this;
+  }
 
-  //  @Step("Verify role is not displayed")
-  //  public boolean isRoleNotDisplayed(String roleName) {
-  //    return !isElementPresent(roleCard(roleName));
-  //  }
-  //
-  //  @Step("Open role: {roleName}")
-  //  public GatesPage openRole(String roleName) {
-  //    click(roleCard(roleName));
-  //    return this;
-  //  }
-  //
-  //  @Step("Scroll Permissions List To Bottom")
-  //  public GatesPage scrollPermissionsListToBottom() {
-  //    WebElement list = getElement(permissionsList);
-  //
-  //    ((JavascriptExecutor) driver)
-  //        .executeScript("arguments[0].scrollTop = arguments[0].scrollHeight;", list);
-  //    return this
+  @Step("Get success Pop-up action")
+  public WebElement getPopUpAction() {
+    return driver.findElement(assertPopUpAction);
+  }
+
+  @Step("Get Pop-up action text")
+  public String getPopUpActionText() {
+    return getText(assertPopUpAction);
+  }
+
+  @Step("Get success Pop-up Plate Number")
+  public WebElement getPopUpPlateNumber() {
+    return driver.findElement(assertPopUpPlateNumber);
+  }
+
+  @Step("Get Pop-up Plate Number text")
+  public String getPopUpPlateNumberText() {
+    return getText(assertPopUpPlateNumber);
+  }
 }

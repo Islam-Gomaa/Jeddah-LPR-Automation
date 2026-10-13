@@ -3,6 +3,7 @@ package utils;
 import io.qameta.allure.Allure;
 import io.qameta.allure.Step;
 import org.openqa.selenium.*;
+import org.testng.Assert;
 
 import static org.testng.Assert.*;
 
@@ -43,14 +44,6 @@ public class Assertions {
 
   // ================ EQUALS ================
 
-//  @Step("Assert equals")
-//  public static void myAssertEquals(Object actual, Object expected) {
-//    Allure.addAttachment("Actual Result", String.valueOf(actual));
-//    Allure.addAttachment("Expected Result", String.valueOf(expected));
-//
-//    assertEquals(actual, expected);
-//  }
-
   @Step("Assert equals with element")
   public static void myAssertEquals(WebElement element, Object actual, Object expected) {
     highlightElement(element);
@@ -59,19 +52,30 @@ public class Assertions {
     assertEquals(actual, expected);
   }
 
-//  @Step("Assert equals with message")
-//  public static void myAssertEquals(Object actual, Object expected, String message) {
-//    Allure.addAttachment("Actual Result", String.valueOf(actual));
-//    Allure.addAttachment("Expected Result", String.valueOf(expected));
-//    assertEquals(actual, expected, message);
-//  }
-
   @Step("Assert equals with message and element")
   public static void myAssertEquals(WebElement element, Object actual, Object expected, String message) {
     highlightElement(element);
     Allure.addAttachment("Actual Result", String.valueOf(actual));
     Allure.addAttachment("Expected Result", String.valueOf(expected));
     assertEquals(actual, expected, message);
+  }
+
+  public static void myAssertEqualsNormalizedNumbers(
+          WebElement actualElement,
+          String actual,
+          String expected,
+          String message) {
+
+    String normalizedActual = TextUtils.normalizeArabicNumbers(actual);
+    String normalizedExpected = TextUtils.normalizeArabicNumbers(expected);
+
+    highlightElement(actualElement);
+
+    Assert.assertEquals(
+            normalizedActual,
+            normalizedExpected,
+            message
+    );
   }
 
   // ================ PLATE LETTERS ================

@@ -307,7 +307,6 @@ public class ElementActions {
         WebElement element = getElement(locator);
         highlightElement(element);
         return element.isDisplayed();
-//        return getElement(locator).isDisplayed();
     }
 
     @Step("Check element enabled")

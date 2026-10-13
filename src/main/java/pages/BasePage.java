@@ -2,9 +2,12 @@ package pages;
 
 import io.qameta.allure.Step;
 import org.openqa.selenium.*;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import utilities.ElementActions;
 import utilities.Waits;
 
+import java.time.Duration;
 import java.util.function.Function;
 
 public class BasePage<T extends BasePage<T>> extends ElementActions {
@@ -18,7 +21,7 @@ public class BasePage<T extends BasePage<T>> extends ElementActions {
     private final By searchInputs = By.cssSelector("[class*='searching'] input[placeholder='Search']");
     private final By saveButton = By.xpath("//button[.='Save']");
     private final By dataTableSearchResult = By.cssSelector("");
-    private final By successMessage = By.cssSelector(".swal2-title");
+    private final By successMessage = By.xpath("//h2[@id='swal2-title']");
     private final By editBtn = By.cssSelector(".v-card-actions .flex button");
     private final By saveEditBtn = By.xpath("//button[.='Edit']");
     private final By deleteBtn = By.xpath("//button[.='Delete']");
@@ -177,6 +180,14 @@ public class BasePage<T extends BasePage<T>> extends ElementActions {
     public String getSuccessMessageText() {
         return getText(successMessage);
     }
+
+    @Step("Wait for success popup: {0}")
+    @SuppressWarnings("unchecked")
+    public T waitForSuccessMessage(String expectedMessage) {
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        wait.until(ExpectedConditions.textToBePresentInElementLocated(successMessage, expectedMessage));
+        return (T) this;
+    }
 //
 //    @Step("Get no data available message")
 //    public boolean isNoDataMessageCorrect() {
@@ -220,6 +231,19 @@ public class BasePage<T extends BasePage<T>> extends ElementActions {
         click(gates);
         return new GatesPage(driver);
     }
+
+    @Step("Open Scale Page")
+    public ScalePage openScale() {
+        click(scale);
+        return new ScalePage(driver);
+    }
+
+    @Step("Open Scale Page")
+    public VehiclesPage openVehicles() {
+        click(vehicles);
+        return new VehiclesPage(driver);
+    }
+
 
 //    @Step("Open UseCases Page")
 //    public UseCasesPage openUseCases() {

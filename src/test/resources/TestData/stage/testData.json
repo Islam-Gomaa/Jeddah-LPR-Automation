@@ -5,40 +5,31 @@
       "Password": "W@keb@$2090@$"
     }
   },
-  "FeatureGroup": {
-    "nameAR": "مجموعة اختياري",
+  "Gates": {
+    "status":"Confirmed",
+    "notes": "notes",
     "nameEN": "feature_auto created",
-    "editNameAR": "مجموعة معدلة",
-    "editNameEN": "feature_updated"
+    "nameEnglish": "New Complaint",
+    "nameArabic": "بلاغ جديد",
+    "descriptionEN": "Complaint's description",
+    "descriptionAR": "وصف البلاغ",
+    "locationGate": "Gate 2",
+    "contract": "Temporary Contract"
   },
-  "UseCases": {
-    "titleAR": "قطاع النقل والخدمات اللوجستية",
-    "titleEN": "Transportation and Logistics",
-    "contentAR": "توفر واكب حلولاً متقدمة مدعومة بالذكاء الاصطناعي لقطاع النقل والخدمات اللوجستية. تُمكّن هذه الأنظمة الشركات من مراقبة أداء الأسطول،",
-    "contentEN": " , and ensure operational efficiency through real-time data analysis.",
-    "imageAR": "useCaseImg.webp",
-    "imageEN": "useCaseImg.webp",
-    "editTitleAR": "اختبار تعديل - قطاع النقل والخدمات اللوجستية",
-    "editTitleEN": "Test edit - Transportation and Logistic"
+  "Scale": {
+    "status":"Confirmed",
+    "notes": "notes",
+    "nameEN": "feature_auto created",
+    "nameEnglish": "New Complaint",
+    "nameArabic": "بلاغ جديد",
+    "descriptionEN": "Complaint's description",
+    "descriptionAR": "وصف البلاغ",
+    "locationGate": "Gate 2",
+    "contract": "Temporary Contract"
   },
-  "Category": {
-    "titleAr": "اختبار الامن السيبراني",
-    "titleEn": "Test Cyber security Auto",
-    "descriptionAr": "قسم خاص بحماية الأنظمة والشبكات من الهجمات الإلكترونية",
-    "descriptionEn": "Category focused on protecting systems and networks from cyber threats",
-    "mainCategory": "Auto",
-    "icon": "categoryImg.jpg",
-    "nameArSEO": "الأمن-السيبراني",
-    "nameEnSEO": "cyber-security",
-    "descriptionArSEO": "كل ما يتعلق بالأمن السيبراني وحماية البيانات",
-    "descriptionEnSEO": "Everything related to cybersecurity and data protection",
-    "keywords": " cyber security",
-    "editTitleAr": "الأمن السيبراني المتقدم اوتو ",
-    "editTitleEn": "Advanced Cyber Security Auto",
-    "editNameArSEO": "الأمن-السيبراني-المتقدم",
-    "editNameEnSEO": "advanced-cyber-security",
-    "editDescriptionArSEO": "تحديث لقسم الأمن السيبراني",
-    "editDescriptionEnSEO": "Updated cybersecurity category description"
+  "Vehicles": {
+    "contract": "Temporary Contract",
+    "carStatus": "Active"
   },
   "Clients": {
     "nameAR": "عميل اختبار",

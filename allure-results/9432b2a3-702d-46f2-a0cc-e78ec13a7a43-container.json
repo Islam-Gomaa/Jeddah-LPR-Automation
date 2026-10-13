@@ -1,0 +1,1 @@
+{"uuid":"9432b2a3-702d-46f2-a0cc-e78ec13a7a43","name":"regression","children":["355e2819-a360-4069-b1d2-e831f0f654ba"],"befores":[{"name":"createVehiclePassage","status":"passed","stage":"finished","description":"","steps":[],"attachments":[],"parameters":[],"start":1791244400097,"stop":1791244402248}],"afters":[],"start":1791244400087,"stop":1791244419442}

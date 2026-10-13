@@ -1,0 +1,1 @@
+{"uuid":"47b92a1f-43f9-4323-a1c4-f72421b91318","name":"tests.Vehicles","children":["1dec9c01-d9bb-49b1-aa2e-8296d117e036"],"befores":[{"name":"loadVehicleTestData","status":"passed","stage":"finished","description":"","steps":[],"attachments":[],"parameters":[],"start":1791722341182,"stop":1791722341182}],"afters":[],"start":1791722280411,"stop":1791722367737}

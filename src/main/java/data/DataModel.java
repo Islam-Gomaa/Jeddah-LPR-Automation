@@ -3,18 +3,7 @@ package data;
 public class DataModel {
 
     public Login Login;
-    public FeatureGroup FeatureGroup;
-    public UseCases UseCases;
-    public Category Category;
-    public Clients Clients;
-    public Partners Partners;
-    public Blogs Blogs;
-    public BlogCategories BlogCategories;
-    public Products Products;
-    public Subscribes Subscribes;
-    public ContactUs ContactUs ;
-    public Users Users;
-    public Roles Roles;
-    public Advertisements Advertisements;
-
+    public Gates Gates;
+    public Scale Scale;
+    public Scale Vehicles;
 }
