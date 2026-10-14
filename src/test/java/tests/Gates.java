@@ -357,7 +357,6 @@ public class Gates extends BaseTests {
 //                "Deleted successfully",
 //                "Vehicle not Deleted"
 //        );
-//
 //}
 
 }

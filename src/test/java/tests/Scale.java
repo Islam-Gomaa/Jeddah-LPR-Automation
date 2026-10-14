@@ -80,98 +80,98 @@ public class Scale extends BaseTests {
         basePage = AuthHelper.login(driver);
     }
 
-//    @Test(priority = 1)
-//    public void createVehiclePermit() {
-//
-//        scalepage = basePage.openScale();
-//
-//        Assertions.myAssertTrue(
-//                scalepage.isPlateNumberDisplayed(plateNumber),
-//                "Plate number did not appear successfully");
-//        scalepage.clickPermitStatusButtonInTable(plateNumber);
-//
-//        Assertions.myAssertTrue(
-//                scalepage.isPlateLetterArDisplayed(),
-//                "Plate letter Ar did not appear successfully");
-//
-//        Assertions.myAssertEqualsIgnoreSpaces(
-//                scalepage.getPlateLetterArElement(),
-//                scalepage.getPlateLetterAr(),
-//                plateLettersAr,
-//                "Incorrect Arabic plate letters");
-//
-//        Assertions.myAssertTrue(
-//                scalepage.isPlateLetterEnDisplayed(),
-//                "Plate letter En did not appear successfully");
-//
-//        Assertions.myAssertEqualsIgnoreSpaces(
-//                scalepage.getPlateLetterEnElement(),
-//                scalepage.getPlateLetterEn(),
-//                plateLettersEn,
-//                "Incorrect English plate letter");
-//
-//        Assertions.myAssertEquals(
-//                scalepage.getVehicleIsNotPermittedTextElement(),
-//                scalepage.getVehicleIsNotPermittedText(),
-//                "This vehicle is not permitted to enter",
-//                "Vehicle is permitted");
-//
-//        scalepage
-//                .clickCreatePermit()
-//                .selectVehicleTypeDDL()
-//                .selectDriverDDL()
-//                .selectMainWasteDDL()
-//                .selectSubWasteDDL()
-//                .selectContractorDDL()
-//                .clickSaveButton()
-//                .waitUntilVehicleIsPermitted();
-//
-//        Assertions.myAssertEquals(
-//                scalepage.getVehicleIsPermittedTextElement(),
-//                scalepage.getVehicleIsPermittedText(),
-//                "This vehicle is permitted to enter",
-//                "Vehicle is not permitted");
-//    }
+    @Test(priority = 1)
+    public void createVehiclePermit() {
 
-//    @Test(priority = 2)
-//    public void changeVehicleStatusInPopUp() throws InterruptedException {
-//        scalepage = basePage.openScale();
-//
-//        scalepage
-//                .searchInputs(plateEn)
-//                .waitForVehicleAppear()
-//                .clickPermitStatusButtonInTable(plateNumber)
-//                .clickChangeStatusButton()
-//                .selectSetStatusDDL(dataModel().Gates.status)
-//                .enterStatusNotes(dataModel().Gates.notes)
-//                .clickSaveButton();
-//
-//        Assertions.myAssertEquals(
-//                scalepage.getSuccessMessage(),
-//                scalepage.getSuccessMessageText(),
-//                "Status updated successfully",
-//                "Status not updated");
-//    }
-//
-//    @Test(priority = 3)
-//    public void changeVehicleStatusByIcon() {
-//        scalepage = basePage.openScale();
-//
-//        scalepage
-//                .searchInputs(plateEn)
-//                .clickChangeStatusIcon(plateNumber)
-//                .selectSetStatusDDL(dataModel().Gates.status)
-//                .enterStatusNotes(dataModel().Gates.notes)
-//                .clickSaveButton()
-//                .waitForSuccessMessage("Status updated successfully");
-//
-//
-//        Assertions.myAssertEquals(
-//                scalepage.getSuccessMessage(),
-//                scalepage.getSuccessMessageText(),
-//                "Status updated successfully",
-//                "Status not updated");
-//    }
+        scalepage = basePage.openScale();
+
+        Assertions.myAssertTrue(
+                scalepage.isPlateNumberDisplayed(plateNumber),
+                "Plate number did not appear successfully");
+        scalepage.clickPermitStatusButtonInTable(plateNumber);
+
+        Assertions.myAssertTrue(
+                scalepage.isPlateLetterArDisplayed(),
+                "Plate letter Ar did not appear successfully");
+
+        Assertions.myAssertEqualsIgnoreSpaces(
+                scalepage.getPlateLetterArElement(),
+                scalepage.getPlateLetterAr(),
+                plateLettersAr,
+                "Incorrect Arabic plate letters");
+
+        Assertions.myAssertTrue(
+                scalepage.isPlateLetterEnDisplayed(),
+                "Plate letter En did not appear successfully");
+
+        Assertions.myAssertEqualsIgnoreSpaces(
+                scalepage.getPlateLetterEnElement(),
+                scalepage.getPlateLetterEn(),
+                plateLettersEn,
+                "Incorrect English plate letter");
+
+        Assertions.myAssertEquals(
+                scalepage.getVehicleIsNotPermittedTextElement(),
+                scalepage.getVehicleIsNotPermittedText(),
+                "This vehicle is not permitted to enter",
+                "Vehicle is permitted");
+
+        scalepage
+                .clickCreatePermit()
+                .selectVehicleTypeDDL()
+                .selectDriverDDL()
+                .selectMainWasteDDL()
+                .selectSubWasteDDL()
+                .selectContractorDDL()
+                .clickSaveButton()
+                .waitUntilVehicleIsPermitted();
+
+        Assertions.myAssertEquals(
+                scalepage.getVehicleIsPermittedTextElement(),
+                scalepage.getVehicleIsPermittedText(),
+                "This vehicle is permitted to enter",
+                "Vehicle is not permitted");
+    }
+
+    @Test(priority = 2)
+    public void changeVehicleStatusInPopUp() throws InterruptedException {
+        scalepage = basePage.openScale();
+
+        scalepage
+                .searchInputs(plateEn)
+                .waitForVehicleAppear()
+                .clickPermitStatusButtonInTable(plateNumber)
+                .clickChangeStatusButton()
+                .selectSetStatusDDL(dataModel().Gates.status)
+                .enterStatusNotes(dataModel().Gates.notes)
+                .clickSaveButton();
+
+        Assertions.myAssertEquals(
+                scalepage.getSuccessMessage(),
+                scalepage.getSuccessMessageText(),
+                "Status updated successfully",
+                "Status not updated");
+    }
+
+    @Test(priority = 3)
+    public void changeVehicleStatusByIcon() {
+        scalepage = basePage.openScale();
+
+        scalepage
+                .searchInputs(plateEn)
+                .clickChangeStatusIcon(plateNumber)
+                .selectSetStatusDDL(dataModel().Gates.status)
+                .enterStatusNotes(dataModel().Gates.notes)
+                .clickSaveButton()
+                .waitForSuccessMessage("Status updated successfully");
+
+
+        Assertions.myAssertEquals(
+                scalepage.getSuccessMessage(),
+                scalepage.getSuccessMessageText(),
+                "Status updated successfully",
+                "Status not updated");
+    }
 
     @Test(priority = 4)
     public void createVehicleReportInTable() {
@@ -199,18 +199,18 @@ public class Scale extends BaseTests {
         );
     }
 
-//    @Test(priority = 5)
-//    public void filterByLocations(){
-//        scalepage = basePage.openScale();
-//        scalepage.filterByLocationAndSelect(dataModel().Gates.locationGate);
-//        scalepage.clickPermitStatusButtonInTable(plateNumber);
-//
-//        Assertions.myAssertEquals(
-//                scalepage.getLocationsGate(),
-//                scalepage.getLocationsGateText(),
-//                dataModel().Gates.locationGate,
-//                "Location Gate not appeared");
-//    }
+    @Test(priority = 5)
+    public void filterByLocations(){
+        scalepage = basePage.openScale();
+        scalepage.filterByLocationAndSelect(dataModel().Gates.locationGate);
+        scalepage.clickPermitStatusButtonInTable(plateNumber);
+
+        Assertions.myAssertEquals(
+                scalepage.getLocationsGate(),
+                scalepage.getLocationsGateText(),
+                dataModel().Gates.locationGate,
+                "Location Gate not appeared");
+    }
 
     @Test(priority = 6)
     public void filterByContractType(){
@@ -226,133 +226,133 @@ public class Scale extends BaseTests {
                 "Contract Type not appeared");
     }
 
-//    @Test(priority = 7)
-//    public void deleteRestoreAndForceDeleteVehicleInTable() {
-//
-//        // Delete Vehicle In Table() {
-//
-//        scalepage = basePage.openScale();
-//
-//        scalepage
-//                .searchInputs(plateEn)
-//                .clickDeleteIcon();
-//
-//        Assertions.myAssertEquals(
-//                scalepage.getPopUpAction(),
-//                scalepage.getPopUpActionText(),
-//                "Delete",
-//                "Expected delete confirmation popup to be displayed"
-//        );
-//
-//        Assertions.myAssertEqualsNormalizedNumbers(
-//                scalepage.getPopUpPlateNumber(),
-//                scalepage.getPopUpPlateNumberText(),
-//                "Are you sure you want to delete " + plateAr + "؟",
-//                "Delete confirmation message is incorrect"
-//        );
-//
-//        scalepage.clickOkButton()
-//                .waitForSuccessMessage("Deleted successfully");
-//
-//        Assertions.myAssertEquals(
-//                scalepage.getSuccessMessage(),
-//                scalepage.getSuccessMessageText(),
-//                "Deleted successfully",
-//                "Vehicle not Deleted"
-//        );
-//
-//        // Restore Vehicle In Table
-//
-//        scalepage
-//                .clickArchiveIcon()
-//                .searchInputs(plateEn)
-//                .clickRestoreIcon();
-//
-//        Assertions.myAssertEquals(
-//                scalepage.getPopUpAction(),
-//                scalepage.getPopUpActionText(),
-//                "Restore",
-//                "Expected Restore confirmation popup to be displayed"
-//        );
-//
-//        Assertions.myAssertEqualsNormalizedNumbers(
-//                scalepage.getPopUpPlateNumber(),
-//                scalepage.getPopUpPlateNumberText(),
-//                "Restore " + plateAr + "؟",
-//                "Restore confirmation message is incorrect"
-//        );
-//
-//        scalepage.clickOkButton()
-//                .waitForSuccessMessage("Restored successfully");
-//
-//        Assertions.myAssertEquals(
-//                scalepage.getSuccessMessage(),
-//                scalepage.getSuccessMessageText(),
-//                "Restored successfully",
-//                "Vehicle not Restored"
-//        );
-//
-//        // Force Delete Vehicle In Table
-//        // Step 1
-//
-//        scalepage
-//                .clickArchiveIcon()
-//                .searchInputs(plateEn)
-//                .clickDeleteIcon();
-//
-//        Assertions.myAssertEquals(
-//                scalepage.getPopUpAction(),
-//                scalepage.getPopUpActionText(),
-//                "Delete",
-//                "Expected delete confirmation popup to be displayed"
-//        );
-//
-//        Assertions.myAssertEqualsNormalizedNumbers(
-//                scalepage.getPopUpPlateNumber(),
-//                scalepage.getPopUpPlateNumberText(),
-//                "Are you sure you want to delete " + plateAr + "؟",
-//                "Delete confirmation message is incorrect"
-//        );
-//
-//        scalepage.clickOkButton()
-//                .waitForSuccessMessage("Deleted successfully");
-//
-//        Assertions.myAssertEquals(
-//                scalepage.getSuccessMessage(),
-//                scalepage.getSuccessMessageText(),
-//                "Deleted successfully",
-//                "Vehicle not Deleted"
-//        );
-//        // Step 2
-//        scalepage
-//                .clickArchiveIcon()
-//                .searchInputs(plateEn)
-//                .clickForceDeleteIcon();
-//
-//        Assertions.myAssertEquals(
-//                scalepage.getPopUpAction(),
-//                scalepage.getPopUpActionText(),
-//                "Permanent delete",
-//                "Expected Permanent delete confirmation popup to be displayed"
-//        );
-//
-//        Assertions.myAssertEqualsNormalizedNumbers(
-//                scalepage.getPopUpPlateNumber(),
-//                scalepage.getPopUpPlateNumberText(),
-//                "Delete permanently? This action cannot be undone.",
-//                "Delete permanently confirmation message is incorrect");
-//
-//
-//        scalepage.clickOkButton()
-//                .waitForSuccessMessage("Deleted successfully");
-//
-//        Assertions.myAssertEquals(
-//                scalepage.getSuccessMessage(),
-//                scalepage.getSuccessMessageText(),
-//                "Deleted successfully",
-//                "Vehicle not Deleted"
-//        );
-//
-//    }
+    @Test(priority = 7)
+    public void deleteRestoreAndForceDeleteVehicleInTable() {
+
+        // Delete Vehicle In Table() {
+
+        scalepage = basePage.openScale();
+
+        scalepage
+                .searchInputs(plateEn)
+                .clickDeleteIcon();
+
+        Assertions.myAssertEquals(
+                scalepage.getPopUpAction(),
+                scalepage.getPopUpActionText(),
+                "Delete",
+                "Expected delete confirmation popup to be displayed"
+        );
+
+        Assertions.myAssertEqualsNormalizedNumbers(
+                scalepage.getPopUpPlateNumber(),
+                scalepage.getPopUpPlateNumberText(),
+                "Are you sure you want to delete " + plateAr + "؟",
+                "Delete confirmation message is incorrect"
+        );
+
+        scalepage.clickOkButton()
+                .waitForSuccessMessage("Deleted successfully");
+
+        Assertions.myAssertEquals(
+                scalepage.getSuccessMessage(),
+                scalepage.getSuccessMessageText(),
+                "Deleted successfully",
+                "Vehicle not Deleted"
+        );
+
+        // Restore Vehicle In Table
+
+        scalepage
+                .clickArchiveIcon()
+                .searchInputs(plateEn)
+                .clickRestoreIcon();
+
+        Assertions.myAssertEquals(
+                scalepage.getPopUpAction(),
+                scalepage.getPopUpActionText(),
+                "Restore",
+                "Expected Restore confirmation popup to be displayed"
+        );
+
+        Assertions.myAssertEqualsNormalizedNumbers(
+                scalepage.getPopUpPlateNumber(),
+                scalepage.getPopUpPlateNumberText(),
+                "Restore " + plateAr + "؟",
+                "Restore confirmation message is incorrect"
+        );
+
+        scalepage.clickOkButton()
+                .waitForSuccessMessage("Restored successfully");
+
+        Assertions.myAssertEquals(
+                scalepage.getSuccessMessage(),
+                scalepage.getSuccessMessageText(),
+                "Restored successfully",
+                "Vehicle not Restored"
+        );
+
+        // Force Delete Vehicle In Table
+        // Step 1
+
+        scalepage
+                .clickArchiveIcon()
+                .searchInputs(plateEn)
+                .clickDeleteIcon();
+
+        Assertions.myAssertEquals(
+                scalepage.getPopUpAction(),
+                scalepage.getPopUpActionText(),
+                "Delete",
+                "Expected delete confirmation popup to be displayed"
+        );
+
+        Assertions.myAssertEqualsNormalizedNumbers(
+                scalepage.getPopUpPlateNumber(),
+                scalepage.getPopUpPlateNumberText(),
+                "Are you sure you want to delete " + plateAr + "؟",
+                "Delete confirmation message is incorrect"
+        );
+
+        scalepage.clickOkButton()
+                .waitForSuccessMessage("Deleted successfully");
+
+        Assertions.myAssertEquals(
+                scalepage.getSuccessMessage(),
+                scalepage.getSuccessMessageText(),
+                "Deleted successfully",
+                "Vehicle not Deleted"
+        );
+        // Step 2
+        scalepage
+                .clickArchiveIcon()
+                .searchInputs(plateEn)
+                .clickForceDeleteIcon();
+
+        Assertions.myAssertEquals(
+                scalepage.getPopUpAction(),
+                scalepage.getPopUpActionText(),
+                "Permanent delete",
+                "Expected Permanent delete confirmation popup to be displayed"
+        );
+
+        Assertions.myAssertEqualsNormalizedNumbers(
+                scalepage.getPopUpPlateNumber(),
+                scalepage.getPopUpPlateNumberText(),
+                "Delete permanently? This action cannot be undone.",
+                "Delete permanently confirmation message is incorrect");
+
+
+        scalepage.clickOkButton()
+                .waitForSuccessMessage("Deleted successfully");
+
+        Assertions.myAssertEquals(
+                scalepage.getSuccessMessage(),
+                scalepage.getSuccessMessageText(),
+                "Deleted successfully",
+                "Vehicle not Deleted"
+        );
+
+    }
 
 }

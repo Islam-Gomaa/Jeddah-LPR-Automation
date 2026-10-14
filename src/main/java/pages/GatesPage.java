@@ -25,19 +25,9 @@ public class GatesPage extends BasePage<GatesPage> {
   public By plateNumberEn(String plateNumber) {
     return By.xpath(getRowByPlate(plateNumber) + "//td[5]//span[3]");
   }
-
-  public By plateNumberAr(String plateNumber) {
-    return By.xpath(getRowByPlate(plateNumber) + "//td[6]");
-  }
-
   public By permitStatusBtn(String plateNumber) {
     return By.xpath(getRowByPlate(plateNumber) + "//td[8]");
   }
-
-  public By deleteGateIcon(String plateNumber) {
-    return By.xpath(getRowByPlate(plateNumber) + "//button[1][3]");
-  }
-
   private final By plateLetterArInPopup =
           By.xpath("(//div[contains(@class,'plate__letter__ar')]//span)[2]");
   private final By plateLetterEnInPopup =
@@ -73,7 +63,6 @@ public class GatesPage extends BasePage<GatesPage> {
 
   private final By changeStatusBtn = By.cssSelector("[class='d-flex gap-2'] button[type='button'][class*='text-primary']");
   private final By setStatusField = By.xpath("//div[contains(@class,'v-field')][.//input[@placeholder='Set Status']]");
-  private final By setStatusInput = By.cssSelector(".v-field__input > input[placeholder='Set Status']");
   private final By notes = By.cssSelector(".v-field__field> textarea[placeholder='Notes']");
 
   // Report

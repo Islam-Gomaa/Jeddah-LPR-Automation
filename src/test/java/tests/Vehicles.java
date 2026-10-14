@@ -66,7 +66,7 @@ public class Vehicles extends BaseTests {
 
     // Verify the existing vehicle in Vehicles module
     @Test(priority = 1)
-    public void verifyVehicle() {
+    public void verifyAndEditVehicle() {
 
         vehiclesPage = basePage.openVehicles();
 
@@ -83,10 +83,34 @@ public class Vehicles extends BaseTests {
                 "Current Contract did not appear successfully"
         );
 
-        Assertions.myAssertTrue(
-                vehiclesPage.isCarStatus(plateNumber),
-                "Car Status not  Contract did not appear successfully"
+        Assertions.myAssertEquals(
+                vehiclesPage.getCarStatusTextElement(plateNumber),
+                vehiclesPage.getCarStatusText(plateNumber),
+                "Active",
+                "Vehicle status not Active");
+
+        // Edit Vehicle
+
+        vehiclesPage
+                .clickEditVehiclesIcon(plateNumber)
+                .clickSaveButton();
+
+        Assertions.myAssertEquals(
+                vehiclesPage.getSuccessMessage(),
+                vehiclesPage.getSuccessMessageText(),
+                "Updated successfully",
+                "Vehicle not Updated"
         );
+    }
+
+    // Change Vehicle Status to be Blocked
+
+    @Test(priority = 2)
+    public void changeVehicleStatusToBeBlocked() {
+        vehiclesPage = basePage.openVehicles();
+
+        vehiclesPage
+                .searchInputs(plateNumber);
 
         Assertions.myAssertEquals(
                 vehiclesPage.getCarStatusTextElement(plateNumber),
@@ -94,6 +118,206 @@ public class Vehicles extends BaseTests {
                 "Active",
                 "Vehicle status not Active");
 
+        vehiclesPage
+                .clickChangeStatusIcon(plateNumber);
+
+        Assertions.myAssertEquals(
+                vehiclesPage.getPopUpAction(),
+                vehiclesPage.getPopUpActionText(),
+                "Change Status",
+                "Expected Change Status confirmation popup to be displayed"
+        );
+
+        Assertions.myAssertEqualsNormalizedNumbers(
+                vehiclesPage.getPopUpPlateNumber(),
+                vehiclesPage.getPopUpPlateNumberText(),
+                "Are you sure you want to change the car status to Inactive?",
+                "Change Status confirmation message is incorrect"
+        );
+
+        vehiclesPage.clickOkButton()
+                .waitForSuccessMessage("The car has been blocked successfully");
+
+        // The car has been unblocked successfully
+        Assertions.myAssertEquals(
+                vehiclesPage.getSuccessMessage(),
+                vehiclesPage.getSuccessMessageText(),
+                "The car has been blocked successfully",
+                "The car still Active and not Blocked"
+        );
+    }
+    // Change Vehicle Status to be Active
+    @Test(priority = 3)
+    public void changeVehicleStatusToBeActive() {
+        vehiclesPage = basePage.openVehicles();
+
+        vehiclesPage
+                .searchInputs(plateNumber);
+
+        Assertions.myAssertEquals(
+                vehiclesPage.getCarStatusTextElement(plateNumber),
+                vehiclesPage.getCarStatusText(plateNumber),
+                "Blocked",
+                "Vehicle status not Blocked");
+
+        vehiclesPage
+                .clickChangeStatusIcon(plateNumber);
+
+
+        Assertions.myAssertEquals(
+                vehiclesPage.getPopUpAction(),
+                vehiclesPage.getPopUpActionText(),
+                "Change Status",
+                "Expected Change Status confirmation popup to be displayed"
+        );
+
+        Assertions.myAssertEqualsNormalizedNumbers(
+                vehiclesPage.getPopUpPlateNumber(),
+                vehiclesPage.getPopUpPlateNumberText(),
+                "Are you sure you want to change the car status to Active?",
+                "Change Status confirmation message is incorrect"
+        );
+
+        vehiclesPage.clickOkButton()
+                .waitForSuccessMessage("The car has been unblocked successfully");
+
+        Assertions.myAssertEquals(
+                vehiclesPage.getSuccessMessage(),
+                vehiclesPage.getSuccessMessageText(),
+                "The car has been unblocked successfully",
+                "The car still Blocked and not Active"
+        );
+    }
+
+    @Test(priority = 4)
+    public void deleteRestoreAndForceDeleteVehicleInTable() {
+
+        // Delete Vehicle In Table() {
+
+        vehiclesPage = basePage.openVehicles();
+
+        vehiclesPage
+                .searchInputs(plateEn)
+                .clickDeleteIcon();
+
+        Assertions.myAssertEquals(
+                vehiclesPage.getPopUpAction(),
+                vehiclesPage.getPopUpActionText(),
+                "Delete",
+                "Expected delete confirmation popup to be displayed"
+        );
+
+        Assertions.myAssertEqualsNormalizedNumbers(
+                vehiclesPage.getPopUpPlateNumber(),
+                vehiclesPage.getPopUpPlateNumberText(),
+                "Are you sure you want to delete " + plateNumber + plateLettersEn + "?",
+                "Delete confirmation message is incorrect"
+        );
+
+        vehiclesPage.clickOkButton()
+                .waitForSuccessMessage("Deleted successfully");
+
+        Assertions.myAssertEquals(
+                vehiclesPage.getSuccessMessage(),
+                vehiclesPage.getSuccessMessageText(),
+                "Deleted successfully",
+                "Vehicle not Deleted"
+        );
+
+        // Restore Vehicle In Table
+
+        vehiclesPage
+                .clickArchiveIcon()
+                .searchInputs(plateEn)
+                .clickRestoreIcon();
+
+        Assertions.myAssertEquals(
+                vehiclesPage.getPopUpAction(),
+                vehiclesPage.getPopUpActionText(),
+                "Restore",
+                "Expected Restore confirmation popup to be displayed"
+        );
+
+        Assertions.myAssertEqualsNormalizedNumbers(
+                vehiclesPage.getPopUpPlateNumber(),
+                vehiclesPage.getPopUpPlateNumberText(),
+                "Restore " + plateNumber + plateLettersEn + "?",
+                "Restore confirmation message is incorrect"
+        );
+
+        vehiclesPage.clickOkButton()
+                .waitForSuccessMessage("Restored successfully");
+
+        Assertions.myAssertEquals(
+                vehiclesPage.getSuccessMessage(),
+                vehiclesPage.getSuccessMessageText(),
+                "Restored successfully",
+                "Vehicle not Restored"
+        );
+
+        // Force Delete Vehicle In Table
+        // Step 1
+
+        vehiclesPage
+                .clickArchiveIcon()
+                .searchInputs(plateEn)
+                .clickDeleteIcon();
+
+        Assertions.myAssertEquals(
+                vehiclesPage.getPopUpAction(),
+                vehiclesPage.getPopUpActionText(),
+                "Delete",
+                "Expected delete confirmation popup to be displayed"
+        );
+
+        Assertions.myAssertEqualsNormalizedNumbers(
+                vehiclesPage.getPopUpPlateNumber(),
+                vehiclesPage.getPopUpPlateNumberText(),
+                "Are you sure you want to delete " + plateNumber + plateLettersEn + "?",
+                "Delete confirmation message is incorrect"
+        );
+
+        vehiclesPage.clickOkButton()
+                .waitForSuccessMessage("Deleted successfully");
+
+        Assertions.myAssertEquals(
+                vehiclesPage.getSuccessMessage(),
+                vehiclesPage.getSuccessMessageText(),
+                "Deleted successfully",
+                "Vehicle not Deleted"
+        );
+        // Step 2
+        vehiclesPage
+                .clickArchiveIcon()
+                .searchInputs(plateEn)
+                .clickForceDeleteIcon();
+
+        Assertions.myAssertEquals(
+                vehiclesPage.getPopUpAction(),
+                vehiclesPage.getPopUpActionText(),
+                "Permanent delete",
+                "Expected Permanent delete confirmation popup to be displayed"
+        );
+
+        Assertions.myAssertEqualsNormalizedNumbers(
+                vehiclesPage.getPopUpPlateNumber(),
+                vehiclesPage.getPopUpPlateNumberText(),
+                "Delete permanently? This action cannot be undone.",
+                "Delete permanently confirmation message is incorrect");
+
+
+        vehiclesPage.clickOkButton()
+                .waitForSuccessMessage("Deleted successfully");
+
+        Assertions.myAssertEquals(
+                vehiclesPage.getSuccessMessage(),
+                vehiclesPage.getSuccessMessageText(),
+                "Deleted successfully",
+                "Vehicle not Deleted"
+        );
+
+    }
+}
 
 
 
@@ -117,5 +341,4 @@ public class Vehicles extends BaseTests {
 //                plateLettersEn,
 //                "Incorrect English plate letters"
 //        );
-    }
-}
+

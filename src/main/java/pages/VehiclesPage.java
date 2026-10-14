@@ -6,7 +6,6 @@ import org.openqa.selenium.*;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-import static data.VehicleTestData.plateNumber;
 
 public class VehiclesPage extends BasePage<VehiclesPage> {
 
@@ -31,13 +30,20 @@ public class VehiclesPage extends BasePage<VehiclesPage> {
     return By.xpath(getRowByPlate(plateNumber) + "//td[8]");
   }
 
-  public By currentContract(String contract) {return By.xpath(getRowByPlate(contract) + "//td[3]//span[1]");
-  }
+  public By currentContract(String contract) {return By.xpath("(" + getRowByPlate(contract) + "//td[3]//span[1])");}
 
   public By carStatus(String plateNumber) {return By.xpath(getRowByPlate(plateNumber) + "//td[6] //div[(@class='v-chip__content')]");}
 
+    // Edit Vehicle
+    public By editVehiclesIcon(String plateNumber) {
+        return By.xpath("(" + getRowByPlate(plateNumber) + "//td[7]//span[3])[1]");
+    }
 
-  private final By plateLetterArInPopup = By.xpath("(//div[contains(@class,'plate__letter__ar')]//span)[2]");
+    // change status of vehicle
+    public By changeStatusIcon(String plateNumber) {
+        return By.xpath("(" + getRowByPlate(plateNumber) + "//td[7]//span[3])[2]");}
+
+    private final By plateLetterArInPopup = By.xpath("(//div[contains(@class,'plate__letter__ar')]//span)[2]");
 
   private final By plateLetterEnInPopup = By.xpath("(//div[contains(@class,'plate__letter__en')]//span)[4]");
 
@@ -47,13 +53,12 @@ public class VehiclesPage extends BasePage<VehiclesPage> {
   private final By vehicleIsPermittedTXT =
           By.xpath("(//div[contains(@class,'permit permit_status')]//span)[2]");
 
-  // Change Status
-  public By changeStatusIcon(String plateNumber) {return By.xpath("("+ getRowByPlate(plateNumber) + "//button[1])[2]");}
 
-  private final By changeStatusBtn = By.cssSelector("[class='d-flex gap-2'] button[type='button'][class*='text-primary']");
-  private final By setStatusField = By.xpath("//div[contains(@class,'v-field')][.//input[@placeholder='Set Status']]");
-  private final By setStatusInput = By.cssSelector(".v-field__input > input[placeholder='Set Status']");
-  private final By notes = By.cssSelector(".v-field__field> textarea[placeholder='Notes']");
+
+//  private final By changeStatusBtn = By.cssSelector("[class='d-flex gap-2'] button[type='button'][class*='text-primary']");
+//  private final By setStatusField = By.xpath("//div[contains(@class,'v-field')][.//input[@placeholder='Set Status']]");
+//  private final By setStatusInput = By.cssSelector(".v-field__input > input[placeholder='Set Status']");
+//  private final By notes = By.cssSelector(".v-field__field> textarea[placeholder='Notes']");
 
   // Filters
   private final By statusFilter = By.xpath("(//div[contains(@class,'v-field') and @role='combobox'][.//input[@placeholder='Status']])");
@@ -63,7 +68,7 @@ public class VehiclesPage extends BasePage<VehiclesPage> {
   private final By contractTypeField = By.xpath("(//div[contains(@class,'info-data')] //p[normalize-space()='Temporary Contract'])[1]");
 
   // Delete, Restore and Force Delete
-  private final By deleteIcon = By.xpath("(//div[contains(@class,'actions')] //button[contains(@class,'bg-table-icon delete')])[2]");
+  private final By deleteIcon = By.xpath("(//div[contains(@class,'actions')] //button[contains(@class,'bg-table-icon delete')])");
   private final By archiveIcon = By.xpath("//div[contains(@class,'transition-all')] //button[contains(@class,'v-btn--elevated')]");
   private final By restoreIcon = By.xpath("//div[contains(@class,'actions')] //button[contains(@class,'elevated table-icon edit')]");
   private final By forceDeleteIcon = By.xpath("//div[contains(@class,'actions')] //button[contains(@class,'elevated table-icon delete')]");
@@ -84,15 +89,13 @@ public class VehiclesPage extends BasePage<VehiclesPage> {
             return driver.findElement(plateNumberEn(number)).isDisplayed();
         }
     }
+
   @Step("Check plate number EN")
   public boolean iscurrentContract(String contract) {
       return isDisplayed(currentContract(contract));
   }
 
-
-
-
-    @Step("Check plate letter AR Displayed")
+  @Step("Check plate letter AR Displayed")
   public boolean isPlateLetterArDisplayed() {
     return isDisplayed(plateLetterArInPopup);
   }
@@ -123,13 +126,13 @@ public class VehiclesPage extends BasePage<VehiclesPage> {
 
   @Step("Get vehicle Car Status text")
   public String getCarStatusText(String plateNumber) {
-    return getText(carStatus(String plateNumber));
+    return getText(carStatus(plateNumber));
   }
 
   @Step("Get vehicle Car Status text")
   public WebElement getCarStatusTextElement(String plateNumber) {
-        return getText(carStatus(String plateNumber));
-  }
+        return driver.findElement(carStatus(plateNumber));
+    }
 
   @Step("Wait until vehicle is permitted")
   public VehiclesPage waitUntilVehicleIsPermitted() {
@@ -171,38 +174,38 @@ public class VehiclesPage extends BasePage<VehiclesPage> {
 
   // Change Status
 
-  @Step("Click Change Status button In Pop-Up")
-  public VehiclesPage clickChangeStatusButton() {
-    click(changeStatusBtn);
-    return this;
-  }
+//  @Step("Click Change Status button In Pop-Up")
+//  public VehiclesPage clickChangeStatusButton() {
+//    click(changeStatusBtn);
+//    return this;
+//  }
 
-  @Step("Click Change Status Icon In table")
+        @Step("Click Change Status Icon In table")
   public VehiclesPage clickChangeStatusIcon(String plateNumber) {
     click(changeStatusIcon(plateNumber));
     return this;
   }
 
-  @Step("Select Set Status DDL")
-  public VehiclesPage selectSetStatusDDL(String status) {
+//  @Step("Select Set Status DDL")
+//  public VehiclesPage selectSetStatusDDL(String status) {
+//
+//    WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+//
+//    wait.until(ExpectedConditions.elementToBeClickable(setStatusField)).click();
+//    By statusOption = By.xpath(
+//            "//div[contains(@class,'v-list-item') and @role='option']" +
+//                    "//div[contains(@class,'v-list-item-title') and normalize-space()='" + status + "']"
+//    );
+//    wait.until(ExpectedConditions.elementToBeClickable(statusOption))
+//            .click();
+//    return this;
+//  }
 
-    WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
-
-    wait.until(ExpectedConditions.elementToBeClickable(setStatusField)).click();
-    By statusOption = By.xpath(
-            "//div[contains(@class,'v-list-item') and @role='option']" +
-                    "//div[contains(@class,'v-list-item-title') and normalize-space()='" + status + "']"
-    );
-    wait.until(ExpectedConditions.elementToBeClickable(statusOption))
-            .click();
-    return this;
-  }
-
-  @Step("Enter Status Notes")
-  public VehiclesPage enterStatusNotes(String note) {
-    sendKeys(notes,note);
-    return this;
-  }
+//  @Step("Enter Status Notes")
+//  public VehiclesPage enterStatusNotes(String note) {
+//    sendKeys(notes,note);
+//    return this;
+//  }
 
   @Step("Wait for vehicle to be ready")
   public VehiclesPage waitForVehicleAppear() {
@@ -258,20 +261,26 @@ public class VehiclesPage extends BasePage<VehiclesPage> {
     }
 
 
+    @Step("Get success location")
+    public WebElement getContractType() {
+        return driver.findElement(contractTypeField);
+    }
+
+    @Step("Get vehicle is not permitted text")
+    public String getContractTypeText() {
+        return getText(contractTypeField);
+    }
+
+
+    // Edit Vehicle
+    @Step("Click Edit Vehicle")
+    public VehiclesPage clickEditVehiclesIcon(String plateNumber) {
+        click(editVehiclesIcon(plateNumber));
+        return this;
+    }
+
     // Delete Vehicle
-
-  @Step("Get success location")
-  public WebElement getContractType() {
-    return driver.findElement(contractTypeField);
-  }
-
-  @Step("Get vehicle is not permitted text")
-  public String getContractTypeText() {
-    return getText(contractTypeField);
-  }
-
-
-  @Step("Click Delete Vehicle")
+    @Step("Click Delete Vehicle")
   public VehiclesPage clickDeleteIcon() {
     click(deleteIcon);
     return this;

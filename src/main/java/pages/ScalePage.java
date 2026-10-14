@@ -17,7 +17,6 @@ public class ScalePage extends BasePage<ScalePage> {
   private String getRowByPlate(String plateNumber) {
     return "//tbody//tr[.//*[contains(normalize-space(.),'" + plateNumber + "')]]";
   }
-
   public By plateNumberEn(String plateNumber) {
     return By.xpath(getRowByPlate(plateNumber) + "//td[7]//span[3]");
   }
@@ -25,15 +24,9 @@ public class ScalePage extends BasePage<ScalePage> {
   public By plateNumberAr(String plateNumber) {
     return By.xpath(getRowByPlate(plateNumber) + "//td[8]");
   }
-
   public By permitStatusBtn(String plateNumber) {
     return By.xpath(getRowByPlate(plateNumber) + "//td[13]");
   }
-
-  public By deleteGateIcon(String plateNumber) {
-    return By.xpath("("+ getRowByPlate(plateNumber) + "//button[1])[4]");
-  }
-
   private final By plateLetterArInPopup =
           By.xpath("(//div[contains(@class,'plate__letter__ar')]//span)[2]");
   private final By plateLetterEnInPopup =
@@ -69,7 +62,6 @@ public class ScalePage extends BasePage<ScalePage> {
 
   private final By changeStatusBtn = By.cssSelector("[class='d-flex gap-2'] button[type='button'][class*='text-primary']");
   private final By setStatusField = By.xpath("//div[contains(@class,'v-field')][.//input[@placeholder='Set Status']]");
-  private final By setStatusInput = By.cssSelector(".v-field__input > input[placeholder='Set Status']");
   private final By notes = By.cssSelector(".v-field__field> textarea[placeholder='Notes']");
 
   // Report
@@ -298,12 +290,6 @@ public class ScalePage extends BasePage<ScalePage> {
   @Step("Click Complaint button")
   public ScalePage clickReportButtonIcon(String plateNumber) {
     click(permitStatusBtn(plateNumber));
-    return this;
-  }
-
-  @Step("Click Complaint button")
-  public ScalePage clickReportButtonInPopUp() {
-    click(reportButton);
     return this;
   }
 
