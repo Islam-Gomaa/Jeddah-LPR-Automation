@@ -174,38 +174,12 @@ public class VehiclesPage extends BasePage<VehiclesPage> {
 
   // Change Status
 
-//  @Step("Click Change Status button In Pop-Up")
-//  public VehiclesPage clickChangeStatusButton() {
-//    click(changeStatusBtn);
-//    return this;
-//  }
-
         @Step("Click Change Status Icon In table")
   public VehiclesPage clickChangeStatusIcon(String plateNumber) {
     click(changeStatusIcon(plateNumber));
     return this;
   }
 
-//  @Step("Select Set Status DDL")
-//  public VehiclesPage selectSetStatusDDL(String status) {
-//
-//    WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
-//
-//    wait.until(ExpectedConditions.elementToBeClickable(setStatusField)).click();
-//    By statusOption = By.xpath(
-//            "//div[contains(@class,'v-list-item') and @role='option']" +
-//                    "//div[contains(@class,'v-list-item-title') and normalize-space()='" + status + "']"
-//    );
-//    wait.until(ExpectedConditions.elementToBeClickable(statusOption))
-//            .click();
-//    return this;
-//  }
-
-//  @Step("Enter Status Notes")
-//  public VehiclesPage enterStatusNotes(String note) {
-//    sendKeys(notes,note);
-//    return this;
-//  }
 
   @Step("Wait for vehicle to be ready")
   public VehiclesPage waitForVehicleAppear() {

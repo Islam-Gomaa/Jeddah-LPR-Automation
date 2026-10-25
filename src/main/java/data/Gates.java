@@ -2,7 +2,6 @@ package data;
 
 public class Gates {
 
-    // ===== Product Basic Info =====
     public String status;
     public String notes;
     public String nameEnglish;

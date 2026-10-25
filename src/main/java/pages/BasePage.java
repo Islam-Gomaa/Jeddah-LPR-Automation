@@ -188,6 +188,19 @@ public class BasePage<T extends BasePage<T>> extends ElementActions {
         wait.until(ExpectedConditions.textToBePresentInElementLocated(successMessage, expectedMessage));
         return (T) this;
     }
+
+    @Step("Wait for vehicle to be ready: {0}")
+    public T waitForVehicleAppear() {
+
+        try {
+            Thread.sleep(300);
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+            throw new RuntimeException("Interrupted while waiting for vehicle", e);
+        }
+
+        return (T) this;
+    }
 //
 //    @Step("Get no data available message")
 //    public boolean isNoDataMessageCorrect() {

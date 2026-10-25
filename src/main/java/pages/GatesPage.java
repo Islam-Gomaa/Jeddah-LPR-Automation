@@ -274,19 +274,6 @@ public class GatesPage extends BasePage<GatesPage> {
     return this;
   }
 
-  @Step("Wait for vehicle to be ready: {0}")
-  public GatesPage waitForVehicleAppear() {
-
-    try {
-      Thread.sleep(300);
-    } catch (InterruptedException e) {
-      Thread.currentThread().interrupt();
-      throw new RuntimeException("Interrupted while waiting for vehicle", e);
-    }
-
-    return this;
-  }
-
   // Report
 
   @Step("Click Complaint button")

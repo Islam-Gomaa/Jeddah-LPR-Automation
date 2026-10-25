@@ -1,0 +1,1 @@
+The car cannot be deleted because it is linked to contracts in the system

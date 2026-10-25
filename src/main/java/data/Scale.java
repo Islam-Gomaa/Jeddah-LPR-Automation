@@ -2,7 +2,6 @@ package data;
 
 public class Scale {
 
-    // ===== Product Basic Info =====
     public String status;
     public String notes;
     public String nameEnglish;
