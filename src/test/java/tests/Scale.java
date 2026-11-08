@@ -73,7 +73,6 @@ public class Scale extends BaseTests {
     }
 
     // Admin Login
-
     @BeforeMethod
     public void setupAdminSession() {
         openSystem();
@@ -179,7 +178,7 @@ public class Scale extends BaseTests {
 
         scalepage
                 .searchInputs(plateEn)
-                .clickReportButtonIcon(plateNumber)
+                .clickReportIcon(plateNumber)
                 .enterNameEnglish(dataModel().Gates.nameEnglish)
                 .enterNameArabic(dataModel().Gates.nameArabic)
                 .selectAssignedUserDDL()

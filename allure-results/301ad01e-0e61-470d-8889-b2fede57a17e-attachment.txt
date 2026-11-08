@@ -1,1 +1,0 @@
-User category should be displayed

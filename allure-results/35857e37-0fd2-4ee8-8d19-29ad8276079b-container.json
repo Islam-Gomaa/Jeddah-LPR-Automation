@@ -1,1 +1,0 @@
-{"uuid":"35857e37-0fd2-4ee8-8d19-29ad8276079b","name":"tests.UseCasesTests.login","children":["bf4bd332-6cb1-4f89-b25f-41d81cdd9fe0"],"description":"","befores":[{"name":"login","status":"passed","stage":"finished","description":"","steps":[],"attachments":[],"parameters":[],"start":1773744646845,"stop":1773744647432}],"afters":[],"start":1773744646845,"stop":1773744647433}

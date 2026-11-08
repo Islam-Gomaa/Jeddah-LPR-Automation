@@ -9,7 +9,7 @@ public class VideoRecorder {
     private String outputPath;
 
     private static final String FFMPEG_PATH =
-            "C:\\Users\\i.gomaa\\Downloads\\ffmpeg-8.1.1-essentials_build\\ffmpeg-8.1.1-essentials_build\\bin\\ffmpeg.exe";
+            "C:\\Users\\Islam\\Downloads\\ffmpeg-9.0.2-essentials_build\\bin\\ffmpeg.exe";
 
     public void startRecording(String testName) {
 
@@ -35,14 +35,12 @@ public class VideoRecorder {
                     FFMPEG_PATH,
 
                     "-y",
-
                     "-f", "gdigrab",
                     "-framerate", "20",
                     "-i", "desktop",
 
                     // FIX FOR ODD SCREEN WIDTHS
                     "-vf", "scale=trunc(iw/2)*2:trunc(ih/2)*2",
-
                     "-c:v", "libx264",
                     "-preset", "ultrafast",
                     "-pix_fmt", "yuv420p",

@@ -27,6 +27,10 @@ public class ScalePage extends BasePage<ScalePage> {
   public By permitStatusBtn(String plateNumber) {
     return By.xpath(getRowByPlate(plateNumber) + "//td[13]");
   }
+
+  public By permitS(String plateNumber) {
+    return By.xpath(getRowByPlate(plateNumber) + "//td[13]");
+  }
   private final By plateLetterArInPopup =
           By.xpath("(//div[contains(@class,'plate__letter__ar')]//span)[2]");
   private final By plateLetterEnInPopup =
@@ -64,9 +68,10 @@ public class ScalePage extends BasePage<ScalePage> {
   private final By setStatusField = By.xpath("//div[contains(@class,'v-field')][.//input[@placeholder='Set Status']]");
   private final By notes = By.cssSelector(".v-field__field> textarea[placeholder='Notes']");
 
+
   // Report
   public By addComplaintIcon(String plateNumber) {
-    return By.xpath("(" + getRowByPlate(plateNumber) + "//button[1])[2]");
+    return By.xpath("(" + getRowByPlate(plateNumber) + "//button[1])[3]");
   }
   private final By reportButton = By.xpath("//p[contains(normalize-space(.),'Report')]");
   private final By nameEnglish = By.cssSelector("[class='v-field__field'] input[placeholder='Name (English)']");
@@ -288,8 +293,13 @@ public class ScalePage extends BasePage<ScalePage> {
 
   // Report
   @Step("Click Complaint button")
-  public ScalePage clickReportButtonIcon(String plateNumber) {
+  public ScalePage clickReportButton(String plateNumber) {
     click(permitStatusBtn(plateNumber));
+    return this;
+  }
+  @Step("Click Complaint button")
+  public ScalePage clickReportIcon(String plateNumber) {
+    click(addComplaintIcon(plateNumber));
     return this;
   }
 

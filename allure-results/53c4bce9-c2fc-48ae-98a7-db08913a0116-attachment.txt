@@ -1,1 +1,0 @@
-Permission category should be displayed

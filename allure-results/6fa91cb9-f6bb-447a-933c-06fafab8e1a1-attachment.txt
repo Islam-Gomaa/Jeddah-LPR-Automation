@@ -1,1 +1,0 @@
-The seo.keywords field is required when seo is present.

@@ -1,1 +1,0 @@
-{"uuid":"79c1e6a3-fbe8-47fb-b969-d68bf5b915cd","name":"base.BaseTests.setUp","children":["6229e5f5-f119-47d9-a8ce-8f93a3b5f7cc"],"description":"","befores":[{"name":"setUp","status":"passed","stage":"finished","description":"","steps":[],"attachments":[],"parameters":[],"start":1774061463060,"stop":1774061464725}],"afters":[],"start":1774061463060,"stop":1774061464725}

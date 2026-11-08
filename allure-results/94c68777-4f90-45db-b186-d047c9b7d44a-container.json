@@ -1,1 +1,0 @@
-{"uuid":"94c68777-4f90-45db-b186-d047c9b7d44a","name":"tests.FeatureGroupTests.login","children":["22784c13-76aa-45e3-b8ff-b84a1b9e87c9"],"description":"","befores":[{"name":"login","status":"passed","stage":"finished","description":"","steps":[],"attachments":[],"parameters":[],"start":1773583968616,"stop":1773583969272}],"afters":[],"start":1773583968616,"stop":1773583969272}
