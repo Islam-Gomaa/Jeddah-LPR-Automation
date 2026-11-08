@@ -22,10 +22,6 @@ public class VehiclesPage extends BasePage<VehiclesPage> {
     return By.xpath(getRowByPlate(plateNumber) + "//td[2]//span[3]");
   }
 
-  public By plateNumberAr(String plateNumber) {
-    return By.xpath(getRowByPlate(plateNumber) + "//td[6]//span[1]");
-  }
-
   public By permitStatusBtn(String plateNumber) {
     return By.xpath(getRowByPlate(plateNumber) + "//td[8]");
   }
@@ -47,25 +43,12 @@ public class VehiclesPage extends BasePage<VehiclesPage> {
 
   private final By plateLetterEnInPopup = By.xpath("(//div[contains(@class,'plate__letter__en')]//span)[4]");
 
-  private final By vehicleIsNotPermittedTXT =
-          By.xpath("(//div[contains(@class,'no_permit permit_status')]//span)[2]");
-
   private final By vehicleIsPermittedTXT =
           By.xpath("(//div[contains(@class,'permit permit_status')]//span)[2]");
 
 
-
-//  private final By changeStatusBtn = By.cssSelector("[class='d-flex gap-2'] button[type='button'][class*='text-primary']");
-//  private final By setStatusField = By.xpath("//div[contains(@class,'v-field')][.//input[@placeholder='Set Status']]");
-//  private final By setStatusInput = By.cssSelector(".v-field__input > input[placeholder='Set Status']");
-//  private final By notes = By.cssSelector(".v-field__field> textarea[placeholder='Notes']");
-
   // Filters
   private final By statusFilter = By.xpath("(//div[contains(@class,'v-field') and @role='combobox'][.//input[@placeholder='Status']])");
-  private final By locationsGate = By.xpath("//p[contains(normalize-space(.),'Gate 2')]");
-  private final By vehicleInformationTab = By.xpath("//button[contains(@class,'v-btn') and normalize-space()='Vehicle Information']");
-  private final By contractTypeDDL = By.xpath("(//div[contains(@class,'v-field') and @role='combobox'][.//input[@placeholder='Contract Type']])");
-  private final By contractTypeField = By.xpath("(//div[contains(@class,'info-data')] //p[normalize-space()='Temporary Contract'])[1]");
 
   // Delete, Restore and Force Delete
   private final By deleteIcon = By.xpath("(//div[contains(@class,'actions')] //button[contains(@class,'bg-table-icon delete')])");
@@ -95,35 +78,6 @@ public class VehiclesPage extends BasePage<VehiclesPage> {
       return isDisplayed(currentContract(contract));
   }
 
-  @Step("Check plate letter AR Displayed")
-  public boolean isPlateLetterArDisplayed() {
-    return isDisplayed(plateLetterArInPopup);
-  }
-
-  @Step("Get plate letter AR")
-  public String getPlateLetterAr() {
-    return getText(plateLetterArInPopup);
-  }
-
-  public WebElement getPlateLetterArElement() {
-    return driver.findElement(plateLetterArInPopup);
-  }
-
-  @Step("Check plate letter EN Displayed")
-  public boolean isPlateLetterEnDisplayed() {
-    return isDisplayed(plateLetterEnInPopup);
-  }
-
-  @Step("Get plate letter EN")
-  public String getPlateLetterEn() {
-    return getText(plateLetterEnInPopup);
-  }
-
-  public WebElement getPlateLetterEnElement() {
-    return driver.findElement(plateLetterEnInPopup);
-  }
-
-
   @Step("Get vehicle Car Status text")
   public String getCarStatusText(String plateNumber) {
     return getText(carStatus(plateNumber));
@@ -134,32 +88,10 @@ public class VehiclesPage extends BasePage<VehiclesPage> {
         return driver.findElement(carStatus(plateNumber));
     }
 
-  @Step("Wait until vehicle is permitted")
-  public VehiclesPage waitUntilVehicleIsPermitted() {
-
-    WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(30));
-
-    wait.until(driver -> {
-      try {
-        return driver.findElement(vehicleIsPermittedTXT)
-                .getText()
-                .trim()
-                .equals("This vehicle is permitted to enter");
-      } catch (Exception e) {
-        return false;
-      }
-    });
-
-    return this;
-  }
 
   @Step("Get vehicle is not permitted text")
   public String getVehicleIsPermittedText() {
     return getText(vehicleIsPermittedTXT);
-  }
-  @Step("Get vehicle is not permitted text")
-  public WebElement getVehicleIsPermittedTextElement() {
-    return driver.findElement(vehicleIsPermittedTXT);
   }
 
  @Step("Click Permit button for plate")
@@ -223,29 +155,6 @@ public class VehiclesPage extends BasePage<VehiclesPage> {
     return this;
   }
 
-  @Step("Get success location")
-  public WebElement getStatus(String plateNumber) {
-    return driver.findElement(carStatus(plateNumber));
-  }
-
-
-    @Step("Check plate number EN")
-    public boolean isCarStatus(String plateNumber) {
-        return isDisplayed(carStatus(plateNumber));
-    }
-
-
-    @Step("Get success location")
-    public WebElement getContractType() {
-        return driver.findElement(contractTypeField);
-    }
-
-    @Step("Get vehicle is not permitted text")
-    public String getContractTypeText() {
-        return getText(contractTypeField);
-    }
-
-
     // Edit Vehicle
     @Step("Click Edit Vehicle")
     public VehiclesPage clickEditVehiclesIcon(String plateNumber) {
@@ -257,24 +166,6 @@ public class VehiclesPage extends BasePage<VehiclesPage> {
     @Step("Click Delete Vehicle")
   public VehiclesPage clickDeleteIcon() {
     click(deleteIcon);
-    return this;
-  }
-
-  @Step("Click Archive Page")
-  public VehiclesPage clickArchiveIcon() {
-    click(archiveIcon);
-    return this;
-  }
-
-  @Step("Click Restore Vehicle")
-  public VehiclesPage clickRestoreIcon() {
-    click(restoreIcon);
-    return this;
-  }
-
-  @Step("Click Force Delete Vehicle")
-  public VehiclesPage clickForceDeleteIcon() {
-    click(forceDeleteIcon);
     return this;
   }
 

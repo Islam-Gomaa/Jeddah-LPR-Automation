@@ -257,6 +257,14 @@ public class BasePage<T extends BasePage<T>> extends ElementActions {
         return new VehiclesPage(driver);
     }
 
+    @Step("Open Visitors Log Page")
+    public VisitorsLogPage openVisitorsLog() {
+        click(visitorsLog);
+        return new VisitorsLogPage(driver);
+    }
+
+
+
 
 //    @Step("Open UseCases Page")
 //    public UseCasesPage openUseCases() {
