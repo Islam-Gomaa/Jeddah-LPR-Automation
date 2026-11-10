@@ -7,6 +7,7 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import pages.BasePage;
+import pages.GatesPage;
 import pages.VehiclesPage;
 import utilities.AuthHelper;
 import utils.Assertions;
@@ -17,6 +18,8 @@ public class Vehicles extends BaseTests {
 
     private BasePage basePage;
     private VehiclesPage vehiclesPage;
+    private GatesPage gatesPage;
+
 
     private String plateEn;
     private String plateAr;
@@ -58,8 +61,61 @@ public class Vehicles extends BaseTests {
         basePage = AuthHelper.login(driver);
     }
 
-    // Verify the existing vehicle in Vehicles module
     @Test(priority = 1)
+    public void createVehiclePermit() {
+
+        gatesPage = basePage.openGates();
+
+        Assertions.myAssertTrue(gatesPage.isPlateNumberDisplayed(plateNumber),
+                "Plate number did not appear successfully");
+        gatesPage.clickPermitStatusButtonInTable(plateNumber);
+
+        Assertions.myAssertTrue(
+                gatesPage.isPlateLetterArDisplayed(),
+                "Plate letter Ar did not appear successfully");
+
+        Assertions.myAssertEqualsIgnoreSpaces(
+                gatesPage.getPlateLetterArElement(),
+                gatesPage.getPlateLetterAr(),
+                plateLettersAr,
+                "Incorrect Arabic plate letters");
+
+        Assertions.myAssertTrue(
+                gatesPage.isPlateLetterEnDisplayed(),
+                "Plate letter En did not appear successfully");
+
+        Assertions.myAssertEqualsIgnoreSpaces(
+                gatesPage.getPlateLetterEnElement(),
+                gatesPage.getPlateLetterEn(),
+                plateLettersEn,
+                "Incorrect English plate letter");
+
+        Assertions.myAssertEquals(
+                gatesPage.getVehicleIsNotPermittedTextElement(),
+                gatesPage.getVehicleIsNotPermittedText(),
+                "This vehicle is not permitted to enter",
+                "Vehicle is permitted");
+
+        gatesPage
+                .clickCreatePermit()
+                .selectVehicleTypeDDL()
+                .selectDriverDDL()
+                .selectMainWasteDDL()
+                .selectSubWasteDDL()
+                .selectContractorDDL()
+                .clickSaveButton()
+                .waitUntilVehicleIsPermitted();
+
+
+        Assertions.myAssertEquals(
+                gatesPage.getVehicleIsPermittedTextElement(),
+                gatesPage.getVehicleIsPermittedText(),
+                "This vehicle is permitted to enter",
+                "Vehicle is not permitted");
+    }
+
+    // Verify the existing vehicle in Vehicles module
+    @Test(priority = 2)
     public void verifyAndEditVehicle() {
 
         vehiclesPage = basePage.openVehicles();
@@ -73,9 +129,13 @@ public class Vehicles extends BaseTests {
         );
 
         Assertions.myAssertTrue(
-                vehiclesPage.iscurrentContract(dataModel().Vehicles.contract),
+                vehiclesPage.isCurrentContractDisplayed(
+                        plateNumber,
+                        dataModel().Vehicles.contract
+                ),
                 "Current Contract did not appear successfully"
         );
+
 
         Assertions.myAssertEquals(
                 vehiclesPage.getCarStatusTextElement(plateNumber),
@@ -98,7 +158,7 @@ public class Vehicles extends BaseTests {
     }
 
     // Change Vehicle Status to be Blocked
-    @Test(priority = 2)
+    @Test(priority = 3)
     public void changeVehicleStatusToBeBlocked() {
         vehiclesPage = basePage.openVehicles();
 
@@ -140,8 +200,22 @@ public class Vehicles extends BaseTests {
         );
     }
 
+    @Test(priority = 4)
+    public void filterByBlockedStatus(){
+        vehiclesPage = basePage.openVehicles();
+        vehiclesPage
+                .searchInputs(plateNumber)
+                .filterByStatusAndSelect(dataModel().Vehicles.blocked);
+
+        Assertions.myAssertEquals(
+                vehiclesPage.getCarStatusTextElement(plateNumber),
+                vehiclesPage.getCarStatusText(plateNumber),
+                "Blocked",
+                "Vehicle status is Active");
+    }
+
     // Change Vehicle Status to be Active
-    @Test(priority = 3)
+    @Test(priority = 5)
     public void changeVehicleStatusToBeActive() {
         vehiclesPage = basePage.openVehicles();
 
@@ -183,7 +257,7 @@ public class Vehicles extends BaseTests {
         );
     }
 
-    @Test(priority = 4)
+    @Test(priority = 6)
     public void filterByActiveStatus(){
         vehiclesPage = basePage.openVehicles();
         vehiclesPage
@@ -197,22 +271,8 @@ public class Vehicles extends BaseTests {
                 "Vehicle status is Blocked");
     }
 
-    @Test(priority = 5)
-    public void filterByBlockedStatus(){
-        vehiclesPage = basePage.openVehicles();
-        vehiclesPage
-                .searchInputs(plateNumber)
-                .filterByStatusAndSelect(dataModel().Vehicles.blocked);
-
-        Assertions.myAssertEquals(
-                vehiclesPage.getCarStatusTextElement(plateNumber),
-                vehiclesPage.getCarStatusText(plateNumber),
-                "Blocked",
-                "Vehicle status is Active");
-    }
-
     // Delete Vehicle in Table
-    @Test(priority = 6)
+    @Test(priority = 7)
     public void deleteRestoreAndForceDeleteVehicleInTable() {
 
         vehiclesPage = basePage.openVehicles();

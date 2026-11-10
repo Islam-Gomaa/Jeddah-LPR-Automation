@@ -73,10 +73,17 @@ public class VehiclesPage extends BasePage<VehiclesPage> {
         }
     }
 
-  @Step("Check plate number EN")
-  public boolean iscurrentContract(String contract) {
-      return isDisplayed(currentContract(contract));
-  }
+//  @Step("Check plate number EN")
+//  public boolean iscurrentContract(String contract) {
+//      return isDisplayed(currentContract(contract));
+//  }
+
+
+   @Step("Verify current contract")
+   public boolean isCurrentContractDisplayed(String plateNumber, String expectedContract) {
+      return getText(currentContract(plateNumber)).contains(expectedContract);
+    }
+
 
   @Step("Get vehicle Car Status text")
   public String getCarStatusText(String plateNumber) {

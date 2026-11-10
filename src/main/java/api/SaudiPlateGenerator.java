@@ -52,7 +52,6 @@ public class SaudiPlateGenerator {
 
     /*
      * Generate English plate
-     * Example: 1234 ABC
      */
 
     private static String generateEnglishPlate(int number) {
@@ -74,7 +73,6 @@ public class SaudiPlateGenerator {
 
     /*
      * Generate Arabic plate
-     * Example: حبأ 1234
      */
 
     private static String generateArabicPlate(

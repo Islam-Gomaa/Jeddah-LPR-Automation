@@ -2,9 +2,10 @@
 
     <test name="Main Flow">
         <classes>
-            <class name="tests.Gates"/>
-<!--            <class name="tests.Scale"/>-->
-            <class name="tests.Vehicles"/>
+<!--            <class name="tests.Gates"/>-->
+            <class name="tests.Scale"/>
+<!--            <class name="tests.Vehicles"/>-->
+<!--            <class name="tests.Permits"/>-->
 
         </classes>
     </test>

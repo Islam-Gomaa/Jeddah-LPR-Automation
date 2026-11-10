@@ -17,7 +17,7 @@ import static dataReader.ReadDataFromJson.dataModel;
 public class Gates extends BaseTests {
 
     BasePage basePage;
-    GatesPage gatespage;
+    GatesPage gatesPage;
 
     // General Vehicle Test Data
 
@@ -86,39 +86,39 @@ public class Gates extends BaseTests {
     @Test(priority = 1)
     public void createVehiclePermit() {
 
-        gatespage = basePage.openGates();
+        gatesPage = basePage.openGates();
 
-        Assertions.myAssertTrue(gatespage.isPlateNumberDisplayed(plateNumber),
+        Assertions.myAssertTrue(gatesPage.isPlateNumberDisplayed(plateNumber),
                 "Plate number did not appear successfully");
-        gatespage.clickPermitStatusButtonInTable(plateNumber);
+        gatesPage.clickPermitStatusButtonInTable(plateNumber);
 
         Assertions.myAssertTrue(
-                gatespage.isPlateLetterArDisplayed(),
+                gatesPage.isPlateLetterArDisplayed(),
                 "Plate letter Ar did not appear successfully");
 
         Assertions.myAssertEqualsIgnoreSpaces(
-                gatespage.getPlateLetterArElement(),
-                gatespage.getPlateLetterAr(),
+                gatesPage.getPlateLetterArElement(),
+                gatesPage.getPlateLetterAr(),
                 plateLettersAr,
                 "Incorrect Arabic plate letters");
 
         Assertions.myAssertTrue(
-                gatespage.isPlateLetterEnDisplayed(),
+                gatesPage.isPlateLetterEnDisplayed(),
                 "Plate letter En did not appear successfully");
 
         Assertions.myAssertEqualsIgnoreSpaces(
-                gatespage.getPlateLetterEnElement(),
-                gatespage.getPlateLetterEn(),
+                gatesPage.getPlateLetterEnElement(),
+                gatesPage.getPlateLetterEn(),
                 plateLettersEn,
                 "Incorrect English plate letter");
 
         Assertions.myAssertEquals(
-                gatespage.getVehicleIsNotPermittedTextElement(),
-                gatespage.getVehicleIsNotPermittedText(),
+                gatesPage.getVehicleIsNotPermittedTextElement(),
+                gatesPage.getVehicleIsNotPermittedText(),
                 "This vehicle is not permitted to enter",
                 "Vehicle is permitted");
 
-        gatespage
+        gatesPage
                 .clickCreatePermit()
                 .selectVehicleTypeDDL()
                 .selectDriverDDL()
@@ -130,17 +130,17 @@ public class Gates extends BaseTests {
 
 
         Assertions.myAssertEquals(
-                gatespage.getVehicleIsPermittedTextElement(),
-                gatespage.getVehicleIsPermittedText(),
+                gatesPage.getVehicleIsPermittedTextElement(),
+                gatesPage.getVehicleIsPermittedText(),
                 "This vehicle is permitted to enter",
                 "Vehicle is not permitted");
     }
 
     @Test(priority = 2)
     public void changeVehicleStatusInPopUp() throws InterruptedException {
-        gatespage = basePage.openGates();
+        gatesPage = basePage.openGates();
 
-        gatespage
+        gatesPage
         .searchInputs(plateEn)
         .waitForVehicleAppear()
         .clickPermitStatusButtonInTable(plateNumber)
@@ -151,17 +151,17 @@ public class Gates extends BaseTests {
 
 
         Assertions.myAssertEquals(
-                gatespage.getSuccessMessage(),
-                gatespage.getSuccessMessageText(),
+                gatesPage.getSuccessMessage(),
+                gatesPage.getSuccessMessageText(),
                 "Status updated successfully",
                 "Status not updated");
     }
 
     @Test(priority = 3)
     public void changeVehicleStatusByIcon() {
-        gatespage = basePage.openGates();
+        gatesPage = basePage.openGates();
 
-        gatespage
+        gatesPage
                 .searchInputs(plateEn)
                 .clickChangeStatusIcon(plateNumber)
                 .selectSetStatusDDL(dataModel().Gates.status)
@@ -171,17 +171,17 @@ public class Gates extends BaseTests {
 
 
         Assertions.myAssertEquals(
-                gatespage.getSuccessMessage(),
-                gatespage.getSuccessMessageText(),
+                gatesPage.getSuccessMessage(),
+                gatesPage.getSuccessMessageText(),
                 "Status updated successfully",
                 "Status not updated");
     }
 
     @Test(priority = 4)
     public void createVehicleReportInTable() {
-        gatespage = basePage.openGates();
+        gatesPage = basePage.openGates();
 
-        gatespage
+        gatesPage
                 .searchInputs(plateEn)
                 .clickReportButtonIcon(plateNumber)
                 .enterNameEnglish(dataModel().Gates.nameEnglish)
@@ -196,8 +196,8 @@ public class Gates extends BaseTests {
 
 
         Assertions.myAssertEquals(
-                gatespage.getSuccessMessage(),
-                gatespage.getSuccessMessageText(),
+                gatesPage.getSuccessMessage(),
+                gatesPage.getSuccessMessageText(),
                 "Created successfully",
                 "Status not Created"
         );
@@ -205,28 +205,28 @@ public class Gates extends BaseTests {
 
     @Test(priority = 5)
     public void filterByLocations(){
-        gatespage = basePage.openGates();
-        gatespage.filterByLocationAndSelect(dataModel().Gates.locationGate)
+        gatesPage = basePage.openGates();
+        gatesPage.filterByLocationAndSelect(dataModel().Gates.locationGate)
                  .clickPermitStatusButtonInTable(plateNumber);
 
         Assertions.myAssertEquals(
-                gatespage.getLocationsGate(),
-                gatespage.getLocationsGateText(),
+                gatesPage.getLocationsGate(),
+                gatesPage.getLocationsGateText(),
                 dataModel().Gates.locationGate,
                 "Location Gate not appeared");
     }
 
     @Test(priority = 6)
     public void filterByContractType(){
-        gatespage = basePage.openGates();
-        gatespage
+        gatesPage = basePage.openGates();
+        gatesPage
                 .filterByContractTypeAndSelect(dataModel().Gates.contract)
                 .clickPermitStatusButtonInTable(plateNumber)
                 .clickVehicleInformationTab();
 
         Assertions.myAssertEquals(
-                gatespage.getContractType(),
-                gatespage.getContractTypeText(),
+                gatesPage.getContractType(),
+                gatesPage.getContractTypeText(),
                 dataModel().Gates.contract,
                 "Contract Type not appeared");
     }
@@ -235,63 +235,63 @@ public class Gates extends BaseTests {
     @Test(priority = 7)
     public void deleteRestoreAndForceDeleteVehicleInTable() {
 
-        gatespage = basePage.openGates();
+        gatesPage = basePage.openGates();
 
-        gatespage
+        gatesPage
                 .searchInputs(plateEn)
                 .clickDeleteIcon();
 
         Assertions.myAssertEquals(
-                gatespage.getPopUpAction(),
-                gatespage.getPopUpActionText(),
+                gatesPage.getPopUpAction(),
+                gatesPage.getPopUpActionText(),
                 "Delete",
                 "Expected delete confirmation popup to be displayed"
         );
 
         Assertions.myAssertEqualsNormalizedNumbers(
-                gatespage.getPopUpPlateNumber(),
-                gatespage.getPopUpPlateNumberText(),
+                gatesPage.getPopUpPlateNumber(),
+                gatesPage.getPopUpPlateNumberText(),
                 "Are you sure you want to delete " + plateAr + "؟",
                 "Delete confirmation message is incorrect"
         );
 
-        gatespage.clickOkButton()
+        gatesPage.clickOkButton()
                  .waitForSuccessMessage("Deleted successfully");
 
         Assertions.myAssertEquals(
-                gatespage.getSuccessMessage(),
-                gatespage.getSuccessMessageText(),
+                gatesPage.getSuccessMessage(),
+                gatesPage.getSuccessMessageText(),
                 "Deleted successfully",
                 "Vehicle not Deleted"
         );
 
     // Restore Vehicle In Table
 
-        gatespage
+        gatesPage
                 .clickArchiveIcon()
                 .searchInputs(plateEn)
                 .clickRestoreIcon();
 
         Assertions.myAssertEquals(
-                gatespage.getPopUpAction(),
-                gatespage.getPopUpActionText(),
+                gatesPage.getPopUpAction(),
+                gatesPage.getPopUpActionText(),
                 "Restore",
                 "Expected Restore confirmation popup to be displayed"
         );
 
         Assertions.myAssertEqualsNormalizedNumbers(
-                gatespage.getPopUpPlateNumber(),
-                gatespage.getPopUpPlateNumberText(),
+                gatesPage.getPopUpPlateNumber(),
+                gatesPage.getPopUpPlateNumberText(),
                 "Restore " + plateAr + "؟",
                 "Restore confirmation message is incorrect"
         );
 
-        gatespage.clickOkButton()
+        gatesPage.clickOkButton()
                 .waitForSuccessMessage("Restored successfully");
 
         Assertions.myAssertEquals(
-                gatespage.getSuccessMessage(),
-                gatespage.getSuccessMessageText(),
+                gatesPage.getSuccessMessage(),
+                gatesPage.getSuccessMessageText(),
                 "Restored successfully",
                 "Vehicle not Restored"
         );
@@ -299,60 +299,60 @@ public class Gates extends BaseTests {
         // Force Delete Vehicle In Table
         // Step 1
 
-        gatespage
+        gatesPage
                 .clickArchiveIcon()
                 .searchInputs(plateEn)
                 .clickDeleteIcon();
 
         Assertions.myAssertEquals(
-                gatespage.getPopUpAction(),
-                gatespage.getPopUpActionText(),
+                gatesPage.getPopUpAction(),
+                gatesPage.getPopUpActionText(),
                 "Delete",
                 "Expected delete confirmation popup to be displayed"
         );
 
         Assertions.myAssertEqualsNormalizedNumbers(
-                gatespage.getPopUpPlateNumber(),
-                gatespage.getPopUpPlateNumberText(),
+                gatesPage.getPopUpPlateNumber(),
+                gatesPage.getPopUpPlateNumberText(),
                 "Are you sure you want to delete " + plateAr + "؟",
                 "Delete confirmation message is incorrect"
         );
 
-        gatespage.clickOkButton()
+        gatesPage.clickOkButton()
                 .waitForSuccessMessage("Deleted successfully");
 
         Assertions.myAssertEquals(
-                gatespage.getSuccessMessage(),
-                gatespage.getSuccessMessageText(),
+                gatesPage.getSuccessMessage(),
+                gatesPage.getSuccessMessageText(),
                 "Deleted successfully",
                 "Vehicle not Deleted"
         );
          // Step 2
-        gatespage
+        gatesPage
                 .clickArchiveIcon()
                 .searchInputs(plateEn)
                 .clickForceDeleteIcon();
 
         Assertions.myAssertEquals(
-                gatespage.getPopUpAction(),
-                gatespage.getPopUpActionText(),
+                gatesPage.getPopUpAction(),
+                gatesPage.getPopUpActionText(),
                 "Permanent delete",
                 "Expected Permanent delete confirmation popup to be displayed"
         );
 
          Assertions.myAssertEqualsNormalizedNumbers(
-                 gatespage.getPopUpPlateNumber(),
-                 gatespage.getPopUpPlateNumberText(),
+                 gatesPage.getPopUpPlateNumber(),
+                 gatesPage.getPopUpPlateNumberText(),
         "Delete permanently? This action cannot be undone.",
         "Delete permanently confirmation message is incorrect");
 
 
-        gatespage.clickOkButton()
+        gatesPage.clickOkButton()
                 .waitForSuccessMessage("Deleted successfully");
 
         Assertions.myAssertEquals(
-                gatespage.getSuccessMessage(),
-                gatespage.getSuccessMessageText(),
+                gatesPage.getSuccessMessage(),
+                gatesPage.getSuccessMessageText(),
                 "Deleted successfully",
                 "Vehicle not Deleted"
         );

@@ -41,9 +41,9 @@ public class BasePage<T extends BasePage<T>> extends ElementActions {
     private final By washStation = By.xpath("//span[normalize-space()='Wash Station']");
     private final By vehicles = By.xpath("//span[normalize-space()='Vehicles']");
     private final By vehiclesContracts = By.xpath("//span[normalize-space()='Vehicles Contracts']");
-    private final By visits = By.xpath("//span[normalize-space()='Visits']");
     private final By visitorCars = By.xpath("//span[normalize-space()='Visitor Cars']");
-    private final By permits = By.xpath("//span[normalize-space()='permits']");
+    private final By visits = By.xpath("//span[normalize-space()='Visits']");
+    private final By permits = By.xpath("//span[normalize-space()='Permits']");
     private final By visitorsLog = By.xpath("//span[normalize-space()='Visitors Log']");
     private final By settings = By.xpath("//span[normalize-space()='Settings']");
     private final By locations = By.xpath("//span[normalize-space()='Locations']");
@@ -263,6 +263,12 @@ public class BasePage<T extends BasePage<T>> extends ElementActions {
         return new VisitorsLogPage(driver);
     }
 
+    @Step("Open Permits Page")
+    public PermitsPage openPermits(){
+        click(visits);
+        click(permits);
+        return new PermitsPage(driver);
+    }
 
 
 
