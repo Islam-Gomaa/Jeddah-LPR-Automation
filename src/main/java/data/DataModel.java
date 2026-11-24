@@ -6,4 +6,5 @@ public class DataModel {
     public Gates Gates;
     public Scale Scale;
     public Vehicles Vehicles;
+    public Permits Permits;
 }

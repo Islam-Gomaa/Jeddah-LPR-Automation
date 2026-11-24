@@ -32,5 +32,9 @@
     "carStatus": "Active",
     "active": "Active",
     "blocked": "Blocked"
+  },
+  "Permits": {
+    "employeeType": "Employee",
+    "visitorType": "Visitor"
   }
 }
